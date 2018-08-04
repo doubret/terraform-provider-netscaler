@@ -55,6 +55,7 @@ func main() {
 			"title":          strings.Title,
 			"is_array":       nitro.IsArray,
 			"go_type":        nitro.GoType,
+			"go_base_type":   nitro.GoBaseType,
 			"name":           nitro.Name,
 			"tf_schema_type": tf_schema_type,
 			"is_in":          is_in,

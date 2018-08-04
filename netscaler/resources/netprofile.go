@@ -1,6 +1,8 @@
 package resources
 
 import (
+	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
+	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 )
@@ -45,14 +47,109 @@ func NetscalerNetprofile() *schema.Resource {
 	}
 }
 
+func key_netprofile(d *schema.ResourceData) string {
+	return d.Get("name").(string)
+}
+
+func get_netprofile(d *schema.ResourceData) nitro.Netprofile {
+	var _ = utils.Convert_set_to_string_array
+
+	resource := nitro.Netprofile{
+		Name:             d.Get("name").(string),
+		Overridelsn:      d.Get("overridelsn").(string),
+		Srcip:            d.Get("srcip").(string),
+		Srcippersistency: d.Get("srcippersistency").(string),
+		Td:               d.Get("td").(int),
+	}
+
+	return resource
+}
+
+func set_netprofile(d *schema.ResourceData, resource *nitro.Netprofile) {
+	d.Set("name", resource.Name)
+	d.Set("overridelsn", resource.Overridelsn)
+	d.Set("srcip", resource.Srcip)
+	d.Set("srcippersistency", resource.Srcippersistency)
+	d.Set("td", resource.Td)
+	d.SetId(resource.Name)
+}
+
 func create_netprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_netprofile")
+
+	client := meta.(*nitro.NitroClient)
+
+	key := key_netprofile(d)
+
+	exists, err := client.ExistsNetprofile(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		resource, err := client.GetNetprofile(key)
+
+		if err != nil {
+			log.Print("Failed to get existing resource : ", err)
+
+			return err
+		}
+
+		set_netprofile(d, resource)
+	} else {
+		err := client.AddNetprofile(get_netprofile(d))
+
+		if err != nil {
+			log.Print("Failed to create resource : ", err)
+
+			return err
+		}
+
+		resource, err := client.GetNetprofile(key)
+
+		if err != nil {
+			log.Print("Failed to get created resource : ", err)
+
+			return err
+		}
+
+		set_netprofile(d, resource)
+	}
 
 	return nil
 }
 
 func read_netprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In read_netprofile")
+
+	client := meta.(*nitro.NitroClient)
+
+	key := key_netprofile(d)
+
+	exists, err := client.ExistsNetprofile(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		resource, err := client.GetNetprofile(key)
+
+		if err != nil {
+			log.Print("Failed to get resource : ", err)
+
+			return err
+		}
+
+		set_netprofile(d, resource)
+	} else {
+		d.SetId("")
+	}
 
 	return nil
 }
@@ -65,6 +162,30 @@ func update_netprofile(d *schema.ResourceData, meta interface{}) error {
 
 func delete_netprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In delete_netprofile")
+
+	client := meta.(*nitro.NitroClient)
+
+	key := key_netprofile(d)
+
+	exists, err := client.ExistsNetprofile(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		err := client.DeleteNetprofile(key)
+
+		if err != nil {
+			log.Print("Failed to delete resource : ", err)
+
+			return err
+		}
+	}
+
+	d.SetId("")
 
 	return nil
 }

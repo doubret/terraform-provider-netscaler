@@ -2,6 +2,8 @@ package resources
 
 import (
         "github.com/hashicorp/terraform/helper/schema"
+	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
+	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
         "log"
 )
 
@@ -25,7 +27,7 @@ func Netscaler{{$.Name|name}}() *schema.Resource {
                                 Optional: true,
 			},
                         {{end -}}
-                        {{ range $key, $value := $.Schema.Fields -}}
+                        {{range $key, $value := $.Schema.Fields -}}
                         "{{$key}}": &schema.Schema{
                                 {{if ($value|is_array) -}}
                                 Type:     schema.TypeSet,
@@ -44,14 +46,131 @@ func Netscaler{{$.Name|name}}() *schema.Resource {
 	}
 }
 
+{{if $.Schema.Key.Fields -}}
+func key_{{$.Name}}(d *schema.ResourceData) nitro.{{$.Name|name}}Key {
+        key := nitro.{{$.Name|name}}Key{}
+
+        return key
+}
+
+{{else -}}
+func key_{{$.Name}}(d *schema.ResourceData) string {
+        return d.Get("{{$.Schema.Key.Name}}").(string)
+}
+
+{{end -}}
+func get_{{$.Name}}(d *schema.ResourceData) nitro.{{$.Name|name}} {
+        var _ = utils.Convert_set_to_string_array
+
+        resource := nitro.{{$.Name|name}} {
+                {{if $.Schema.Key.Name -}}
+                {{$.Schema.Key.Name|title}}: d.Get("{{$.Schema.Key.Name}}").(string),
+                {{end -}}
+                {{if $.Schema.State -}}
+                {{$.Schema.State|title}}: d.Get("{{$.Schema.State}}").(string),
+                {{end -}}
+                {{ range $key, $value := $.Schema.Fields -}}
+                {{if ($value|is_array) -}}
+                {{$key|title}}: utils.Convert_set_to_{{$value|go_base_type}}_array(d.Get("{{$key}}").(*schema.Set)),
+                {{else -}}
+                {{$key|title}}: d.Get("{{$key}}").({{$value|go_type}}),
+                {{end -}}
+                {{end -}}
+	}
+
+        return resource
+}
+
+func set_{{$.Name}}(d *schema.ResourceData, resource *nitro.{{$.Name|name}}) {
+        {{if $.Schema.Key.Name -}}
+	d.Set("{{$.Schema.Key.Name}}", resource.{{$.Schema.Key.Name|title}})
+        {{end -}}
+        {{if $.Schema.State -}}
+	d.Set("{{$.Schema.State}}", resource.{{$.Schema.State|title}})
+        {{end -}}
+        {{ range $key, $value := $.Schema.Fields -}}
+	d.Set("{{$key}}", resource.{{$key|title}})
+        {{end -}}
+
+        d.SetId(resource.{{$.Schema.Key.Name|title}})
+}
+
 func create_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
         log.Printf("[DEBUG]  netscaler-provider: In create_{{$.Name}}")
+
+	client := meta.(*nitro.NitroClient)
+
+        key := key_{{$.Name}}(d)
+
+        exists, err := client.Exists{{$.Name|name}}(key)
+
+        if err != nil {
+                log.Print("Failed to check if resource exists : ", err)
+
+                return err
+        }
+        
+        if exists {
+                resource, err := client.Get{{$.Name|name}}(key)
+
+                if err != nil {
+                        log.Print("Failed to get existing resource : ", err)
+
+                        return err
+                }
+
+                set_{{$.Name}}(d, resource)
+        } else {
+                err := client.Add{{$.Name|name}}(get_{{$.Name}}(d))
+
+                if err != nil {
+                        log.Print("Failed to create resource : ", err)
+
+                        return err
+                }
+
+                resource, err := client.Get{{$.Name|name}}(key)
+
+                if err != nil {
+                        log.Print("Failed to get created resource : ", err)
+
+                        return err
+                }
+
+                set_{{$.Name}}(d, resource)
+        }
 
 	return nil
 }
 
 func read_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
         log.Println("[DEBUG] netscaler-provider:  In read_{{$.Name}}")
+
+	client := meta.(*nitro.NitroClient)
+
+        key := key_{{$.Name}}(d)
+
+        exists, err := client.Exists{{$.Name|name}}(key)
+
+        if err != nil {
+                log.Print("Failed to check if resource exists : ", err)
+
+                return err
+        }
+        
+        if exists {
+                resource, err := client.Get{{$.Name|name}}(key)
+
+                if err != nil {
+                        log.Print("Failed to get resource : ", err)
+
+                        return err
+                }
+
+                set_{{$.Name}}(d, resource)
+        } else {
+		d.SetId("")
+        }
 
 	return nil
 }
@@ -64,6 +183,30 @@ func update_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
 
 func delete_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
         log.Printf("[DEBUG]  netscaler-provider: In delete_{{$.Name}}")
+
+	client := meta.(*nitro.NitroClient)
+
+        key := key_{{$.Name}}(d)
+
+        exists, err := client.Exists{{$.Name|name}}(key)
+
+        if err != nil {
+                log.Print("Failed to check if resource exists : ", err)
+
+                return err
+        }
+        
+        if exists {
+                err := client.Delete{{$.Name|name}}(key)
+
+                if err != nil {
+                        log.Print("Failed to delete resource : ", err)
+
+                        return err
+                }
+        }
+
+	d.SetId("")
 
 	return nil
 }

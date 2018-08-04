@@ -13,7 +13,7 @@ func Netscaler{{$.Name|name}}() *schema.Resource {
                 Update:        nil,
                 Delete:        delete_{{$.Name}},
 		Schema: map[string]*schema.Schema{
-                        {{ range $key, $value := $.Schema.Fields -}}
+                        {{range $key, $value := $.Schema.Fields -}}
                         "{{$key}}": &schema.Schema{
                                 {{if ($value|is_array) -}}
                                 Type:     schema.TypeSet,

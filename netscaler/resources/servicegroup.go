@@ -1,6 +1,8 @@
 package resources
 
 import (
+	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
+	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 )
@@ -219,14 +221,167 @@ func NetscalerServicegroup() *schema.Resource {
 	}
 }
 
+func key_servicegroup(d *schema.ResourceData) string {
+	return d.Get("servicegroupname").(string)
+}
+
+func get_servicegroup(d *schema.ResourceData) nitro.Servicegroup {
+	var _ = utils.Convert_set_to_string_array
+
+	resource := nitro.Servicegroup{
+		Servicegroupname:   d.Get("servicegroupname").(string),
+		Appflowlog:         d.Get("appflowlog").(string),
+		Autoscale:          d.Get("autoscale").(string),
+		Cacheable:          d.Get("cacheable").(string),
+		Cachetype:          d.Get("cachetype").(string),
+		Cip:                d.Get("cip").(string),
+		Cipheader:          d.Get("cipheader").(string),
+		Cka:                d.Get("cka").(string),
+		Clttimeout:         d.Get("clttimeout").(int),
+		Cmp:                d.Get("cmp").(string),
+		Comment:            d.Get("comment").(string),
+		Downstateflush:     d.Get("downstateflush").(string),
+		Healthmonitor:      d.Get("healthmonitor").(string),
+		Httpprofilename:    d.Get("httpprofilename").(string),
+		Maxbandwidth:       d.Get("maxbandwidth").(int),
+		Maxclient:          d.Get("maxclient").(int),
+		Maxreq:             d.Get("maxreq").(int),
+		Memberport:         d.Get("memberport").(int),
+		Monconnectionclose: d.Get("monconnectionclose").(string),
+		Monthreshold:       d.Get("monthreshold").(int),
+		Netprofile:         d.Get("netprofile").(string),
+		Pathmonitor:        d.Get("pathmonitor").(string),
+		Pathmonitorindv:    d.Get("pathmonitorindv").(string),
+		Rtspsessionidremap: d.Get("rtspsessionidremap").(string),
+		Sc:                 d.Get("sc").(string),
+		Servicetype:        d.Get("servicetype").(string),
+		Sp:                 d.Get("sp").(string),
+		State:              d.Get("state").(string),
+		Svrtimeout:         d.Get("svrtimeout").(int),
+		Tcpb:               d.Get("tcpb").(string),
+		Tcpprofilename:     d.Get("tcpprofilename").(string),
+		Td:                 d.Get("td").(int),
+		Useproxyport:       d.Get("useproxyport").(string),
+		Usip:               d.Get("usip").(string),
+	}
+
+	return resource
+}
+
+func set_servicegroup(d *schema.ResourceData, resource *nitro.Servicegroup) {
+	d.Set("servicegroupname", resource.Servicegroupname)
+	d.Set("appflowlog", resource.Appflowlog)
+	d.Set("autoscale", resource.Autoscale)
+	d.Set("cacheable", resource.Cacheable)
+	d.Set("cachetype", resource.Cachetype)
+	d.Set("cip", resource.Cip)
+	d.Set("cipheader", resource.Cipheader)
+	d.Set("cka", resource.Cka)
+	d.Set("clttimeout", resource.Clttimeout)
+	d.Set("cmp", resource.Cmp)
+	d.Set("comment", resource.Comment)
+	d.Set("downstateflush", resource.Downstateflush)
+	d.Set("healthmonitor", resource.Healthmonitor)
+	d.Set("httpprofilename", resource.Httpprofilename)
+	d.Set("maxbandwidth", resource.Maxbandwidth)
+	d.Set("maxclient", resource.Maxclient)
+	d.Set("maxreq", resource.Maxreq)
+	d.Set("memberport", resource.Memberport)
+	d.Set("monconnectionclose", resource.Monconnectionclose)
+	d.Set("monthreshold", resource.Monthreshold)
+	d.Set("netprofile", resource.Netprofile)
+	d.Set("pathmonitor", resource.Pathmonitor)
+	d.Set("pathmonitorindv", resource.Pathmonitorindv)
+	d.Set("rtspsessionidremap", resource.Rtspsessionidremap)
+	d.Set("sc", resource.Sc)
+	d.Set("servicetype", resource.Servicetype)
+	d.Set("sp", resource.Sp)
+	d.Set("state", resource.State)
+	d.Set("svrtimeout", resource.Svrtimeout)
+	d.Set("tcpb", resource.Tcpb)
+	d.Set("tcpprofilename", resource.Tcpprofilename)
+	d.Set("td", resource.Td)
+	d.Set("useproxyport", resource.Useproxyport)
+	d.Set("usip", resource.Usip)
+	d.SetId(resource.Servicegroupname)
+}
+
 func create_servicegroup(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_servicegroup")
+
+	client := meta.(*nitro.NitroClient)
+
+	key := key_servicegroup(d)
+
+	exists, err := client.ExistsServicegroup(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		resource, err := client.GetServicegroup(key)
+
+		if err != nil {
+			log.Print("Failed to get existing resource : ", err)
+
+			return err
+		}
+
+		set_servicegroup(d, resource)
+	} else {
+		err := client.AddServicegroup(get_servicegroup(d))
+
+		if err != nil {
+			log.Print("Failed to create resource : ", err)
+
+			return err
+		}
+
+		resource, err := client.GetServicegroup(key)
+
+		if err != nil {
+			log.Print("Failed to get created resource : ", err)
+
+			return err
+		}
+
+		set_servicegroup(d, resource)
+	}
 
 	return nil
 }
 
 func read_servicegroup(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In read_servicegroup")
+
+	client := meta.(*nitro.NitroClient)
+
+	key := key_servicegroup(d)
+
+	exists, err := client.ExistsServicegroup(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		resource, err := client.GetServicegroup(key)
+
+		if err != nil {
+			log.Print("Failed to get resource : ", err)
+
+			return err
+		}
+
+		set_servicegroup(d, resource)
+	} else {
+		d.SetId("")
+	}
 
 	return nil
 }
@@ -239,6 +394,30 @@ func update_servicegroup(d *schema.ResourceData, meta interface{}) error {
 
 func delete_servicegroup(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In delete_servicegroup")
+
+	client := meta.(*nitro.NitroClient)
+
+	key := key_servicegroup(d)
+
+	exists, err := client.ExistsServicegroup(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		err := client.DeleteServicegroup(key)
+
+		if err != nil {
+			log.Print("Failed to delete resource : ", err)
+
+			return err
+		}
+	}
+
+	d.SetId("")
 
 	return nil
 }
