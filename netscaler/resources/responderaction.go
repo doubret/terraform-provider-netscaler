@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerResponderaction() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_responderaction_func,
-		//                Read:          read_responderaction_func,
-		//                Update:        update_responderaction_func,
-		//                Delete:        delete_responderaction_func,
+		Create:        create_responderaction,
+		Read:          read_responderaction,
+		Update:        update_responderaction,
+		Delete:        delete_responderaction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -60,4 +61,28 @@ func NetscalerResponderaction() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_responderaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_responderaction")
+
+	return nil
+}
+
+func read_responderaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_responderaction")
+
+	return nil
+}
+
+func update_responderaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_responderaction")
+
+	return nil
+}
+
+func delete_responderaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_responderaction")
+
+	return nil
 }

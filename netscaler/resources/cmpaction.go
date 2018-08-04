@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerCmpaction() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_cmpaction_func,
-		//                Read:          read_cmpaction_func,
-		//                Update:        update_cmpaction_func,
-		//                Delete:        delete_cmpaction_func,
+		Create:        create_cmpaction,
+		Read:          read_cmpaction,
+		Update:        update_cmpaction,
+		Delete:        delete_cmpaction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -42,4 +43,28 @@ func NetscalerCmpaction() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_cmpaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_cmpaction")
+
+	return nil
+}
+
+func read_cmpaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_cmpaction")
+
+	return nil
+}
+
+func update_cmpaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_cmpaction")
+
+	return nil
+}
+
+func delete_cmpaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_cmpaction")
+
+	return nil
 }

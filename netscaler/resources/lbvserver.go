@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerLbvserver() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_lbvserver_func,
-		//                Read:          read_lbvserver_func,
-		//                Update:        update_lbvserver_func,
-		//                Delete:        delete_lbvserver_func,
+		Create:        create_lbvserver,
+		Read:          read_lbvserver,
+		Update:        update_lbvserver,
+		Delete:        delete_lbvserver,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -565,4 +566,28 @@ func NetscalerLbvserver() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_lbvserver(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_lbvserver")
+
+	return nil
+}
+
+func read_lbvserver(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_lbvserver")
+
+	return nil
+}
+
+func update_lbvserver(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_lbvserver")
+
+	return nil
+}
+
+func delete_lbvserver(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_lbvserver")
+
+	return nil
 }

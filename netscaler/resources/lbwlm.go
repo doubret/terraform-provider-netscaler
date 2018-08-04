@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerLbwlm() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_lbwlm_func,
-		//                Read:          read_lbwlm_func,
-		//                Update:        update_lbwlm_func,
-		//                Delete:        delete_lbwlm_func,
+		Create:        create_lbwlm,
+		Read:          read_lbwlm,
+		Update:        update_lbwlm,
+		Delete:        delete_lbwlm,
 		Schema: map[string]*schema.Schema{
 			"wlmname": &schema.Schema{
 				Type:     schema.TypeString,
@@ -42,4 +43,28 @@ func NetscalerLbwlm() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_lbwlm(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_lbwlm")
+
+	return nil
+}
+
+func read_lbwlm(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_lbwlm")
+
+	return nil
+}
+
+func update_lbwlm(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_lbwlm")
+
+	return nil
+}
+
+func delete_lbwlm(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_lbwlm")
+
+	return nil
 }

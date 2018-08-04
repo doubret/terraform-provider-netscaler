@@ -2,20 +2,20 @@ package bindings
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerLbvserverTransformpolicyBinding() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_lbvserver_transformpolicy_binding_func,
-		//                Read:          read_lbvserver_transformpolicy_binding_func,
-		//                Update:        update_lbvserver_transformpolicy_binding_func,
-		//                Delete:        delete_lbvserver_transformpolicy_binding_func,
+		Create:        create_lbvserver_transformpolicy_binding,
+		Read:          read_lbvserver_transformpolicy_binding,
+		Update:        nil,
+		Delete:        delete_lbvserver_transformpolicy_binding,
 		Schema: map[string]*schema.Schema{
 			"bindpoint": &schema.Schema{
 				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+				Required: true,
 				ForceNew: true,
 			},
 			"gotopriorityexpression": &schema.Schema{
@@ -44,14 +44,12 @@ func NetscalerLbvserverTransformpolicyBinding() *schema.Resource {
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+				Required: true,
 				ForceNew: true,
 			},
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+				Required: true,
 				ForceNew: true,
 			},
 			"priority": &schema.Schema{
@@ -62,4 +60,22 @@ func NetscalerLbvserverTransformpolicyBinding() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_lbvserver_transformpolicy_binding(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_lbvserver_transformpolicy_binding")
+
+	return nil
+}
+
+func read_lbvserver_transformpolicy_binding(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_lbvserver_transformpolicy_binding")
+
+	return nil
+}
+
+func delete_lbvserver_transformpolicy_binding(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_lbvserver_transformpolicy_binding")
+
+	return nil
 }

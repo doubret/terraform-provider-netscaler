@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerResponderpolicylabel() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_responderpolicylabel_func,
-		//                Read:          read_responderpolicylabel_func,
-		//                Update:        update_responderpolicylabel_func,
-		//                Delete:        delete_responderpolicylabel_func,
+		Create:        create_responderpolicylabel,
+		Read:          read_responderpolicylabel,
+		Update:        update_responderpolicylabel,
+		Delete:        delete_responderpolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
@@ -30,4 +31,28 @@ func NetscalerResponderpolicylabel() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_responderpolicylabel(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_responderpolicylabel")
+
+	return nil
+}
+
+func read_responderpolicylabel(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_responderpolicylabel")
+
+	return nil
+}
+
+func update_responderpolicylabel(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_responderpolicylabel")
+
+	return nil
+}
+
+func delete_responderpolicylabel(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_responderpolicylabel")
+
+	return nil
 }

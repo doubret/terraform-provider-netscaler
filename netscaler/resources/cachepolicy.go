@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerCachepolicy() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_cachepolicy_func,
-		//                Read:          read_cachepolicy_func,
-		//                Update:        update_cachepolicy_func,
-		//                Delete:        delete_cachepolicy_func,
+		Create:        create_cachepolicy,
+		Read:          read_cachepolicy,
+		Update:        update_cachepolicy,
+		Delete:        delete_cachepolicy,
 		Schema: map[string]*schema.Schema{
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
@@ -60,4 +61,28 @@ func NetscalerCachepolicy() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_cachepolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_cachepolicy")
+
+	return nil
+}
+
+func read_cachepolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_cachepolicy")
+
+	return nil
+}
+
+func update_cachepolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_cachepolicy")
+
+	return nil
+}
+
+func delete_cachepolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_cachepolicy")
+
+	return nil
 }

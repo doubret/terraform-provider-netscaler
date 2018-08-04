@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerNshttpprofile() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_nshttpprofile_func,
-		//                Read:          read_nshttpprofile_func,
-		//                Update:        update_nshttpprofile_func,
-		//                Delete:        delete_nshttpprofile_func,
+		Create:        create_nshttpprofile,
+		Read:          read_nshttpprofile,
+		Update:        update_nshttpprofile,
+		Delete:        delete_nshttpprofile,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -210,4 +211,28 @@ func NetscalerNshttpprofile() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_nshttpprofile")
+
+	return nil
+}
+
+func read_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_nshttpprofile")
+
+	return nil
+}
+
+func update_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_nshttpprofile")
+
+	return nil
+}
+
+func delete_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_nshttpprofile")
+
+	return nil
 }

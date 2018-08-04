@@ -7,9 +7,5 @@ go fmt      github.com/doubret/citrix-netscaler-terraform-provider/netscaler/res
 go fmt      github.com/doubret/citrix-netscaler-terraform-provider/netscaler/bindings
 go fmt      github.com/doubret/citrix-netscaler-terraform-provider/netscaler
 
-go build    github.com/doubret/citrix-netscaler-terraform-provider/netscaler/resources
-go build    github.com/doubret/citrix-netscaler-terraform-provider/netscaler/bindings
-go build    github.com/doubret/citrix-netscaler-terraform-provider/netscaler
-
 go fmt
 go build

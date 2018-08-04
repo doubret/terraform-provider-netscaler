@@ -2,15 +2,16 @@ package bindings
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerAppflowpolicylabelAppflowpolicyBinding() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_appflowpolicylabel_appflowpolicy_binding_func,
-		//                Read:          read_appflowpolicylabel_appflowpolicy_binding_func,
-		//                Update:        update_appflowpolicylabel_appflowpolicy_binding_func,
-		//                Delete:        delete_appflowpolicylabel_appflowpolicy_binding_func,
+		Create:        create_appflowpolicylabel_appflowpolicy_binding,
+		Read:          read_appflowpolicylabel_appflowpolicy_binding,
+		Update:        nil,
+		Delete:        delete_appflowpolicylabel_appflowpolicy_binding,
 		Schema: map[string]*schema.Schema{
 			"gotopriorityexpression": &schema.Schema{
 				Type:     schema.TypeString,
@@ -32,8 +33,7 @@ func NetscalerAppflowpolicylabelAppflowpolicyBinding() *schema.Resource {
 			},
 			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+				Required: true,
 				ForceNew: true,
 			},
 			"labeltype": &schema.Schema{
@@ -44,8 +44,7 @@ func NetscalerAppflowpolicylabelAppflowpolicyBinding() *schema.Resource {
 			},
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
+				Required: true,
 				ForceNew: true,
 			},
 			"priority": &schema.Schema{
@@ -56,4 +55,22 @@ func NetscalerAppflowpolicylabelAppflowpolicyBinding() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_appflowpolicylabel_appflowpolicy_binding(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_appflowpolicylabel_appflowpolicy_binding")
+
+	return nil
+}
+
+func read_appflowpolicylabel_appflowpolicy_binding(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_appflowpolicylabel_appflowpolicy_binding")
+
+	return nil
+}
+
+func delete_appflowpolicylabel_appflowpolicy_binding(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_appflowpolicylabel_appflowpolicy_binding")
+
+	return nil
 }

@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerServicegroup() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_servicegroup_func,
-		//                Read:          read_servicegroup_func,
-		//                Update:        update_servicegroup_func,
-		//                Delete:        delete_servicegroup_func,
+		Create:        create_servicegroup,
+		Read:          read_servicegroup,
+		Update:        update_servicegroup,
+		Delete:        delete_servicegroup,
 		Schema: map[string]*schema.Schema{
 			"servicegroupname": &schema.Schema{
 				Type:     schema.TypeString,
@@ -216,4 +217,28 @@ func NetscalerServicegroup() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_servicegroup(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_servicegroup")
+
+	return nil
+}
+
+func read_servicegroup(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_servicegroup")
+
+	return nil
+}
+
+func update_servicegroup(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_servicegroup")
+
+	return nil
+}
+
+func delete_servicegroup(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_servicegroup")
+
+	return nil
 }

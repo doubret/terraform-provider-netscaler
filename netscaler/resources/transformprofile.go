@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerTransformprofile() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_transformprofile_func,
-		//                Read:          read_transformprofile_func,
-		//                Update:        update_transformprofile_func,
-		//                Delete:        delete_transformprofile_func,
+		Create:        create_transformprofile,
+		Read:          read_transformprofile,
+		Update:        update_transformprofile,
+		Delete:        delete_transformprofile,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -36,4 +37,28 @@ func NetscalerTransformprofile() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_transformprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_transformprofile")
+
+	return nil
+}
+
+func read_transformprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_transformprofile")
+
+	return nil
+}
+
+func update_transformprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_transformprofile")
+
+	return nil
+}
+
+func delete_transformprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_transformprofile")
+
+	return nil
 }

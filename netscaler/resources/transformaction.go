@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerTransformaction() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_transformaction_func,
-		//                Read:          read_transformaction_func,
-		//                Update:        update_transformaction_func,
-		//                Delete:        delete_transformaction_func,
+		Create:        create_transformaction,
+		Read:          read_transformaction,
+		Update:        update_transformaction,
+		Delete:        delete_transformaction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -78,4 +79,28 @@ func NetscalerTransformaction() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_transformaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_transformaction")
+
+	return nil
+}
+
+func read_transformaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_transformaction")
+
+	return nil
+}
+
+func update_transformaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_transformaction")
+
+	return nil
+}
+
+func delete_transformaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_transformaction")
+
+	return nil
 }

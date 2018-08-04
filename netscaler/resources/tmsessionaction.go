@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerTmsessionaction() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_tmsessionaction_func,
-		//                Read:          read_tmsessionaction_func,
-		//                Update:        update_tmsessionaction_func,
-		//                Delete:        delete_tmsessionaction_func,
+		Create:        create_tmsessionaction,
+		Read:          read_tmsessionaction,
+		Update:        update_tmsessionaction,
+		Delete:        delete_tmsessionaction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -78,4 +79,28 @@ func NetscalerTmsessionaction() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_tmsessionaction")
+
+	return nil
+}
+
+func read_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_tmsessionaction")
+
+	return nil
+}
+
+func update_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_tmsessionaction")
+
+	return nil
+}
+
+func delete_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_tmsessionaction")
+
+	return nil
 }

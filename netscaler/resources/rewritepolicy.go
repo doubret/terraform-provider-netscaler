@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerRewritepolicy() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_rewritepolicy_func,
-		//                Read:          read_rewritepolicy_func,
-		//                Update:        update_rewritepolicy_func,
-		//                Delete:        delete_rewritepolicy_func,
+		Create:        create_rewritepolicy,
+		Read:          read_rewritepolicy,
+		Update:        update_rewritepolicy,
+		Delete:        delete_rewritepolicy,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -48,4 +49,28 @@ func NetscalerRewritepolicy() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_rewritepolicy")
+
+	return nil
+}
+
+func read_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_rewritepolicy")
+
+	return nil
+}
+
+func update_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_rewritepolicy")
+
+	return nil
+}
+
+func delete_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_rewritepolicy")
+
+	return nil
 }

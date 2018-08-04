@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerNetprofile() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_netprofile_func,
-		//                Read:          read_netprofile_func,
-		//                Update:        update_netprofile_func,
-		//                Delete:        delete_netprofile_func,
+		Create:        create_netprofile,
+		Read:          read_netprofile,
+		Update:        update_netprofile,
+		Delete:        delete_netprofile,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -42,4 +43,28 @@ func NetscalerNetprofile() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_netprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_netprofile")
+
+	return nil
+}
+
+func read_netprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_netprofile")
+
+	return nil
+}
+
+func update_netprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_netprofile")
+
+	return nil
+}
+
+func delete_netprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_netprofile")
+
+	return nil
 }

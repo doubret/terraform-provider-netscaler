@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerAuditnslogaction() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_auditnslogaction_func,
-		//                Read:          read_auditnslogaction_func,
-		//                Update:        update_auditnslogaction_func,
-		//                Delete:        delete_auditnslogaction_func,
+		Create:        create_auditnslogaction,
+		Read:          read_auditnslogaction,
+		Update:        update_auditnslogaction,
+		Delete:        delete_auditnslogaction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -117,4 +118,28 @@ func NetscalerAuditnslogaction() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_auditnslogaction")
+
+	return nil
+}
+
+func read_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_auditnslogaction")
+
+	return nil
+}
+
+func update_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_auditnslogaction")
+
+	return nil
+}
+
+func delete_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_auditnslogaction")
+
+	return nil
 }

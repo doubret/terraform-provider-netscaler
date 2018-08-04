@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerServer() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_server_func,
-		//                Read:          read_server_func,
-		//                Update:        update_server_func,
-		//                Delete:        delete_server_func,
+		Create:        create_server,
+		Read:          read_server,
+		Update:        update_server,
+		Delete:        delete_server,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -70,4 +71,28 @@ func NetscalerServer() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_server(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_server")
+
+	return nil
+}
+
+func read_server(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_server")
+
+	return nil
+}
+
+func update_server(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_server")
+
+	return nil
+}
+
+func delete_server(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_server")
+
+	return nil
 }

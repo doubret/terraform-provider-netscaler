@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerFeoaction() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_feoaction_func,
-		//                Read:          read_feoaction_func,
-		//                Update:        update_feoaction_func,
-		//                Delete:        delete_feoaction_func,
+		Create:        create_feoaction,
+		Read:          read_feoaction,
+		Update:        update_feoaction,
+		Delete:        delete_feoaction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -153,4 +154,28 @@ func NetscalerFeoaction() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_feoaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_feoaction")
+
+	return nil
+}
+
+func read_feoaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_feoaction")
+
+	return nil
+}
+
+func update_feoaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_feoaction")
+
+	return nil
+}
+
+func delete_feoaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_feoaction")
+
+	return nil
 }

@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerPqpolicy() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_pqpolicy_func,
-		//                Read:          read_pqpolicy_func,
-		//                Update:        update_pqpolicy_func,
-		//                Delete:        delete_pqpolicy_func,
+		Create:        create_pqpolicy,
+		Read:          read_pqpolicy,
+		Update:        update_pqpolicy,
+		Delete:        delete_pqpolicy,
 		Schema: map[string]*schema.Schema{
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
@@ -48,4 +49,28 @@ func NetscalerPqpolicy() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_pqpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_pqpolicy")
+
+	return nil
+}
+
+func read_pqpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_pqpolicy")
+
+	return nil
+}
+
+func update_pqpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_pqpolicy")
+
+	return nil
+}
+
+func delete_pqpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_pqpolicy")
+
+	return nil
 }

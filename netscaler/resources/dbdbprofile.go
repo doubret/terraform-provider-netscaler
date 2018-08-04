@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerDbdbprofile() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_dbdbprofile_func,
-		//                Read:          read_dbdbprofile_func,
-		//                Update:        update_dbdbprofile_func,
-		//                Delete:        delete_dbdbprofile_func,
+		Create:        create_dbdbprofile,
+		Read:          read_dbdbprofile,
+		Update:        update_dbdbprofile,
+		Delete:        delete_dbdbprofile,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -48,4 +49,28 @@ func NetscalerDbdbprofile() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_dbdbprofile")
+
+	return nil
+}
+
+func read_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_dbdbprofile")
+
+	return nil
+}
+
+func update_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_dbdbprofile")
+
+	return nil
+}
+
+func delete_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_dbdbprofile")
+
+	return nil
 }

@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerVideooptimizationaction() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_videooptimizationaction_func,
-		//                Read:          read_videooptimizationaction_func,
-		//                Update:        update_videooptimizationaction_func,
-		//                Delete:        delete_videooptimizationaction_func,
+		Create:        create_videooptimizationaction,
+		Read:          read_videooptimizationaction,
+		Update:        update_videooptimizationaction,
+		Delete:        delete_videooptimizationaction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -36,4 +37,28 @@ func NetscalerVideooptimizationaction() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_videooptimizationaction")
+
+	return nil
+}
+
+func read_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_videooptimizationaction")
+
+	return nil
+}
+
+func update_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_videooptimizationaction")
+
+	return nil
+}
+
+func delete_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_videooptimizationaction")
+
+	return nil
 }

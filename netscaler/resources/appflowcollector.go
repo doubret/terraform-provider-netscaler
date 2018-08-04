@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerAppflowcollector() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_appflowcollector_func,
-		//                Read:          read_appflowcollector_func,
-		//                Update:        update_appflowcollector_func,
-		//                Delete:        delete_appflowcollector_func,
+		Create:        create_appflowcollector,
+		Read:          read_appflowcollector,
+		Update:        update_appflowcollector,
+		Delete:        delete_appflowcollector,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -42,4 +43,28 @@ func NetscalerAppflowcollector() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_appflowcollector(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_appflowcollector")
+
+	return nil
+}
+
+func read_appflowcollector(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_appflowcollector")
+
+	return nil
+}
+
+func update_appflowcollector(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_appflowcollector")
+
+	return nil
+}
+
+func delete_appflowcollector(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_appflowcollector")
+
+	return nil
 }

@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerResponderpolicy() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_responderpolicy_func,
-		//                Read:          read_responderpolicy_func,
-		//                Update:        update_responderpolicy_func,
-		//                Delete:        delete_responderpolicy_func,
+		Create:        create_responderpolicy,
+		Read:          read_responderpolicy,
+		Update:        update_responderpolicy,
+		Delete:        delete_responderpolicy,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -54,4 +55,28 @@ func NetscalerResponderpolicy() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_responderpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_responderpolicy")
+
+	return nil
+}
+
+func read_responderpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_responderpolicy")
+
+	return nil
+}
+
+func update_responderpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_responderpolicy")
+
+	return nil
+}
+
+func delete_responderpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_responderpolicy")
+
+	return nil
 }

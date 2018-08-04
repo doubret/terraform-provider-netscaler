@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerScpolicy() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_scpolicy_func,
-		//                Read:          read_scpolicy_func,
-		//                Update:        update_scpolicy_func,
-		//                Delete:        delete_scpolicy_func,
+		Create:        create_scpolicy,
+		Read:          read_scpolicy,
+		Update:        update_scpolicy,
+		Delete:        delete_scpolicy,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -60,4 +61,28 @@ func NetscalerScpolicy() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_scpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_scpolicy")
+
+	return nil
+}
+
+func read_scpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_scpolicy")
+
+	return nil
+}
+
+func update_scpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_scpolicy")
+
+	return nil
+}
+
+func delete_scpolicy(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_scpolicy")
+
+	return nil
 }

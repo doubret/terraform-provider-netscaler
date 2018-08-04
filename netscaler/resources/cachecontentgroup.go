@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerCachecontentgroup() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_cachecontentgroup_func,
-		//                Read:          read_cachecontentgroup_func,
-		//                Update:        update_cachecontentgroup_func,
-		//                Delete:        delete_cachecontentgroup_func,
+		Create:        create_cachecontentgroup,
+		Read:          read_cachecontentgroup,
+		Update:        update_cachecontentgroup,
+		Delete:        delete_cachecontentgroup,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -258,4 +259,28 @@ func NetscalerCachecontentgroup() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_cachecontentgroup")
+
+	return nil
+}
+
+func read_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_cachecontentgroup")
+
+	return nil
+}
+
+func update_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_cachecontentgroup")
+
+	return nil
+}
+
+func delete_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_cachecontentgroup")
+
+	return nil
 }

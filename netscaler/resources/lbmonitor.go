@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerLbmonitor() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_lbmonitor_func,
-		//                Read:          read_lbmonitor_func,
-		//                Update:        update_lbmonitor_func,
-		//                Delete:        delete_lbmonitor_func,
+		Create:        create_lbmonitor,
+		Read:          read_lbmonitor,
+		Update:        update_lbmonitor,
+		Delete:        delete_lbmonitor,
 		Schema: map[string]*schema.Schema{
 			"monitorname": &schema.Schema{
 				Type:     schema.TypeString,
@@ -562,4 +563,28 @@ func NetscalerLbmonitor() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_lbmonitor(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_lbmonitor")
+
+	return nil
+}
+
+func read_lbmonitor(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_lbmonitor")
+
+	return nil
+}
+
+func update_lbmonitor(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_lbmonitor")
+
+	return nil
+}
+
+func delete_lbmonitor(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_lbmonitor")
+
+	return nil
 }

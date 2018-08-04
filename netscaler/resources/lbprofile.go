@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerLbprofile() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_lbprofile_func,
-		//                Read:          read_lbprofile_func,
-		//                Update:        update_lbprofile_func,
-		//                Delete:        delete_lbprofile_func,
+		Create:        create_lbprofile,
+		Read:          read_lbprofile,
+		Update:        update_lbprofile,
+		Delete:        delete_lbprofile,
 		Schema: map[string]*schema.Schema{
 			"lbprofilename": &schema.Schema{
 				Type:     schema.TypeString,
@@ -54,4 +55,28 @@ func NetscalerLbprofile() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_lbprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_lbprofile")
+
+	return nil
+}
+
+func read_lbprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_lbprofile")
+
+	return nil
+}
+
+func update_lbprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_lbprofile")
+
+	return nil
+}
+
+func delete_lbprofile(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_lbprofile")
+
+	return nil
 }

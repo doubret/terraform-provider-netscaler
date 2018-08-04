@@ -2,15 +2,16 @@ package resources
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
+	"log"
 )
 
 func NetscalerTmtrafficaction() *schema.Resource {
 	return &schema.Resource{
 		SchemaVersion: 1,
-		//                Create:        create_tmtrafficaction_func,
-		//                Read:          read_tmtrafficaction_func,
-		//                Update:        update_tmtrafficaction_func,
-		//                Delete:        delete_tmtrafficaction_func,
+		Create:        create_tmtrafficaction,
+		Read:          read_tmtrafficaction,
+		Update:        update_tmtrafficaction,
+		Delete:        delete_tmtrafficaction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
@@ -84,4 +85,28 @@ func NetscalerTmtrafficaction() *schema.Resource {
 			},
 		},
 	}
+}
+
+func create_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In create_tmtrafficaction")
+
+	return nil
+}
+
+func read_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In read_tmtrafficaction")
+
+	return nil
+}
+
+func update_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
+	log.Println("[DEBUG] netscaler-provider:  In update_tmtrafficaction")
+
+	return nil
+}
+
+func delete_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
+	log.Printf("[DEBUG]  netscaler-provider: In delete_tmtrafficaction")
+
+	return nil
 }
