@@ -1,0 +1,57 @@
+package netscaler
+
+import (
+	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
+	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/resources"
+	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/bindings"
+	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform/terraform"
+)
+
+func Provider() terraform.ResourceProvider {
+	return &schema.Provider{
+		Schema:        providerSchema(),
+		ResourcesMap:  providerResources(),
+		ConfigureFunc: providerConfigure,
+	}
+}
+
+func providerSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"username": &schema.Schema{
+			Type:        schema.TypeString,
+			Required:    true,
+			Description: "Username to login to the NetScaler",
+			DefaultFunc: schema.EnvDefaultFunc("NS_LOGIN", "nsroot"),
+		},
+		"password": &schema.Schema{
+			Type:        schema.TypeString,
+			Required:    true,
+			Description: "Password to login to the NetScaler",
+			DefaultFunc: schema.EnvDefaultFunc("NS_PASSWORD", "nsroot"),
+		},
+		"endpoint": &schema.Schema{
+			Type:        schema.TypeString,
+			Required:    true,
+			Description: "The URL to the API",
+			DefaultFunc: schema.EnvDefaultFunc("NS_URL", nil),
+		},
+	}
+}
+
+func providerResources() map[string]*schema.Resource {
+	return map[string]*schema.Resource{
+		{{range $name, $resource := $.Resources -}}
+		"netscaler_{{$name}}": resources.Netscaler{{$name|name}}(),
+		{{end -}}
+		{{range $name, $binding := $.Bindings -}}
+		"netscaler_{{$name}}": bindings.Netscaler{{$name|name}}(),
+		{{end -}}
+	}
+}
+
+func providerConfigure(d *schema.ResourceData) (interface{}, error) {
+	c := nitro.NewNitroClient(d.Get("endpoint").(string), d.Get("username").(string), d.Get("password").(string))
+
+	return c, nil
+}
