@@ -35,16 +35,6 @@ func tf_schema_type(fieldType string) string {
 	return base
 }
 
-func is_in(value string, array []string) bool {
-	for _, item := range array {
-		if item == value {
-			return true
-		}
-	}
-
-	return false
-}
-
 func main() {
 	spec, err := nitro.ReadSpec("C:/Users/ce.breteche/go/src/github.com/doubret/citrix-netscaler-nitro-yaml-specs/yml")
 
@@ -58,7 +48,7 @@ func main() {
 			"go_base_type":   nitro.GoBaseType,
 			"name":           nitro.Name,
 			"tf_schema_type": tf_schema_type,
-			"is_in":          is_in,
+			"is_in":          nitro.IsIn,
 		}
 
 		templates := template.Must(template.New("").Funcs(funcMap).ParseFiles("templates/resource.tmpl", "templates/binding.tmpl", "templates/provider.tmpl"))
