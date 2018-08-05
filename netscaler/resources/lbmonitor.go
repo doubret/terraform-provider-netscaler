@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerLbmonitor() *schema.Resource {
@@ -568,7 +570,10 @@ func NetscalerLbmonitor() *schema.Resource {
 }
 
 func key_lbmonitor(d *schema.ResourceData) nitro.LbmonitorKey {
-	key := nitro.LbmonitorKey{}
+	key := nitro.LbmonitorKey{
+		Monitorname: d.Get("monitorname").(string),
+		Type:        d.Get("type").(string),
+	}
 
 	return key
 }
@@ -675,6 +680,8 @@ func get_lbmonitor(d *schema.ResourceData) nitro.Lbmonitor {
 }
 
 func set_lbmonitor(d *schema.ResourceData, resource *nitro.Lbmonitor) {
+	var _ = strconv.Itoa
+
 	d.Set("monitorname", resource.Monitorname)
 	d.Set("state", resource.State)
 	d.Set("action", resource.Action)
@@ -767,7 +774,12 @@ func set_lbmonitor(d *schema.ResourceData, resource *nitro.Lbmonitor) {
 	d.Set("validatecred", resource.Validatecred)
 	d.Set("vendorid", resource.Vendorid)
 	d.Set("vendorspecificvendorid", resource.Vendorspecificvendorid)
-	d.SetId(resource.Monitorname)
+
+	var key []string
+
+	key = append(key, resource.Monitorname)
+	key = append(key, resource.Type)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_lbmonitor(d *schema.ResourceData, meta interface{}) error {

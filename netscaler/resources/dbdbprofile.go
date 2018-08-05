@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerDbdbprofile() *schema.Resource {
@@ -73,13 +75,19 @@ func get_dbdbprofile(d *schema.ResourceData) nitro.Dbdbprofile {
 }
 
 func set_dbdbprofile(d *schema.ResourceData, resource *nitro.Dbdbprofile) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("conmultiplex", resource.Conmultiplex)
 	d.Set("enablecachingconmuxoff", resource.Enablecachingconmuxoff)
 	d.Set("interpretquery", resource.Interpretquery)
 	d.Set("kcdaccount", resource.Kcdaccount)
 	d.Set("stickiness", resource.Stickiness)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_dbdbprofile(d *schema.ResourceData, meta interface{}) error {

@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerPolicystringmap() *schema.Resource {
@@ -45,9 +47,15 @@ func get_policystringmap(d *schema.ResourceData) nitro.Policystringmap {
 }
 
 func set_policystringmap(d *schema.ResourceData, resource *nitro.Policystringmap) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_policystringmap(d *schema.ResourceData, meta interface{}) error {

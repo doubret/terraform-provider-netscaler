@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerRewritepolicylabel() *schema.Resource {
@@ -52,10 +54,16 @@ func get_rewritepolicylabel(d *schema.ResourceData) nitro.Rewritepolicylabel {
 }
 
 func set_rewritepolicylabel(d *schema.ResourceData, resource *nitro.Rewritepolicylabel) {
+	var _ = strconv.Itoa
+
 	d.Set("labelname", resource.Labelname)
 	d.Set("comment", resource.Comment)
 	d.Set("transform", resource.Transform)
-	d.SetId(resource.Labelname)
+
+	var key []string
+
+	key = append(key, resource.Labelname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_rewritepolicylabel(d *schema.ResourceData, meta interface{}) error {

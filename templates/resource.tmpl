@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
         "log"
+        "strings"
+        "strconv"
 )
 
 func Netscaler{{$.Name|name}}() *schema.Resource {
@@ -15,12 +17,10 @@ func Netscaler{{$.Name|name}}() *schema.Resource {
                 Update:        update_{{$.Name}},
                 Delete:        delete_{{$.Name}},
 		Schema: map[string]*schema.Schema{
-                        {{if $.Schema.Key.Name -}}
                         "{{$.Schema.Key.Name}}": &schema.Schema{
                                 Type:     schema.TypeString,
                                 Required: true,
 			},
-                        {{end -}}
                         {{if $.Schema.State -}}
                         "{{$.Schema.State}}": &schema.Schema{
                                 Type:     schema.TypeString,
@@ -48,7 +48,12 @@ func Netscaler{{$.Name|name}}() *schema.Resource {
 
 {{if $.Schema.Key.Fields -}}
 func key_{{$.Name}}(d *schema.ResourceData) nitro.{{$.Name|name}}Key {
-        key := nitro.{{$.Name|name}}Key{}
+        key := nitro.{{$.Name|name}}Key{
+                {{$.Schema.Key.Name|title}}: d.Get("{{$.Schema.Key.Name}}").(string),
+                {{range $key := $.Schema.Key.Fields -}}
+                {{$key|title}}: d.Get("{{$key}}").({{(index $.Schema.Fields $key)|go_type}}),
+                {{end -}}
+        }
 
         return key
 }
@@ -63,13 +68,11 @@ func get_{{$.Name}}(d *schema.ResourceData) nitro.{{$.Name|name}} {
         var _ = utils.Convert_set_to_string_array
 
         resource := nitro.{{$.Name|name}} {
-                {{if $.Schema.Key.Name -}}
                 {{$.Schema.Key.Name|title}}: d.Get("{{$.Schema.Key.Name}}").(string),
-                {{end -}}
                 {{if $.Schema.State -}}
                 {{$.Schema.State|title}}: d.Get("{{$.Schema.State}}").(string),
                 {{end -}}
-                {{ range $key, $value := $.Schema.Fields -}}
+                {{range $key, $value := $.Schema.Fields -}}
                 {{if ($value|is_array) -}}
                 {{$key|title}}: utils.Convert_set_to_{{$value|go_base_type}}_array(d.Get("{{$key}}").(*schema.Set)),
                 {{else -}}
@@ -82,17 +85,28 @@ func get_{{$.Name}}(d *schema.ResourceData) nitro.{{$.Name|name}} {
 }
 
 func set_{{$.Name}}(d *schema.ResourceData, resource *nitro.{{$.Name|name}}) {
-        {{if $.Schema.Key.Name -}}
+        var _ = strconv.Itoa
+
 	d.Set("{{$.Schema.Key.Name}}", resource.{{$.Schema.Key.Name|title}})
-        {{end -}}
         {{if $.Schema.State -}}
 	d.Set("{{$.Schema.State}}", resource.{{$.Schema.State|title}})
         {{end -}}
-        {{ range $key, $value := $.Schema.Fields -}}
+        {{range $key, $value := $.Schema.Fields -}}
 	d.Set("{{$key}}", resource.{{$key|title}})
+        {{end}}
+
+        var key []string
+
+        key = append(key, resource.{{$.Schema.Key.Name|title}})
+        {{range $key := $.Schema.Key.Fields -}}
+        {{if eq (index $.Schema.Fields $key) "int" -}}
+        key = append(key, strconv.Itoa(resource.{{$key|title}}))
+        {{else -}}
+        key = append(key, resource.{{$key|title}})
+        {{end -}}
         {{end -}}
 
-        d.SetId(resource.{{$.Schema.Key.Name|title}})
+        d.SetId(strings.Join(key, "-"))
 }
 
 func create_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {

@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerNshttpprofile() *schema.Resource {
@@ -262,6 +264,8 @@ func get_nshttpprofile(d *schema.ResourceData) nitro.Nshttpprofile {
 }
 
 func set_nshttpprofile(d *schema.ResourceData, resource *nitro.Nshttpprofile) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("adpttimeout", resource.Adpttimeout)
 	d.Set("altsvc", resource.Altsvc)
@@ -295,7 +299,11 @@ func set_nshttpprofile(d *schema.ResourceData, resource *nitro.Nshttpprofile) {
 	d.Set("spdy", resource.Spdy)
 	d.Set("weblog", resource.Weblog)
 	d.Set("websocket", resource.Websocket)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_nshttpprofile(d *schema.ResourceData, meta interface{}) error {

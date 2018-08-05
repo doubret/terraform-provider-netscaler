@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerLbprofile() *schema.Resource {
@@ -80,6 +82,8 @@ func get_lbprofile(d *schema.ResourceData) nitro.Lbprofile {
 }
 
 func set_lbprofile(d *schema.ResourceData, resource *nitro.Lbprofile) {
+	var _ = strconv.Itoa
+
 	d.Set("lbprofilename", resource.Lbprofilename)
 	d.Set("cookiepassphrase", resource.Cookiepassphrase)
 	d.Set("dbslb", resource.Dbslb)
@@ -87,7 +91,11 @@ func set_lbprofile(d *schema.ResourceData, resource *nitro.Lbprofile) {
 	d.Set("processlocal", resource.Processlocal)
 	d.Set("useencryptedpersistencecookie", resource.Useencryptedpersistencecookie)
 	d.Set("usesecuredpersistencecookie", resource.Usesecuredpersistencecookie)
-	d.SetId(resource.Lbprofilename)
+
+	var key []string
+
+	key = append(key, resource.Lbprofilename)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_lbprofile(d *schema.ResourceData, meta interface{}) error {

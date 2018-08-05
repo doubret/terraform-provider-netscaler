@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerCmpaction() *schema.Resource {
@@ -66,12 +68,18 @@ func get_cmpaction(d *schema.ResourceData) nitro.Cmpaction {
 }
 
 func set_cmpaction(d *schema.ResourceData, resource *nitro.Cmpaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("addvaryheader", resource.Addvaryheader)
 	d.Set("cmptype", resource.Cmptype)
 	d.Set("deltatype", resource.Deltatype)
 	d.Set("varyheadervalue", resource.Varyheadervalue)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_cmpaction(d *schema.ResourceData, meta interface{}) error {

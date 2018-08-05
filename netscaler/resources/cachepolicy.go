@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerCachepolicy() *schema.Resource {
@@ -86,6 +88,8 @@ func get_cachepolicy(d *schema.ResourceData) nitro.Cachepolicy {
 }
 
 func set_cachepolicy(d *schema.ResourceData, resource *nitro.Cachepolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("policyname", resource.Policyname)
 	d.Set("action", resource.Action)
 	d.Set("invalgroups", resource.Invalgroups)
@@ -93,7 +97,11 @@ func set_cachepolicy(d *schema.ResourceData, resource *nitro.Cachepolicy) {
 	d.Set("rule", resource.Rule)
 	d.Set("storeingroup", resource.Storeingroup)
 	d.Set("undefaction", resource.Undefaction)
-	d.SetId(resource.Policyname)
+
+	var key []string
+
+	key = append(key, resource.Policyname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_cachepolicy(d *schema.ResourceData, meta interface{}) error {

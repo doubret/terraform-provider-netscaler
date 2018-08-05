@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerTmsessionaction() *schema.Resource {
@@ -108,6 +110,8 @@ func get_tmsessionaction(d *schema.ResourceData) nitro.Tmsessionaction {
 }
 
 func set_tmsessionaction(d *schema.ResourceData, resource *nitro.Tmsessionaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("defaultauthorizationaction", resource.Defaultauthorizationaction)
 	d.Set("homepage", resource.Homepage)
@@ -119,7 +123,11 @@ func set_tmsessionaction(d *schema.ResourceData, resource *nitro.Tmsessionaction
 	d.Set("sso", resource.Sso)
 	d.Set("ssocredential", resource.Ssocredential)
 	d.Set("ssodomain", resource.Ssodomain)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_tmsessionaction(d *schema.ResourceData, meta interface{}) error {

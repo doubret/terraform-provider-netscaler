@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerLbwlm() *schema.Resource {
@@ -66,12 +68,18 @@ func get_lbwlm(d *schema.ResourceData) nitro.Lbwlm {
 }
 
 func set_lbwlm(d *schema.ResourceData, resource *nitro.Lbwlm) {
+	var _ = strconv.Itoa
+
 	d.Set("wlmname", resource.Wlmname)
 	d.Set("ipaddress", resource.Ipaddress)
 	d.Set("katimeout", resource.Katimeout)
 	d.Set("lbuid", resource.Lbuid)
 	d.Set("port", resource.Port)
-	d.SetId(resource.Wlmname)
+
+	var key []string
+
+	key = append(key, resource.Wlmname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_lbwlm(d *schema.ResourceData, meta interface{}) error {

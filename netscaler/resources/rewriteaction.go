@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerRewriteaction() *schema.Resource {
@@ -94,6 +96,8 @@ func get_rewriteaction(d *schema.ResourceData) nitro.Rewriteaction {
 }
 
 func set_rewriteaction(d *schema.ResourceData, resource *nitro.Rewriteaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("bypasssafetycheck", resource.Bypasssafetycheck)
 	d.Set("comment", resource.Comment)
@@ -103,7 +107,11 @@ func set_rewriteaction(d *schema.ResourceData, resource *nitro.Rewriteaction) {
 	d.Set("stringbuilderexpr", resource.Stringbuilderexpr)
 	d.Set("target", resource.Target)
 	d.Set("type", resource.Type)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_rewriteaction(d *schema.ResourceData, meta interface{}) error {

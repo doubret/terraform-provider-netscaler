@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerCachepolicylabel() *schema.Resource {
@@ -45,9 +47,15 @@ func get_cachepolicylabel(d *schema.ResourceData) nitro.Cachepolicylabel {
 }
 
 func set_cachepolicylabel(d *schema.ResourceData, resource *nitro.Cachepolicylabel) {
+	var _ = strconv.Itoa
+
 	d.Set("labelname", resource.Labelname)
 	d.Set("evaluates", resource.Evaluates)
-	d.SetId(resource.Labelname)
+
+	var key []string
+
+	key = append(key, resource.Labelname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_cachepolicylabel(d *schema.ResourceData, meta interface{}) error {

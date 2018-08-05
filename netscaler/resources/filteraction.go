@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerFilteraction() *schema.Resource {
@@ -73,13 +75,19 @@ func get_filteraction(d *schema.ResourceData) nitro.Filteraction {
 }
 
 func set_filteraction(d *schema.ResourceData, resource *nitro.Filteraction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("page", resource.Page)
 	d.Set("qual", resource.Qual)
 	d.Set("respcode", resource.Respcode)
 	d.Set("servicename", resource.Servicename)
 	d.Set("value", resource.Value)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_filteraction(d *schema.ResourceData, meta interface{}) error {

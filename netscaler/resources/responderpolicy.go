@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerResponderpolicy() *schema.Resource {
@@ -80,6 +82,8 @@ func get_responderpolicy(d *schema.ResourceData) nitro.Responderpolicy {
 }
 
 func set_responderpolicy(d *schema.ResourceData, resource *nitro.Responderpolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
 	d.Set("appflowaction", resource.Appflowaction)
@@ -87,7 +91,11 @@ func set_responderpolicy(d *schema.ResourceData, resource *nitro.Responderpolicy
 	d.Set("logaction", resource.Logaction)
 	d.Set("rule", resource.Rule)
 	d.Set("undefaction", resource.Undefaction)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_responderpolicy(d *schema.ResourceData, meta interface{}) error {

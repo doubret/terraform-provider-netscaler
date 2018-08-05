@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerLbmetrictable() *schema.Resource {
@@ -38,8 +40,14 @@ func get_lbmetrictable(d *schema.ResourceData) nitro.Lbmetrictable {
 }
 
 func set_lbmetrictable(d *schema.ResourceData, resource *nitro.Lbmetrictable) {
+	var _ = strconv.Itoa
+
 	d.Set("metrictable", resource.Metrictable)
-	d.SetId(resource.Metrictable)
+
+	var key []string
+
+	key = append(key, resource.Metrictable)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_lbmetrictable(d *schema.ResourceData, meta interface{}) error {

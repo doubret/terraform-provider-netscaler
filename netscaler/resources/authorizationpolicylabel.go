@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerAuthorizationpolicylabel() *schema.Resource {
@@ -38,8 +40,14 @@ func get_authorizationpolicylabel(d *schema.ResourceData) nitro.Authorizationpol
 }
 
 func set_authorizationpolicylabel(d *schema.ResourceData, resource *nitro.Authorizationpolicylabel) {
+	var _ = strconv.Itoa
+
 	d.Set("labelname", resource.Labelname)
-	d.SetId(resource.Labelname)
+
+	var key []string
+
+	key = append(key, resource.Labelname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_authorizationpolicylabel(d *schema.ResourceData, meta interface{}) error {

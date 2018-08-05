@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerAppflowaction() *schema.Resource {
@@ -111,6 +113,8 @@ func get_appflowaction(d *schema.ResourceData) nitro.Appflowaction {
 }
 
 func set_appflowaction(d *schema.ResourceData, resource *nitro.Appflowaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("clientsidemeasurements", resource.Clientsidemeasurements)
 	d.Set("collectors", resource.Collectors)
@@ -122,7 +126,11 @@ func set_appflowaction(d *schema.ResourceData, resource *nitro.Appflowaction) {
 	d.Set("transactionlog", resource.Transactionlog)
 	d.Set("videoanalytics", resource.Videoanalytics)
 	d.Set("webinsight", resource.Webinsight)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_appflowaction(d *schema.ResourceData, meta interface{}) error {

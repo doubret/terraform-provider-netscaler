@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerDnsprofile() *schema.Resource {
@@ -94,6 +96,8 @@ func get_dnsprofile(d *schema.ResourceData) nitro.Dnsprofile {
 }
 
 func set_dnsprofile(d *schema.ResourceData, resource *nitro.Dnsprofile) {
+	var _ = strconv.Itoa
+
 	d.Set("dnsprofilename", resource.Dnsprofilename)
 	d.Set("cacheecsresponses", resource.Cacheecsresponses)
 	d.Set("cachenegativeresponses", resource.Cachenegativeresponses)
@@ -103,7 +107,11 @@ func set_dnsprofile(d *schema.ResourceData, resource *nitro.Dnsprofile) {
 	d.Set("dnsextendedlogging", resource.Dnsextendedlogging)
 	d.Set("dnsquerylogging", resource.Dnsquerylogging)
 	d.Set("dropmultiqueryrequest", resource.Dropmultiqueryrequest)
-	d.SetId(resource.Dnsprofilename)
+
+	var key []string
+
+	key = append(key, resource.Dnsprofilename)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_dnsprofile(d *schema.ResourceData, meta interface{}) error {

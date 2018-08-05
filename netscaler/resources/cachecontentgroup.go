@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerCachecontentgroup() *schema.Resource {
@@ -316,6 +318,8 @@ func get_cachecontentgroup(d *schema.ResourceData) nitro.Cachecontentgroup {
 }
 
 func set_cachecontentgroup(d *schema.ResourceData, resource *nitro.Cachecontentgroup) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("absexpiry", resource.Absexpiry)
 	d.Set("absexpirygmt", resource.Absexpirygmt)
@@ -355,7 +359,11 @@ func set_cachecontentgroup(d *schema.ResourceData, resource *nitro.Cachecontentg
 	d.Set("type", resource.Type)
 	d.Set("weaknegrelexpiry", resource.Weaknegrelexpiry)
 	d.Set("weakposrelexpiry", resource.Weakposrelexpiry)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {

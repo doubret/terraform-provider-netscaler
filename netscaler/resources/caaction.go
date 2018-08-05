@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerCaaction() *schema.Resource {
@@ -66,12 +68,18 @@ func get_caaction(d *schema.ResourceData) nitro.Caaction {
 }
 
 func set_caaction(d *schema.ResourceData, resource *nitro.Caaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("accumressize", resource.Accumressize)
 	d.Set("comment", resource.Comment)
 	d.Set("lbvserver", resource.Lbvserver)
 	d.Set("type", resource.Type)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_caaction(d *schema.ResourceData, meta interface{}) error {

@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerResponderaction() *schema.Resource {
@@ -87,6 +89,8 @@ func get_responderaction(d *schema.ResourceData) nitro.Responderaction {
 }
 
 func set_responderaction(d *schema.ResourceData, resource *nitro.Responderaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("bypasssafetycheck", resource.Bypasssafetycheck)
 	d.Set("comment", resource.Comment)
@@ -95,7 +99,11 @@ func set_responderaction(d *schema.ResourceData, resource *nitro.Responderaction
 	d.Set("responsestatuscode", resource.Responsestatuscode)
 	d.Set("target", resource.Target)
 	d.Set("type", resource.Type)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_responderaction(d *schema.ResourceData, meta interface{}) error {

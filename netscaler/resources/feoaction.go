@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerFeoaction() *schema.Resource {
@@ -195,6 +197,8 @@ func get_feoaction(d *schema.ResourceData) nitro.Feoaction {
 }
 
 func set_feoaction(d *schema.ResourceData, resource *nitro.Feoaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("cachemaxage", resource.Cachemaxage)
 	d.Set("clientsidemeasurements", resource.Clientsidemeasurements)
@@ -218,7 +222,11 @@ func set_feoaction(d *schema.ResourceData, resource *nitro.Feoaction) {
 	d.Set("jsminify", resource.Jsminify)
 	d.Set("jsmovetoend", resource.Jsmovetoend)
 	d.Set("pageextendcache", resource.Pageextendcache)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_feoaction(d *schema.ResourceData, meta interface{}) error {

@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerTransformpolicylabel() *schema.Resource {
@@ -45,9 +47,15 @@ func get_transformpolicylabel(d *schema.ResourceData) nitro.Transformpolicylabel
 }
 
 func set_transformpolicylabel(d *schema.ResourceData, resource *nitro.Transformpolicylabel) {
+	var _ = strconv.Itoa
+
 	d.Set("labelname", resource.Labelname)
 	d.Set("policylabeltype", resource.Policylabeltype)
-	d.SetId(resource.Labelname)
+
+	var key []string
+
+	key = append(key, resource.Labelname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_transformpolicylabel(d *schema.ResourceData, meta interface{}) error {

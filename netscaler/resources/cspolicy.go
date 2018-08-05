@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerCspolicy() *schema.Resource {
@@ -73,13 +75,19 @@ func get_cspolicy(d *schema.ResourceData) nitro.Cspolicy {
 }
 
 func set_cspolicy(d *schema.ResourceData, resource *nitro.Cspolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("policyname", resource.Policyname)
 	d.Set("action", resource.Action)
 	d.Set("domain", resource.Domain)
 	d.Set("logaction", resource.Logaction)
 	d.Set("rule", resource.Rule)
 	d.Set("url", resource.Url)
-	d.SetId(resource.Policyname)
+
+	var key []string
+
+	key = append(key, resource.Policyname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_cspolicy(d *schema.ResourceData, meta interface{}) error {

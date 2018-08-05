@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerAppfwpolicy() *schema.Resource {
@@ -66,12 +68,18 @@ func get_appfwpolicy(d *schema.ResourceData) nitro.Appfwpolicy {
 }
 
 func set_appfwpolicy(d *schema.ResourceData, resource *nitro.Appfwpolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("logaction", resource.Logaction)
 	d.Set("profilename", resource.Profilename)
 	d.Set("rule", resource.Rule)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_appfwpolicy(d *schema.ResourceData, meta interface{}) error {

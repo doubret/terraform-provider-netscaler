@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerDospolicy() *schema.Resource {
@@ -52,10 +54,16 @@ func get_dospolicy(d *schema.ResourceData) nitro.Dospolicy {
 }
 
 func set_dospolicy(d *schema.ResourceData, resource *nitro.Dospolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("cltdetectrate", resource.Cltdetectrate)
 	d.Set("qdepth", resource.Qdepth)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_dospolicy(d *schema.ResourceData, meta interface{}) error {

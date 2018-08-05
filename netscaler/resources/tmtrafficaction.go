@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerTmtrafficaction() *schema.Resource {
@@ -115,6 +117,8 @@ func get_tmtrafficaction(d *schema.ResourceData) nitro.Tmtrafficaction {
 }
 
 func set_tmtrafficaction(d *schema.ResourceData, resource *nitro.Tmtrafficaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("apptimeout", resource.Apptimeout)
 	d.Set("forcedtimeout", resource.Forcedtimeout)
@@ -127,7 +131,11 @@ func set_tmtrafficaction(d *schema.ResourceData, resource *nitro.Tmtrafficaction
 	d.Set("samlssoprofile", resource.Samlssoprofile)
 	d.Set("sso", resource.Sso)
 	d.Set("userexpression", resource.Userexpression)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {

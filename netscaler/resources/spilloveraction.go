@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerSpilloveraction() *schema.Resource {
@@ -45,9 +47,15 @@ func get_spilloveraction(d *schema.ResourceData) nitro.Spilloveraction {
 }
 
 func set_spilloveraction(d *schema.ResourceData, resource *nitro.Spilloveraction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_spilloveraction(d *schema.ResourceData, meta interface{}) error {

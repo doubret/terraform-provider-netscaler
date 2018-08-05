@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerVideooptimizationaction() *schema.Resource {
@@ -59,11 +61,17 @@ func get_videooptimizationaction(d *schema.ResourceData) nitro.Videooptimization
 }
 
 func set_videooptimizationaction(d *schema.ResourceData, resource *nitro.Videooptimizationaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("rate", resource.Rate)
 	d.Set("type", resource.Type)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {

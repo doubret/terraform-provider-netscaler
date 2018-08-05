@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerNetprofile() *schema.Resource {
@@ -66,12 +68,18 @@ func get_netprofile(d *schema.ResourceData) nitro.Netprofile {
 }
 
 func set_netprofile(d *schema.ResourceData, resource *nitro.Netprofile) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("overridelsn", resource.Overridelsn)
 	d.Set("srcip", resource.Srcip)
 	d.Set("srcippersistency", resource.Srcippersistency)
 	d.Set("td", resource.Td)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_netprofile(d *schema.ResourceData, meta interface{}) error {

@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerPolicypatset() *schema.Resource {
@@ -52,10 +54,16 @@ func get_policypatset(d *schema.ResourceData) nitro.Policypatset {
 }
 
 func set_policypatset(d *schema.ResourceData, resource *nitro.Policypatset) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("indextype", resource.Indextype)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_policypatset(d *schema.ResourceData, meta interface{}) error {

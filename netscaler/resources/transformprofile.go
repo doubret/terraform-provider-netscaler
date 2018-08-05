@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerTransformprofile() *schema.Resource {
@@ -59,11 +61,17 @@ func get_transformprofile(d *schema.ResourceData) nitro.Transformprofile {
 }
 
 func set_transformprofile(d *schema.ResourceData, resource *nitro.Transformprofile) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("onlytransformabsurlinbody", resource.Onlytransformabsurlinbody)
 	d.Set("type", resource.Type)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_transformprofile(d *schema.ResourceData, meta interface{}) error {

@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerLbvserver() *schema.Resource {
@@ -676,6 +678,8 @@ func get_lbvserver(d *schema.ResourceData) nitro.Lbvserver {
 }
 
 func set_lbvserver(d *schema.ResourceData, resource *nitro.Lbvserver) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("state", resource.State)
 	d.Set("appflowlog", resource.Appflowlog)
@@ -768,7 +772,11 @@ func set_lbvserver(d *schema.ResourceData, resource *nitro.Lbvserver) {
 	d.Set("v6netmasklen", resource.V6netmasklen)
 	d.Set("v6persistmasklen", resource.V6persistmasklen)
 	d.Set("vipheader", resource.Vipheader)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_lbvserver(d *schema.ResourceData, meta interface{}) error {

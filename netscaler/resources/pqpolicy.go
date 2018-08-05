@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerPqpolicy() *schema.Resource {
@@ -73,13 +75,19 @@ func get_pqpolicy(d *schema.ResourceData) nitro.Pqpolicy {
 }
 
 func set_pqpolicy(d *schema.ResourceData, resource *nitro.Pqpolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("policyname", resource.Policyname)
 	d.Set("polqdepth", resource.Polqdepth)
 	d.Set("priority", resource.Priority)
 	d.Set("qdepth", resource.Qdepth)
 	d.Set("rule", resource.Rule)
 	d.Set("weight", resource.Weight)
-	d.SetId(resource.Policyname)
+
+	var key []string
+
+	key = append(key, resource.Policyname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_pqpolicy(d *schema.ResourceData, meta interface{}) error {

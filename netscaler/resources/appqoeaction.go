@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerAppqoeaction() *schema.Resource {
@@ -122,6 +124,8 @@ func get_appqoeaction(d *schema.ResourceData) nitro.Appqoeaction {
 }
 
 func set_appqoeaction(d *schema.ResourceData, resource *nitro.Appqoeaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("altcontentpath", resource.Altcontentpath)
 	d.Set("altcontentsvcname", resource.Altcontentsvcname)
@@ -135,7 +139,11 @@ func set_appqoeaction(d *schema.ResourceData, resource *nitro.Appqoeaction) {
 	d.Set("priqdepth", resource.Priqdepth)
 	d.Set("respondwith", resource.Respondwith)
 	d.Set("tcpprofile", resource.Tcpprofile)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_appqoeaction(d *schema.ResourceData, meta interface{}) error {

@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerTransformaction() *schema.Resource {
@@ -108,6 +110,8 @@ func get_transformaction(d *schema.ResourceData) nitro.Transformaction {
 }
 
 func set_transformaction(d *schema.ResourceData, resource *nitro.Transformaction) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("cookiedomainfrom", resource.Cookiedomainfrom)
@@ -119,7 +123,11 @@ func set_transformaction(d *schema.ResourceData, resource *nitro.Transformaction
 	d.Set("resurlfrom", resource.Resurlfrom)
 	d.Set("resurlinto", resource.Resurlinto)
 	d.Set("state", resource.State)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_transformaction(d *schema.ResourceData, meta interface{}) error {

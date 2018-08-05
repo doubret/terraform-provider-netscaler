@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerNstcpprofile() *schema.Resource {
@@ -381,6 +383,8 @@ func get_nstcpprofile(d *schema.ResourceData) nitro.Nstcpprofile {
 }
 
 func set_nstcpprofile(d *schema.ResourceData, resource *nitro.Nstcpprofile) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("ackaggregation", resource.Ackaggregation)
 	d.Set("ackonpush", resource.Ackonpush)
@@ -431,7 +435,11 @@ func set_nstcpprofile(d *schema.ResourceData, resource *nitro.Nstcpprofile) {
 	d.Set("timestamp", resource.Timestamp)
 	d.Set("ws", resource.Ws)
 	d.Set("wsval", resource.Wsval)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_nstcpprofile(d *schema.ResourceData, meta interface{}) error {

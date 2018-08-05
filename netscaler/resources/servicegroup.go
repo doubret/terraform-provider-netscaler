@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerServicegroup() *schema.Resource {
@@ -269,6 +271,8 @@ func get_servicegroup(d *schema.ResourceData) nitro.Servicegroup {
 }
 
 func set_servicegroup(d *schema.ResourceData, resource *nitro.Servicegroup) {
+	var _ = strconv.Itoa
+
 	d.Set("servicegroupname", resource.Servicegroupname)
 	d.Set("appflowlog", resource.Appflowlog)
 	d.Set("autoscale", resource.Autoscale)
@@ -303,7 +307,11 @@ func set_servicegroup(d *schema.ResourceData, resource *nitro.Servicegroup) {
 	d.Set("td", resource.Td)
 	d.Set("useproxyport", resource.Useproxyport)
 	d.Set("usip", resource.Usip)
-	d.SetId(resource.Servicegroupname)
+
+	var key []string
+
+	key = append(key, resource.Servicegroupname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_servicegroup(d *schema.ResourceData, meta interface{}) error {

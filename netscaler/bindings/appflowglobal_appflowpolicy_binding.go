@@ -1,8 +1,12 @@
 package bindings
 
 import (
+	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
+	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerAppflowglobalAppflowpolicyBinding() *schema.Resource {
@@ -57,8 +61,92 @@ func NetscalerAppflowglobalAppflowpolicyBinding() *schema.Resource {
 	}
 }
 
+func key_appflowglobal_appflowpolicy_binding(d *schema.ResourceData) nitro.AppflowglobalAppflowpolicyBindingKey {
+	key := nitro.AppflowglobalAppflowpolicyBindingKey{
+		Labelname:  d.Get("labelname").(string),
+		Policyname: d.Get("policyname").(string),
+	}
+
+	return key
+}
+
+func get_appflowglobal_appflowpolicy_binding(d *schema.ResourceData) nitro.AppflowglobalAppflowpolicyBinding {
+	var _ = utils.Convert_set_to_string_array
+
+	resource := nitro.AppflowglobalAppflowpolicyBinding{
+		Gotopriorityexpression: d.Get("gotopriorityexpression").(string),
+		Invoke:                 d.Get("invoke").(bool),
+		Labelname:              d.Get("labelname").(string),
+		Labeltype:              d.Get("labeltype").(string),
+		Policyname:             d.Get("policyname").(string),
+		Priority:               d.Get("priority").(int),
+		Type:                   d.Get("type").(string),
+	}
+
+	return resource
+}
+
+func set_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, resource *nitro.AppflowglobalAppflowpolicyBinding) {
+	var _ = strconv.Itoa
+
+	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
+	d.Set("invoke", resource.Invoke)
+	d.Set("labelname", resource.Labelname)
+	d.Set("labeltype", resource.Labeltype)
+	d.Set("policyname", resource.Policyname)
+	d.Set("priority", resource.Priority)
+	d.Set("type", resource.Type)
+	var key []string
+
+	key = append(key, resource.Labelname)
+	key = append(key, resource.Policyname)
+	d.SetId(strings.Join(key, "-"))
+}
+
 func create_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_appflowglobal_appflowpolicy_binding")
+
+	client := meta.(*nitro.NitroClient)
+
+	key := key_appflowglobal_appflowpolicy_binding(d)
+
+	exists, err := client.ExistsAppflowglobalAppflowpolicyBinding(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		resource, err := client.GetAppflowglobalAppflowpolicyBinding(key)
+
+		if err != nil {
+			log.Print("Failed to get existing resource : ", err)
+
+			return err
+		}
+
+		set_appflowglobal_appflowpolicy_binding(d, resource)
+	} else {
+		err := client.AddAppflowglobalAppflowpolicyBinding(get_appflowglobal_appflowpolicy_binding(d))
+
+		if err != nil {
+			log.Print("Failed to create resource : ", err)
+
+			return err
+		}
+
+		resource, err := client.GetAppflowglobalAppflowpolicyBinding(key)
+
+		if err != nil {
+			log.Print("Failed to get created resource : ", err)
+
+			return err
+		}
+
+		set_appflowglobal_appflowpolicy_binding(d, resource)
+	}
 
 	return nil
 }
@@ -66,11 +154,61 @@ func create_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, meta int
 func read_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In read_appflowglobal_appflowpolicy_binding")
 
+	client := meta.(*nitro.NitroClient)
+
+	key := key_appflowglobal_appflowpolicy_binding(d)
+
+	exists, err := client.ExistsAppflowglobalAppflowpolicyBinding(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		resource, err := client.GetAppflowglobalAppflowpolicyBinding(key)
+
+		if err != nil {
+			log.Print("Failed to get resource : ", err)
+
+			return err
+		}
+
+		set_appflowglobal_appflowpolicy_binding(d, resource)
+	} else {
+		d.SetId("")
+	}
+
 	return nil
 }
 
 func delete_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In delete_appflowglobal_appflowpolicy_binding")
+
+	client := meta.(*nitro.NitroClient)
+
+	key := key_appflowglobal_appflowpolicy_binding(d)
+
+	exists, err := client.ExistsAppflowglobalAppflowpolicyBinding(key)
+
+	if err != nil {
+		log.Print("Failed to check if resource exists : ", err)
+
+		return err
+	}
+
+	if exists {
+		err := client.DeleteAppflowglobalAppflowpolicyBinding(key)
+
+		if err != nil {
+			log.Print("Failed to delete resource : ", err)
+
+			return err
+		}
+	}
+
+	d.SetId("")
 
 	return nil
 }

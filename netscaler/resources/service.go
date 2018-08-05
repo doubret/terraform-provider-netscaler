@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerService() *schema.Resource {
@@ -318,6 +320,8 @@ func get_service(d *schema.ResourceData) nitro.Service {
 }
 
 func set_service(d *schema.ResourceData, resource *nitro.Service) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("accessdown", resource.Accessdown)
 	d.Set("appflowlog", resource.Appflowlog)
@@ -359,7 +363,11 @@ func set_service(d *schema.ResourceData, resource *nitro.Service) {
 	d.Set("td", resource.Td)
 	d.Set("useproxyport", resource.Useproxyport)
 	d.Set("usip", resource.Usip)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_service(d *schema.ResourceData, meta interface{}) error {

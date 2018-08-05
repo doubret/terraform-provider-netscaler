@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerSpilloverpolicy() *schema.Resource {
@@ -59,11 +61,17 @@ func get_spilloverpolicy(d *schema.ResourceData) nitro.Spilloverpolicy {
 }
 
 func set_spilloverpolicy(d *schema.ResourceData, resource *nitro.Spilloverpolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
 	d.Set("comment", resource.Comment)
 	d.Set("rule", resource.Rule)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_spilloverpolicy(d *schema.ResourceData, meta interface{}) error {

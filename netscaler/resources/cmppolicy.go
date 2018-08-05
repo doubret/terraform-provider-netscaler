@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerCmppolicy() *schema.Resource {
@@ -52,10 +54,16 @@ func get_cmppolicy(d *schema.ResourceData) nitro.Cmppolicy {
 }
 
 func set_cmppolicy(d *schema.ResourceData, resource *nitro.Cmppolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("resaction", resource.Resaction)
 	d.Set("rule", resource.Rule)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_cmppolicy(d *schema.ResourceData, meta interface{}) error {

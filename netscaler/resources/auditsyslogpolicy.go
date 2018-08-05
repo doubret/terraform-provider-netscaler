@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerAuditsyslogpolicy() *schema.Resource {
@@ -52,10 +54,16 @@ func get_auditsyslogpolicy(d *schema.ResourceData) nitro.Auditsyslogpolicy {
 }
 
 func set_auditsyslogpolicy(d *schema.ResourceData, resource *nitro.Auditsyslogpolicy) {
+	var _ = strconv.Itoa
+
 	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
 	d.Set("rule", resource.Rule)
-	d.SetId(resource.Name)
+
+	var key []string
+
+	key = append(key, resource.Name)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {

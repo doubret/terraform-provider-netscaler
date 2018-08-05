@@ -5,6 +5,8 @@ import (
 	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
+	"strconv"
+	"strings"
 )
 
 func NetscalerDnsaction64() *schema.Resource {
@@ -59,11 +61,17 @@ func get_dnsaction64(d *schema.ResourceData) nitro.Dnsaction64 {
 }
 
 func set_dnsaction64(d *schema.ResourceData, resource *nitro.Dnsaction64) {
+	var _ = strconv.Itoa
+
 	d.Set("actionname", resource.Actionname)
 	d.Set("excluderule", resource.Excluderule)
 	d.Set("mappedrule", resource.Mappedrule)
 	d.Set("prefix", resource.Prefix)
-	d.SetId(resource.Actionname)
+
+	var key []string
+
+	key = append(key, resource.Actionname)
+	d.SetId(strings.Join(key, "-"))
 }
 
 func create_dnsaction64(d *schema.ResourceData, meta interface{}) error {
