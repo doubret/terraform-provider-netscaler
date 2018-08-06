@@ -2,7 +2,7 @@ package resources
 
 import (
 	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
-	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
+	"github.com/doubret/terraform-provider-netscaler/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 	"strconv"
@@ -20,10 +20,13 @@ func NetscalerLbvserver() *schema.Resource {
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 			},
 			"state": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"appflowlog": &schema.Schema{
 				Type:     schema.TypeString,

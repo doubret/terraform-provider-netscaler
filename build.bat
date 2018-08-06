@@ -1,1 +1,1 @@
-go build -o terraform-provider-netscaler.exe
+go build

@@ -2,7 +2,7 @@ package resources
 
 import (
 	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
-	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
+	"github.com/doubret/terraform-provider-netscaler/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 	"strconv"
@@ -20,6 +20,7 @@ func NetscalerPqpolicy() *schema.Resource {
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 			},
 			"polqdepth": &schema.Schema{
 				Type:     schema.TypeInt,

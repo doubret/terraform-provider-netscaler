@@ -2,8 +2,8 @@ package netscaler
 
 import (
 	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
-	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/bindings"
-	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/resources"
+	"github.com/doubret/terraform-provider-netscaler/netscaler/bindings"
+	"github.com/doubret/terraform-provider-netscaler/netscaler/resources"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
 )

@@ -2,7 +2,7 @@ package bindings
 
 import (
 	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
-	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
+	"github.com/doubret/terraform-provider-netscaler/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 	"strconv"
@@ -17,11 +17,6 @@ func NetscalerLbvserverVideooptimizationpolicyBinding() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_lbvserver_videooptimizationpolicy_binding,
 		Schema: map[string]*schema.Schema{
-			"bindpoint": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"gotopriorityexpression": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -70,7 +65,6 @@ func key_lbvserver_videooptimizationpolicy_binding(d *schema.ResourceData) nitro
 	key := nitro.LbvserverVideooptimizationpolicyBindingKey{
 		Name:       d.Get("name").(string),
 		Policyname: d.Get("policyname").(string),
-		Bindpoint:  d.Get("bindpoint").(string),
 	}
 
 	return key
@@ -80,7 +74,6 @@ func get_lbvserver_videooptimizationpolicy_binding(d *schema.ResourceData) nitro
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.LbvserverVideooptimizationpolicyBinding{
-		Bindpoint:              d.Get("bindpoint").(string),
 		Gotopriorityexpression: d.Get("gotopriorityexpression").(string),
 		Invoke:                 d.Get("invoke").(bool),
 		Labelname:              d.Get("labelname").(string),
@@ -96,7 +89,6 @@ func get_lbvserver_videooptimizationpolicy_binding(d *schema.ResourceData) nitro
 func set_lbvserver_videooptimizationpolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverVideooptimizationpolicyBinding) {
 	var _ = strconv.Itoa
 
-	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)
 	d.Set("labelname", resource.Labelname)
@@ -108,7 +100,6 @@ func set_lbvserver_videooptimizationpolicy_binding(d *schema.ResourceData, resou
 
 	key = append(key, resource.Name)
 	key = append(key, resource.Policyname)
-	key = append(key, resource.Bindpoint)
 	d.SetId(strings.Join(key, "-"))
 }
 

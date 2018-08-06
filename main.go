@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler"
+	"github.com/doubret/terraform-provider-netscaler/netscaler"
 	"github.com/hashicorp/terraform/plugin"
 )
 

@@ -2,7 +2,7 @@ package bindings
 
 import (
 	"github.com/doubret/citrix-netscaler-nitro-go-client/nitro"
-	"github.com/doubret/citrix-netscaler-terraform-provider/netscaler/utils"
+	"github.com/doubret/terraform-provider-netscaler/netscaler/utils"
 	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 	"strconv"
