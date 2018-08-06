@@ -181,6 +181,14 @@ func read_responderpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_responderpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_responderpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateResponderpolicy(get_responderpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

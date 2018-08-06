@@ -397,6 +397,14 @@ func read_servicegroup(d *schema.ResourceData, meta interface{}) error {
 func update_servicegroup(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_servicegroup")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateServicegroup(get_servicegroup(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

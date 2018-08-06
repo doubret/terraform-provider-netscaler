@@ -173,6 +173,14 @@ func read_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_pqpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdatePqpolicy(get_pqpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

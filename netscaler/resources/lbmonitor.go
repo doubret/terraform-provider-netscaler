@@ -865,6 +865,14 @@ func read_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 func update_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbmonitor")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateLbmonitor(get_lbmonitor(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

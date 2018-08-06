@@ -157,6 +157,14 @@ func read_transformprofile(d *schema.ResourceData, meta interface{}) error {
 func update_transformprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_transformprofile")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateTransformprofile(get_transformprofile(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

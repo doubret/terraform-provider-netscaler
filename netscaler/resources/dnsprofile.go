@@ -197,6 +197,14 @@ func read_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 func update_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dnsprofile")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateDnsprofile(get_dnsprofile(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

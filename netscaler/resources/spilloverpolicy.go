@@ -157,6 +157,14 @@ func read_spilloverpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_spilloverpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_spilloverpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateSpilloverpolicy(get_spilloverpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

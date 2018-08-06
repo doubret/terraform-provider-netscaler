@@ -39,12 +39,6 @@ func NetscalerAppflowcollector() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
-			"transport": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: true,
-			},
 		},
 	}
 }
@@ -61,7 +55,6 @@ func get_appflowcollector(d *schema.ResourceData) nitro.Appflowcollector {
 		Ipaddress:  d.Get("ipaddress").(string),
 		Netprofile: d.Get("netprofile").(string),
 		Port:       d.Get("port").(int),
-		Transport:  d.Get("transport").(string),
 	}
 
 	return resource
@@ -74,7 +67,6 @@ func set_appflowcollector(d *schema.ResourceData, resource *nitro.Appflowcollect
 	d.Set("ipaddress", resource.Ipaddress)
 	d.Set("netprofile", resource.Netprofile)
 	d.Set("port", resource.Port)
-	d.Set("transport", resource.Transport)
 
 	var key []string
 
@@ -164,6 +156,14 @@ func read_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 
 func update_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appflowcollector")
+
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateAppflowcollector(get_appflowcollector(d))
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

@@ -149,6 +149,14 @@ func read_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cmppolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateCmppolicy(get_cmppolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

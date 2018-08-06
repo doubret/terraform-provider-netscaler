@@ -173,6 +173,14 @@ func read_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_rewritepolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateRewritepolicy(get_rewritepolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

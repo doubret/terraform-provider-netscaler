@@ -165,6 +165,14 @@ func read_transformpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_transformpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_transformpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateTransformpolicy(get_transformpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

@@ -14,7 +14,11 @@ func Netscaler{{$.Name|name}}() *schema.Resource {
 		SchemaVersion: 1,
                 Create:        create_{{$.Name}},
                 Read:          read_{{$.Name}},
+{{if $.Schema.Update -}}
                 Update:        update_{{$.Name}},
+{{else -}}
+                Update:        nil,
+{{end -}}
                 Delete:        delete_{{$.Name}},
 		Schema: map[string]*schema.Schema{
                         "{{$.Schema.Key.Name}}": &schema.Schema{
@@ -189,12 +193,22 @@ func read_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
+{{if $.Schema.Update -}}
 func update_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
         log.Println("[DEBUG] netscaler-provider:  In update_{{$.Name}}")
+
+        client := meta.(*nitro.NitroClient)
+
+        err := client.Update{{$.Name|name}}(get_{{$.Name}}(d))
+
+        if err != nil {
+                return err
+        }
 
 	return nil
 }
 
+{{end -}}
 func delete_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
         log.Printf("[DEBUG]  netscaler-provider: In delete_{{$.Name}}")
 

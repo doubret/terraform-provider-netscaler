@@ -149,6 +149,14 @@ func read_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appqoepolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateAppqoepolicy(get_appqoepolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

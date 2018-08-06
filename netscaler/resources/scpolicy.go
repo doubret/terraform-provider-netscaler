@@ -189,6 +189,14 @@ func read_scpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_scpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_scpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateScpolicy(get_scpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

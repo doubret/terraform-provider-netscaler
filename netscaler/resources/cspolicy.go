@@ -173,6 +173,14 @@ func read_cspolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cspolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cspolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateCspolicy(get_cspolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

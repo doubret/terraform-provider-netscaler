@@ -165,6 +165,14 @@ func read_cmpaction(d *schema.ResourceData, meta interface{}) error {
 func update_cmpaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cmpaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateCmpaction(get_cmpaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

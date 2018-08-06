@@ -149,6 +149,14 @@ func read_dospolicy(d *schema.ResourceData, meta interface{}) error {
 func update_dospolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dospolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateDospolicy(get_dospolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

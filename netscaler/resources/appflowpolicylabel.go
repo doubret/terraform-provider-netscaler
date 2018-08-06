@@ -14,7 +14,7 @@ func NetscalerAppflowpolicylabel() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_appflowpolicylabel,
 		Read:          read_appflowpolicylabel,
-		Update:        update_appflowpolicylabel,
+		Update:        nil,
 		Delete:        delete_appflowpolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
@@ -134,12 +134,6 @@ func read_appflowpolicylabel(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_appflowpolicylabel(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_appflowpolicylabel")
 
 	return nil
 }

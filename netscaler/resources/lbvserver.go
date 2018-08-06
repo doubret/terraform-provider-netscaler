@@ -862,6 +862,14 @@ func read_lbvserver(d *schema.ResourceData, meta interface{}) error {
 func update_lbvserver(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbvserver")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateLbvserver(get_lbvserver(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

@@ -221,6 +221,14 @@ func read_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 func update_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmtrafficaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateTmtrafficaction(get_tmtrafficaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

@@ -173,6 +173,14 @@ func read_capolicy(d *schema.ResourceData, meta interface{}) error {
 func update_capolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_capolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateCapolicy(get_capolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

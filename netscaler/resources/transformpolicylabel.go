@@ -14,7 +14,7 @@ func NetscalerTransformpolicylabel() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_transformpolicylabel,
 		Read:          read_transformpolicylabel,
-		Update:        update_transformpolicylabel,
+		Update:        nil,
 		Delete:        delete_transformpolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
@@ -134,12 +134,6 @@ func read_transformpolicylabel(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_transformpolicylabel(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_transformpolicylabel")
 
 	return nil
 }

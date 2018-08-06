@@ -141,6 +141,14 @@ func read_policystringmap(d *schema.ResourceData, meta interface{}) error {
 func update_policystringmap(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_policystringmap")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdatePolicystringmap(get_policystringmap(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

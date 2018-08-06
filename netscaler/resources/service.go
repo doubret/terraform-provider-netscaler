@@ -453,6 +453,14 @@ func read_service(d *schema.ResourceData, meta interface{}) error {
 func update_service(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_service")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateService(get_service(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

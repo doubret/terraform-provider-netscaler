@@ -165,6 +165,14 @@ func read_netprofile(d *schema.ResourceData, meta interface{}) error {
 func update_netprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_netprofile")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateNetprofile(get_netprofile(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

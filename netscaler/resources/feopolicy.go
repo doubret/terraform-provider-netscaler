@@ -149,6 +149,14 @@ func read_feopolicy(d *schema.ResourceData, meta interface{}) error {
 func update_feopolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_feopolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateFeopolicy(get_feopolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

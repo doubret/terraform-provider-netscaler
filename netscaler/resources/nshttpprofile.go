@@ -389,6 +389,14 @@ func read_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 func update_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_nshttpprofile")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateNshttpprofile(get_nshttpprofile(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

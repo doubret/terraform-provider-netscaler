@@ -14,7 +14,7 @@ func NetscalerCachepolicylabel() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_cachepolicylabel,
 		Read:          read_cachepolicylabel,
-		Update:        update_cachepolicylabel,
+		Update:        nil,
 		Delete:        delete_cachepolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
@@ -134,12 +134,6 @@ func read_cachepolicylabel(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_cachepolicylabel(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_cachepolicylabel")
 
 	return nil
 }

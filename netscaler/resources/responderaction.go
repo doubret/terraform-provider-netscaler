@@ -189,6 +189,14 @@ func read_responderaction(d *schema.ResourceData, meta interface{}) error {
 func update_responderaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_responderaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateResponderaction(get_responderaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

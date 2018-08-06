@@ -14,7 +14,7 @@ func NetscalerPolicydataset() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_policydataset,
 		Read:          read_policydataset,
-		Update:        update_policydataset,
+		Update:        nil,
 		Delete:        delete_policydataset,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
@@ -150,12 +150,6 @@ func read_policydataset(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_policydataset(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_policydataset")
 
 	return nil
 }

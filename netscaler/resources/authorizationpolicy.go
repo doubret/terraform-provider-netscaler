@@ -149,6 +149,14 @@ func read_authorizationpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_authorizationpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_authorizationpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateAuthorizationpolicy(get_authorizationpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

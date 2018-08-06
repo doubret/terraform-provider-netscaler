@@ -181,6 +181,14 @@ func read_lbprofile(d *schema.ResourceData, meta interface{}) error {
 func update_lbprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbprofile")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateLbprofile(get_lbprofile(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

@@ -229,6 +229,14 @@ func read_appqoeaction(d *schema.ResourceData, meta interface{}) error {
 func update_appqoeaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appqoeaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateAppqoeaction(get_appqoeaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

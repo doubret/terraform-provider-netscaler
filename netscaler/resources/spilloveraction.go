@@ -14,7 +14,7 @@ func NetscalerSpilloveraction() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_spilloveraction,
 		Read:          read_spilloveraction,
-		Update:        update_spilloveraction,
+		Update:        nil,
 		Delete:        delete_spilloveraction,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
@@ -134,12 +134,6 @@ func read_spilloveraction(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_spilloveraction(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_spilloveraction")
 
 	return nil
 }

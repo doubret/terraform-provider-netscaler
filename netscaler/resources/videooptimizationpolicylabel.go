@@ -14,7 +14,7 @@ func NetscalerVideooptimizationpolicylabel() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_videooptimizationpolicylabel,
 		Read:          read_videooptimizationpolicylabel,
-		Update:        update_videooptimizationpolicylabel,
+		Update:        nil,
 		Delete:        delete_videooptimizationpolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
@@ -142,12 +142,6 @@ func read_videooptimizationpolicylabel(d *schema.ResourceData, meta interface{})
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_videooptimizationpolicylabel(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_videooptimizationpolicylabel")
 
 	return nil
 }

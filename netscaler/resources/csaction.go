@@ -165,6 +165,14 @@ func read_csaction(d *schema.ResourceData, meta interface{}) error {
 func update_csaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_csaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateCsaction(get_csaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

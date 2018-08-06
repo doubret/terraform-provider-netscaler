@@ -157,6 +157,14 @@ func read_videooptimizationaction(d *schema.ResourceData, meta interface{}) erro
 func update_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_videooptimizationaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateVideooptimizationaction(get_videooptimizationaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

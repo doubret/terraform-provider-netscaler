@@ -264,6 +264,14 @@ func read_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
 func update_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_auditnslogaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateAuditnslogaction(get_auditnslogaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

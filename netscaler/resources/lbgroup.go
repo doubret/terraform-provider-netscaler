@@ -213,6 +213,14 @@ func read_lbgroup(d *schema.ResourceData, meta interface{}) error {
 func update_lbgroup(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbgroup")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateLbgroup(get_lbgroup(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

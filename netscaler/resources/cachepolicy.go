@@ -187,6 +187,14 @@ func read_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cachepolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateCachepolicy(get_cachepolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

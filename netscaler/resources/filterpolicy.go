@@ -157,6 +157,14 @@ func read_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_filterpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateFilterpolicy(get_filterpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

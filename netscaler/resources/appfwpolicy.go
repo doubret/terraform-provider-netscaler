@@ -165,6 +165,14 @@ func read_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appfwpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateAppfwpolicy(get_appfwpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

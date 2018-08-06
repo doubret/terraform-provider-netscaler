@@ -165,6 +165,14 @@ func read_policyexpression(d *schema.ResourceData, meta interface{}) error {
 func update_policyexpression(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_policyexpression")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdatePolicyexpression(get_policyexpression(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

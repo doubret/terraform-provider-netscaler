@@ -149,6 +149,14 @@ func read_tmtrafficpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_tmtrafficpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmtrafficpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateTmtrafficpolicy(get_tmtrafficpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

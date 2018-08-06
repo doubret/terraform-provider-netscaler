@@ -312,6 +312,14 @@ func read_feoaction(d *schema.ResourceData, meta interface{}) error {
 func update_feoaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_feoaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateFeoaction(get_feoaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

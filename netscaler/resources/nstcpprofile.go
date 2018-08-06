@@ -525,6 +525,14 @@ func read_nstcpprofile(d *schema.ResourceData, meta interface{}) error {
 func update_nstcpprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_nstcpprofile")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateNstcpprofile(get_nstcpprofile(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

@@ -14,7 +14,7 @@ func NetscalerCmppolicylabel() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_cmppolicylabel,
 		Read:          read_cmppolicylabel,
-		Update:        update_cmppolicylabel,
+		Update:        nil,
 		Delete:        delete_cmppolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
@@ -134,12 +134,6 @@ func read_cmppolicylabel(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_cmppolicylabel(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_cmppolicylabel")
 
 	return nil
 }

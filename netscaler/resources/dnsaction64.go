@@ -157,6 +157,14 @@ func read_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 func update_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dnsaction64")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateDnsaction64(get_dnsaction64(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

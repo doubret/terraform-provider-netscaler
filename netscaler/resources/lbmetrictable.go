@@ -14,7 +14,7 @@ func NetscalerLbmetrictable() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_lbmetrictable,
 		Read:          read_lbmetrictable,
-		Update:        update_lbmetrictable,
+		Update:        nil,
 		Delete:        delete_lbmetrictable,
 		Schema: map[string]*schema.Schema{
 			"metrictable": &schema.Schema{
@@ -126,12 +126,6 @@ func read_lbmetrictable(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_lbmetrictable(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_lbmetrictable")
 
 	return nil
 }

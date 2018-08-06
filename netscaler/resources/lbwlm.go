@@ -165,6 +165,14 @@ func read_lbwlm(d *schema.ResourceData, meta interface{}) error {
 func update_lbwlm(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbwlm")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateLbwlm(get_lbwlm(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

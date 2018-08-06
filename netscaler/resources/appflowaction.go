@@ -42,18 +42,6 @@ func NetscalerAppflowaction() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
-			"distributionalgorithm": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: false,
-			},
-			"metricslog": &schema.Schema{
-				Type:     schema.TypeBool,
-				Optional: true,
-				Computed: true,
-				ForceNew: true,
-			},
 			"pagetracking": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -61,18 +49,6 @@ func NetscalerAppflowaction() *schema.Resource {
 				ForceNew: false,
 			},
 			"securityinsight": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: false,
-			},
-			"transactionlog": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: true,
-			},
-			"videoanalytics": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -100,12 +76,8 @@ func get_appflowaction(d *schema.ResourceData) nitro.Appflowaction {
 		Clientsidemeasurements: d.Get("clientsidemeasurements").(string),
 		Collectors:             utils.Convert_set_to_string_array(d.Get("collectors").(*schema.Set)),
 		Comment:                d.Get("comment").(string),
-		Distributionalgorithm:  d.Get("distributionalgorithm").(string),
-		Metricslog:             d.Get("metricslog").(bool),
 		Pagetracking:           d.Get("pagetracking").(string),
 		Securityinsight:        d.Get("securityinsight").(string),
-		Transactionlog:         d.Get("transactionlog").(string),
-		Videoanalytics:         d.Get("videoanalytics").(string),
 		Webinsight:             d.Get("webinsight").(string),
 	}
 
@@ -119,12 +91,8 @@ func set_appflowaction(d *schema.ResourceData, resource *nitro.Appflowaction) {
 	d.Set("clientsidemeasurements", resource.Clientsidemeasurements)
 	d.Set("collectors", resource.Collectors)
 	d.Set("comment", resource.Comment)
-	d.Set("distributionalgorithm", resource.Distributionalgorithm)
-	d.Set("metricslog", resource.Metricslog)
 	d.Set("pagetracking", resource.Pagetracking)
 	d.Set("securityinsight", resource.Securityinsight)
-	d.Set("transactionlog", resource.Transactionlog)
-	d.Set("videoanalytics", resource.Videoanalytics)
 	d.Set("webinsight", resource.Webinsight)
 
 	var key []string
@@ -215,6 +183,14 @@ func read_appflowaction(d *schema.ResourceData, meta interface{}) error {
 
 func update_appflowaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appflowaction")
+
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateAppflowaction(get_appflowaction(d))
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

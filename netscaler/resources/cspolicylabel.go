@@ -14,7 +14,7 @@ func NetscalerCspolicylabel() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_cspolicylabel,
 		Read:          read_cspolicylabel,
-		Update:        update_cspolicylabel,
+		Update:        nil,
 		Delete:        delete_cspolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
@@ -134,12 +134,6 @@ func read_cspolicylabel(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_cspolicylabel(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_cspolicylabel")
 
 	return nil
 }

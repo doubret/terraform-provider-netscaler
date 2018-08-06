@@ -213,6 +213,14 @@ func read_transformaction(d *schema.ResourceData, meta interface{}) error {
 func update_transformaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_transformaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateTransformaction(get_transformaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

@@ -14,7 +14,7 @@ func NetscalerPolicypatset() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_policypatset,
 		Read:          read_policypatset,
-		Update:        update_policypatset,
+		Update:        nil,
 		Delete:        delete_policypatset,
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
@@ -142,12 +142,6 @@ func read_policypatset(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_policypatset(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_policypatset")
 
 	return nil
 }

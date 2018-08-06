@@ -14,7 +14,7 @@ func NetscalerAuthorizationpolicylabel() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_authorizationpolicylabel,
 		Read:          read_authorizationpolicylabel,
-		Update:        update_authorizationpolicylabel,
+		Update:        nil,
 		Delete:        delete_authorizationpolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
@@ -126,12 +126,6 @@ func read_authorizationpolicylabel(d *schema.ResourceData, meta interface{}) err
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_authorizationpolicylabel(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_authorizationpolicylabel")
 
 	return nil
 }

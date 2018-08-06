@@ -173,6 +173,14 @@ func read_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 func update_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dbdbprofile")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateDbdbprofile(get_dbdbprofile(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

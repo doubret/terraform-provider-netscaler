@@ -14,7 +14,7 @@ func NetscalerResponderpolicylabel() *schema.Resource {
 		SchemaVersion: 1,
 		Create:        create_responderpolicylabel,
 		Read:          read_responderpolicylabel,
-		Update:        update_responderpolicylabel,
+		Update:        nil,
 		Delete:        delete_responderpolicylabel,
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
@@ -142,12 +142,6 @@ func read_responderpolicylabel(d *schema.ResourceData, meta interface{}) error {
 	} else {
 		d.SetId("")
 	}
-
-	return nil
-}
-
-func update_responderpolicylabel(d *schema.ResourceData, meta interface{}) error {
-	log.Println("[DEBUG] netscaler-provider:  In update_responderpolicylabel")
 
 	return nil
 }

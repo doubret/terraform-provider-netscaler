@@ -149,6 +149,14 @@ func read_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_auditsyslogpolicy")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateAuditsyslogpolicy(get_auditsyslogpolicy(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

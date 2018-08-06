@@ -213,6 +213,14 @@ func read_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 func update_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmsessionaction")
 
+	client := meta.(*nitro.NitroClient)
+
+	err := client.UpdateTmsessionaction(get_tmsessionaction(d))
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
