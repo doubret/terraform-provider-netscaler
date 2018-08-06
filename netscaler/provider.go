@@ -65,6 +65,7 @@ func providerResources() map[string]*schema.Resource {
 		"netscaler_csaction":                                             resources.NetscalerCsaction(),
 		"netscaler_cspolicy":                                             resources.NetscalerCspolicy(),
 		"netscaler_cspolicylabel":                                        resources.NetscalerCspolicylabel(),
+		"netscaler_csvserver":                                            resources.NetscalerCsvserver(),
 		"netscaler_dbdbprofile":                                          resources.NetscalerDbdbprofile(),
 		"netscaler_dnsaction64":                                          resources.NetscalerDnsaction64(),
 		"netscaler_dnspolicy64":                                          resources.NetscalerDnspolicy64(),
