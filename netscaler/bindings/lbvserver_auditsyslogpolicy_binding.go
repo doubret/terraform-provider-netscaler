@@ -43,12 +43,14 @@ func NetscalerLbvserverAuditsyslogpolicyBinding() *schema.Resource {
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"priority": &schema.Schema{
@@ -59,15 +61,6 @@ func NetscalerLbvserverAuditsyslogpolicyBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData) nitro.LbvserverAuditsyslogpolicyBindingKey {
-	key := nitro.LbvserverAuditsyslogpolicyBindingKey{
-		Name:       d.Get("name").(string),
-		Policyname: d.Get("policyname").(string),
-	}
-
-	return key
 }
 
 func get_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData) nitro.LbvserverAuditsyslogpolicyBinding {
@@ -96,6 +89,7 @@ func set_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData, resource *n
 	d.Set("name", resource.Name)
 	d.Set("policyname", resource.Policyname)
 	d.Set("priority", resource.Priority)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -108,7 +102,8 @@ func create_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData, meta int
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_auditsyslogpolicy_binding(d)
+	resource := get_lbvserver_auditsyslogpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverAuditsyslogpolicyBinding(key)
 
@@ -156,7 +151,8 @@ func read_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData, meta inter
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_auditsyslogpolicy_binding(d)
+	resource := get_lbvserver_auditsyslogpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverAuditsyslogpolicyBinding(key)
 
@@ -188,7 +184,8 @@ func delete_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData, meta int
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_auditsyslogpolicy_binding(d)
+	resource := get_lbvserver_auditsyslogpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverAuditsyslogpolicyBinding(key)
 

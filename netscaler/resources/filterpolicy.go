@@ -19,7 +19,8 @@ func NetscalerFilterpolicy() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"reqaction": &schema.Schema{
@@ -42,10 +43,6 @@ func NetscalerFilterpolicy() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_filterpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
 }
 
 func get_filterpolicy(d *schema.ResourceData) nitro.Filterpolicy {
@@ -80,7 +77,8 @@ func create_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_filterpolicy(d)
+	resource := get_filterpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFilterpolicy(key)
 
@@ -128,7 +126,8 @@ func read_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_filterpolicy(d)
+	resource := get_filterpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFilterpolicy(key)
 
@@ -158,13 +157,14 @@ func read_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_filterpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateFilterpolicy(get_filterpolicy(d))
+	// err := client.UpdateFilterpolicy(get_filterpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -174,7 +174,8 @@ func delete_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_filterpolicy(d)
+	resource := get_filterpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFilterpolicy(key)
 

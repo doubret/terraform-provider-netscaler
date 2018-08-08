@@ -17,16 +17,17 @@ func NetscalerAuthorizationpolicy() *schema.Resource {
 		Update:        update_authorizationpolicy,
 		Delete:        delete_authorizationpolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
@@ -38,16 +39,12 @@ func NetscalerAuthorizationpolicy() *schema.Resource {
 	}
 }
 
-func key_authorizationpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_authorizationpolicy(d *schema.ResourceData) nitro.Authorizationpolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Authorizationpolicy{
-		Name:   d.Get("name").(string),
 		Action: d.Get("action").(string),
+		Name:   d.Get("name").(string),
 		Rule:   d.Get("rule").(string),
 	}
 
@@ -57,8 +54,8 @@ func get_authorizationpolicy(d *schema.ResourceData) nitro.Authorizationpolicy {
 func set_authorizationpolicy(d *schema.ResourceData, resource *nitro.Authorizationpolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 
 	var key []string
@@ -72,7 +69,8 @@ func create_authorizationpolicy(d *schema.ResourceData, meta interface{}) error 
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicy(d)
+	resource := get_authorizationpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicy(key)
 
@@ -120,7 +118,8 @@ func read_authorizationpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicy(d)
+	resource := get_authorizationpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicy(key)
 
@@ -150,13 +149,14 @@ func read_authorizationpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_authorizationpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_authorizationpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAuthorizationpolicy(get_authorizationpolicy(d))
+	// err := client.UpdateAuthorizationpolicy(get_authorizationpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -166,7 +166,8 @@ func delete_authorizationpolicy(d *schema.ResourceData, meta interface{}) error 
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicy(d)
+	resource := get_authorizationpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicy(key)
 

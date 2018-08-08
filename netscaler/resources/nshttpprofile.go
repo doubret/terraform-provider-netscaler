@@ -17,11 +17,6 @@ func NetscalerNshttpprofile() *schema.Resource {
 		Update:        update_nshttpprofile,
 		Delete:        delete_nshttpprofile,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"adpttimeout": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -166,6 +161,12 @@ func NetscalerNshttpprofile() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"persistentetag": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -218,15 +219,10 @@ func NetscalerNshttpprofile() *schema.Resource {
 	}
 }
 
-func key_nshttpprofile(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_nshttpprofile(d *schema.ResourceData) nitro.Nshttpprofile {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Nshttpprofile{
-		Name:        d.Get("name").(string),
 		Adpttimeout: d.Get("adpttimeout").(string),
 		Altsvc:      d.Get("altsvc").(string),
 		Apdexcltresptimethreshold: d.Get("apdexcltresptimethreshold").(int),
@@ -251,6 +247,7 @@ func get_nshttpprofile(d *schema.ResourceData) nitro.Nshttpprofile {
 		Maxreq:                    d.Get("maxreq").(int),
 		Maxreusepool:              d.Get("maxreusepool").(int),
 		Minreusepool:              d.Get("minreusepool").(int),
+		Name:                      d.Get("name").(string),
 		Persistentetag:            d.Get("persistentetag").(string),
 		Reqtimeout:                d.Get("reqtimeout").(int),
 		Reqtimeoutaction:          d.Get("reqtimeoutaction").(string),
@@ -267,7 +264,6 @@ func get_nshttpprofile(d *schema.ResourceData) nitro.Nshttpprofile {
 func set_nshttpprofile(d *schema.ResourceData, resource *nitro.Nshttpprofile) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("adpttimeout", resource.Adpttimeout)
 	d.Set("altsvc", resource.Altsvc)
 	d.Set("apdexcltresptimethreshold", resource.Apdexcltresptimethreshold)
@@ -292,6 +288,7 @@ func set_nshttpprofile(d *schema.ResourceData, resource *nitro.Nshttpprofile) {
 	d.Set("maxreq", resource.Maxreq)
 	d.Set("maxreusepool", resource.Maxreusepool)
 	d.Set("minreusepool", resource.Minreusepool)
+	d.Set("name", resource.Name)
 	d.Set("persistentetag", resource.Persistentetag)
 	d.Set("reqtimeout", resource.Reqtimeout)
 	d.Set("reqtimeoutaction", resource.Reqtimeoutaction)
@@ -312,7 +309,8 @@ func create_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_nshttpprofile(d)
+	resource := get_nshttpprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNshttpprofile(key)
 
@@ -360,7 +358,8 @@ func read_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_nshttpprofile(d)
+	resource := get_nshttpprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNshttpprofile(key)
 
@@ -390,13 +389,14 @@ func read_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 func update_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_nshttpprofile")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateNshttpprofile(get_nshttpprofile(d))
+	// err := client.UpdateNshttpprofile(get_nshttpprofile(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -406,7 +406,8 @@ func delete_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_nshttpprofile(d)
+	resource := get_nshttpprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNshttpprofile(key)
 

@@ -17,11 +17,6 @@ func NetscalerLbprofile() *schema.Resource {
 		Update:        update_lbprofile,
 		Delete:        delete_lbprofile,
 		Schema: map[string]*schema.Schema{
-			"lbprofilename": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"cookiepassphrase": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -39,6 +34,12 @@ func NetscalerLbprofile() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"lbprofilename": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"processlocal": &schema.Schema{
 				Type:     schema.TypeString,
@@ -62,18 +63,14 @@ func NetscalerLbprofile() *schema.Resource {
 	}
 }
 
-func key_lbprofile(d *schema.ResourceData) string {
-	return d.Get("lbprofilename").(string)
-}
-
 func get_lbprofile(d *schema.ResourceData) nitro.Lbprofile {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Lbprofile{
-		Lbprofilename:                 d.Get("lbprofilename").(string),
 		Cookiepassphrase:              d.Get("cookiepassphrase").(string),
 		Dbslb:                         d.Get("dbslb").(string),
 		Httponlycookieflag:            d.Get("httponlycookieflag").(string),
+		Lbprofilename:                 d.Get("lbprofilename").(string),
 		Processlocal:                  d.Get("processlocal").(string),
 		Useencryptedpersistencecookie: d.Get("useencryptedpersistencecookie").(string),
 		Usesecuredpersistencecookie:   d.Get("usesecuredpersistencecookie").(string),
@@ -85,10 +82,10 @@ func get_lbprofile(d *schema.ResourceData) nitro.Lbprofile {
 func set_lbprofile(d *schema.ResourceData, resource *nitro.Lbprofile) {
 	var _ = strconv.Itoa
 
-	d.Set("lbprofilename", resource.Lbprofilename)
 	d.Set("cookiepassphrase", resource.Cookiepassphrase)
 	d.Set("dbslb", resource.Dbslb)
 	d.Set("httponlycookieflag", resource.Httponlycookieflag)
+	d.Set("lbprofilename", resource.Lbprofilename)
 	d.Set("processlocal", resource.Processlocal)
 	d.Set("useencryptedpersistencecookie", resource.Useencryptedpersistencecookie)
 	d.Set("usesecuredpersistencecookie", resource.Usesecuredpersistencecookie)
@@ -104,7 +101,8 @@ func create_lbprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbprofile(d)
+	resource := get_lbprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbprofile(key)
 
@@ -152,7 +150,8 @@ func read_lbprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbprofile(d)
+	resource := get_lbprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbprofile(key)
 
@@ -182,13 +181,14 @@ func read_lbprofile(d *schema.ResourceData, meta interface{}) error {
 func update_lbprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbprofile")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateLbprofile(get_lbprofile(d))
+	// err := client.UpdateLbprofile(get_lbprofile(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -198,7 +198,8 @@ func delete_lbprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbprofile(d)
+	resource := get_lbprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbprofile(key)
 

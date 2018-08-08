@@ -17,11 +17,6 @@ func NetscalerFeoaction() *schema.Resource {
 		Update:        update_feoaction,
 		Delete:        delete_feoaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"cachemaxage": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -151,6 +146,12 @@ func NetscalerFeoaction() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"pageextendcache": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
@@ -161,15 +162,10 @@ func NetscalerFeoaction() *schema.Resource {
 	}
 }
 
-func key_feoaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_feoaction(d *schema.ResourceData) nitro.Feoaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Feoaction{
-		Name:                   d.Get("name").(string),
 		Cachemaxage:            d.Get("cachemaxage").(int),
 		Clientsidemeasurements: d.Get("clientsidemeasurements").(bool),
 		Convertimporttolink:    d.Get("convertimporttolink").(bool),
@@ -191,6 +187,7 @@ func get_feoaction(d *schema.ResourceData) nitro.Feoaction {
 		Jsinline:               d.Get("jsinline").(bool),
 		Jsminify:               d.Get("jsminify").(bool),
 		Jsmovetoend:            d.Get("jsmovetoend").(bool),
+		Name:                   d.Get("name").(string),
 		Pageextendcache:        d.Get("pageextendcache").(bool),
 	}
 
@@ -200,7 +197,6 @@ func get_feoaction(d *schema.ResourceData) nitro.Feoaction {
 func set_feoaction(d *schema.ResourceData, resource *nitro.Feoaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("cachemaxage", resource.Cachemaxage)
 	d.Set("clientsidemeasurements", resource.Clientsidemeasurements)
 	d.Set("convertimporttolink", resource.Convertimporttolink)
@@ -222,6 +218,7 @@ func set_feoaction(d *schema.ResourceData, resource *nitro.Feoaction) {
 	d.Set("jsinline", resource.Jsinline)
 	d.Set("jsminify", resource.Jsminify)
 	d.Set("jsmovetoend", resource.Jsmovetoend)
+	d.Set("name", resource.Name)
 	d.Set("pageextendcache", resource.Pageextendcache)
 
 	var key []string
@@ -235,7 +232,8 @@ func create_feoaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_feoaction(d)
+	resource := get_feoaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFeoaction(key)
 
@@ -283,7 +281,8 @@ func read_feoaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_feoaction(d)
+	resource := get_feoaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFeoaction(key)
 
@@ -313,13 +312,14 @@ func read_feoaction(d *schema.ResourceData, meta interface{}) error {
 func update_feoaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_feoaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateFeoaction(get_feoaction(d))
+	// err := client.UpdateFeoaction(get_feoaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -329,7 +329,8 @@ func delete_feoaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_feoaction(d)
+	resource := get_feoaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFeoaction(key)
 

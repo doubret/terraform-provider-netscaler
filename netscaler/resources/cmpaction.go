@@ -17,11 +17,6 @@ func NetscalerCmpaction() *schema.Resource {
 		Update:        update_cmpaction,
 		Delete:        delete_cmpaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"addvaryheader": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -40,6 +35,12 @@ func NetscalerCmpaction() *schema.Resource {
 				Computed: true,
 				ForceNew: true,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"varyheadervalue": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -50,18 +51,14 @@ func NetscalerCmpaction() *schema.Resource {
 	}
 }
 
-func key_cmpaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_cmpaction(d *schema.ResourceData) nitro.Cmpaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Cmpaction{
-		Name:            d.Get("name").(string),
 		Addvaryheader:   d.Get("addvaryheader").(string),
 		Cmptype:         d.Get("cmptype").(string),
 		Deltatype:       d.Get("deltatype").(string),
+		Name:            d.Get("name").(string),
 		Varyheadervalue: d.Get("varyheadervalue").(string),
 	}
 
@@ -71,10 +68,10 @@ func get_cmpaction(d *schema.ResourceData) nitro.Cmpaction {
 func set_cmpaction(d *schema.ResourceData, resource *nitro.Cmpaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("addvaryheader", resource.Addvaryheader)
 	d.Set("cmptype", resource.Cmptype)
 	d.Set("deltatype", resource.Deltatype)
+	d.Set("name", resource.Name)
 	d.Set("varyheadervalue", resource.Varyheadervalue)
 
 	var key []string
@@ -88,7 +85,8 @@ func create_cmpaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmpaction(d)
+	resource := get_cmpaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmpaction(key)
 
@@ -136,7 +134,8 @@ func read_cmpaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmpaction(d)
+	resource := get_cmpaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmpaction(key)
 
@@ -166,13 +165,14 @@ func read_cmpaction(d *schema.ResourceData, meta interface{}) error {
 func update_cmpaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cmpaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCmpaction(get_cmpaction(d))
+	// err := client.UpdateCmpaction(get_cmpaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -182,7 +182,8 @@ func delete_cmpaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmpaction(d)
+	resource := get_cmpaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmpaction(key)
 

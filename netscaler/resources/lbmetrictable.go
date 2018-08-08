@@ -19,15 +19,12 @@ func NetscalerLbmetrictable() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"metrictable": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 		},
 	}
-}
-
-func key_lbmetrictable(d *schema.ResourceData) string {
-	return d.Get("metrictable").(string)
 }
 
 func get_lbmetrictable(d *schema.ResourceData) nitro.Lbmetrictable {
@@ -56,7 +53,8 @@ func create_lbmetrictable(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmetrictable(d)
+	resource := get_lbmetrictable(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmetrictable(key)
 
@@ -104,7 +102,8 @@ func read_lbmetrictable(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmetrictable(d)
+	resource := get_lbmetrictable(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmetrictable(key)
 
@@ -136,7 +135,8 @@ func delete_lbmetrictable(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmetrictable(d)
+	resource := get_lbmetrictable(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmetrictable(key)
 

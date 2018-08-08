@@ -17,16 +17,17 @@ func NetscalerAppflowcollector() *schema.Resource {
 		Update:        update_appflowcollector,
 		Delete:        delete_appflowcollector,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"ipaddress": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"netprofile": &schema.Schema{
 				Type:     schema.TypeString,
@@ -44,16 +45,12 @@ func NetscalerAppflowcollector() *schema.Resource {
 	}
 }
 
-func key_appflowcollector(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_appflowcollector(d *schema.ResourceData) nitro.Appflowcollector {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Appflowcollector{
-		Name:       d.Get("name").(string),
 		Ipaddress:  d.Get("ipaddress").(string),
+		Name:       d.Get("name").(string),
 		Netprofile: d.Get("netprofile").(string),
 		Port:       d.Get("port").(int),
 	}
@@ -64,8 +61,8 @@ func get_appflowcollector(d *schema.ResourceData) nitro.Appflowcollector {
 func set_appflowcollector(d *schema.ResourceData, resource *nitro.Appflowcollector) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("ipaddress", resource.Ipaddress)
+	d.Set("name", resource.Name)
 	d.Set("netprofile", resource.Netprofile)
 	d.Set("port", resource.Port)
 
@@ -80,7 +77,8 @@ func create_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowcollector(d)
+	resource := get_appflowcollector(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowcollector(key)
 
@@ -128,7 +126,8 @@ func read_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowcollector(d)
+	resource := get_appflowcollector(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowcollector(key)
 
@@ -158,13 +157,14 @@ func read_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 func update_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appflowcollector")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAppflowcollector(get_appflowcollector(d))
+	// err := client.UpdateAppflowcollector(get_appflowcollector(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -174,7 +174,8 @@ func delete_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowcollector(d)
+	resource := get_appflowcollector(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowcollector(key)
 

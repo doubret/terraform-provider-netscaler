@@ -17,11 +17,6 @@ func NetscalerTransformpolicy() *schema.Resource {
 		Update:        update_transformpolicy,
 		Delete:        delete_transformpolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -33,6 +28,12 @@ func NetscalerTransformpolicy() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"profilename": &schema.Schema{
 				Type:     schema.TypeString,
@@ -50,17 +51,13 @@ func NetscalerTransformpolicy() *schema.Resource {
 	}
 }
 
-func key_transformpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_transformpolicy(d *schema.ResourceData) nitro.Transformpolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Transformpolicy{
-		Name:        d.Get("name").(string),
 		Comment:     d.Get("comment").(string),
 		Logaction:   d.Get("logaction").(string),
+		Name:        d.Get("name").(string),
 		Profilename: d.Get("profilename").(string),
 		Rule:        d.Get("rule").(string),
 	}
@@ -71,9 +68,9 @@ func get_transformpolicy(d *schema.ResourceData) nitro.Transformpolicy {
 func set_transformpolicy(d *schema.ResourceData, resource *nitro.Transformpolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("logaction", resource.Logaction)
+	d.Set("name", resource.Name)
 	d.Set("profilename", resource.Profilename)
 	d.Set("rule", resource.Rule)
 
@@ -88,7 +85,8 @@ func create_transformpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformpolicy(d)
+	resource := get_transformpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformpolicy(key)
 
@@ -136,7 +134,8 @@ func read_transformpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformpolicy(d)
+	resource := get_transformpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformpolicy(key)
 
@@ -166,13 +165,14 @@ func read_transformpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_transformpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_transformpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateTransformpolicy(get_transformpolicy(d))
+	// err := client.UpdateTransformpolicy(get_transformpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -182,7 +182,8 @@ func delete_transformpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformpolicy(d)
+	resource := get_transformpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformpolicy(key)
 

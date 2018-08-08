@@ -17,12 +17,13 @@ func NetscalerCspolicylabel() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_cspolicylabel,
 		Schema: map[string]*schema.Schema{
-			"labelname": &schema.Schema{
+			"cspolicylabeltype": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
-			"cspolicylabeltype": &schema.Schema{
+			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -32,16 +33,12 @@ func NetscalerCspolicylabel() *schema.Resource {
 	}
 }
 
-func key_cspolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
-}
-
 func get_cspolicylabel(d *schema.ResourceData) nitro.Cspolicylabel {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Cspolicylabel{
-		Labelname:         d.Get("labelname").(string),
 		Cspolicylabeltype: d.Get("cspolicylabeltype").(string),
+		Labelname:         d.Get("labelname").(string),
 	}
 
 	return resource
@@ -50,8 +47,8 @@ func get_cspolicylabel(d *schema.ResourceData) nitro.Cspolicylabel {
 func set_cspolicylabel(d *schema.ResourceData, resource *nitro.Cspolicylabel) {
 	var _ = strconv.Itoa
 
-	d.Set("labelname", resource.Labelname)
 	d.Set("cspolicylabeltype", resource.Cspolicylabeltype)
+	d.Set("labelname", resource.Labelname)
 
 	var key []string
 
@@ -64,7 +61,8 @@ func create_cspolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cspolicylabel(d)
+	resource := get_cspolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCspolicylabel(key)
 
@@ -112,7 +110,8 @@ func read_cspolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cspolicylabel(d)
+	resource := get_cspolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCspolicylabel(key)
 
@@ -144,7 +143,8 @@ func delete_cspolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cspolicylabel(d)
+	resource := get_cspolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCspolicylabel(key)
 

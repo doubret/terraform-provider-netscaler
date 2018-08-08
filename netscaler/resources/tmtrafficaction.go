@@ -17,11 +17,6 @@ func NetscalerTmtrafficaction() *schema.Resource {
 		Update:        update_tmtrafficaction,
 		Delete:        delete_tmtrafficaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"apptimeout": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -58,6 +53,12 @@ func NetscalerTmtrafficaction() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"passwdexpression": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -92,21 +93,17 @@ func NetscalerTmtrafficaction() *schema.Resource {
 	}
 }
 
-func key_tmtrafficaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_tmtrafficaction(d *schema.ResourceData) nitro.Tmtrafficaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Tmtrafficaction{
-		Name:             d.Get("name").(string),
 		Apptimeout:       d.Get("apptimeout").(int),
 		Forcedtimeout:    d.Get("forcedtimeout").(string),
 		Forcedtimeoutval: d.Get("forcedtimeoutval").(int),
 		Formssoaction:    d.Get("formssoaction").(string),
 		Initiatelogout:   d.Get("initiatelogout").(string),
 		Kcdaccount:       d.Get("kcdaccount").(string),
+		Name:             d.Get("name").(string),
 		Passwdexpression: d.Get("passwdexpression").(string),
 		Persistentcookie: d.Get("persistentcookie").(string),
 		Samlssoprofile:   d.Get("samlssoprofile").(string),
@@ -120,13 +117,13 @@ func get_tmtrafficaction(d *schema.ResourceData) nitro.Tmtrafficaction {
 func set_tmtrafficaction(d *schema.ResourceData, resource *nitro.Tmtrafficaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("apptimeout", resource.Apptimeout)
 	d.Set("forcedtimeout", resource.Forcedtimeout)
 	d.Set("forcedtimeoutval", resource.Forcedtimeoutval)
 	d.Set("formssoaction", resource.Formssoaction)
 	d.Set("initiatelogout", resource.Initiatelogout)
 	d.Set("kcdaccount", resource.Kcdaccount)
+	d.Set("name", resource.Name)
 	d.Set("passwdexpression", resource.Passwdexpression)
 	d.Set("persistentcookie", resource.Persistentcookie)
 	d.Set("samlssoprofile", resource.Samlssoprofile)
@@ -144,7 +141,8 @@ func create_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmtrafficaction(d)
+	resource := get_tmtrafficaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmtrafficaction(key)
 
@@ -192,7 +190,8 @@ func read_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmtrafficaction(d)
+	resource := get_tmtrafficaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmtrafficaction(key)
 
@@ -222,13 +221,14 @@ func read_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 func update_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmtrafficaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateTmtrafficaction(get_tmtrafficaction(d))
+	// err := client.UpdateTmtrafficaction(get_tmtrafficaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -238,7 +238,8 @@ func delete_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmtrafficaction(d)
+	resource := get_tmtrafficaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmtrafficaction(key)
 

@@ -17,11 +17,6 @@ func NetscalerResponderpolicy() *schema.Resource {
 		Update:        update_responderpolicy,
 		Delete:        delete_responderpolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -46,6 +41,12 @@ func NetscalerResponderpolicy() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -62,19 +63,15 @@ func NetscalerResponderpolicy() *schema.Resource {
 	}
 }
 
-func key_responderpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_responderpolicy(d *schema.ResourceData) nitro.Responderpolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Responderpolicy{
-		Name:          d.Get("name").(string),
 		Action:        d.Get("action").(string),
 		Appflowaction: d.Get("appflowaction").(string),
 		Comment:       d.Get("comment").(string),
 		Logaction:     d.Get("logaction").(string),
+		Name:          d.Get("name").(string),
 		Rule:          d.Get("rule").(string),
 		Undefaction:   d.Get("undefaction").(string),
 	}
@@ -85,11 +82,11 @@ func get_responderpolicy(d *schema.ResourceData) nitro.Responderpolicy {
 func set_responderpolicy(d *schema.ResourceData, resource *nitro.Responderpolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
 	d.Set("appflowaction", resource.Appflowaction)
 	d.Set("comment", resource.Comment)
 	d.Set("logaction", resource.Logaction)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 	d.Set("undefaction", resource.Undefaction)
 
@@ -104,7 +101,8 @@ func create_responderpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderpolicy(d)
+	resource := get_responderpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderpolicy(key)
 
@@ -152,7 +150,8 @@ func read_responderpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderpolicy(d)
+	resource := get_responderpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderpolicy(key)
 
@@ -182,13 +181,14 @@ func read_responderpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_responderpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_responderpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateResponderpolicy(get_responderpolicy(d))
+	// err := client.UpdateResponderpolicy(get_responderpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -198,7 +198,8 @@ func delete_responderpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderpolicy(d)
+	resource := get_responderpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderpolicy(key)
 

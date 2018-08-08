@@ -17,16 +17,17 @@ func NetscalerAppqoepolicy() *schema.Resource {
 		Update:        update_appqoepolicy,
 		Delete:        delete_appqoepolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
@@ -38,16 +39,12 @@ func NetscalerAppqoepolicy() *schema.Resource {
 	}
 }
 
-func key_appqoepolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_appqoepolicy(d *schema.ResourceData) nitro.Appqoepolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Appqoepolicy{
-		Name:   d.Get("name").(string),
 		Action: d.Get("action").(string),
+		Name:   d.Get("name").(string),
 		Rule:   d.Get("rule").(string),
 	}
 
@@ -57,8 +54,8 @@ func get_appqoepolicy(d *schema.ResourceData) nitro.Appqoepolicy {
 func set_appqoepolicy(d *schema.ResourceData, resource *nitro.Appqoepolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 
 	var key []string
@@ -72,7 +69,8 @@ func create_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appqoepolicy(d)
+	resource := get_appqoepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppqoepolicy(key)
 
@@ -120,7 +118,8 @@ func read_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appqoepolicy(d)
+	resource := get_appqoepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppqoepolicy(key)
 
@@ -150,13 +149,14 @@ func read_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appqoepolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAppqoepolicy(get_appqoepolicy(d))
+	// err := client.UpdateAppqoepolicy(get_appqoepolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -166,7 +166,8 @@ func delete_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appqoepolicy(d)
+	resource := get_appqoepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppqoepolicy(key)
 

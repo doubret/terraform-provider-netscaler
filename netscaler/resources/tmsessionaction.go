@@ -17,11 +17,6 @@ func NetscalerTmsessionaction() *schema.Resource {
 		Update:        update_tmsessionaction,
 		Delete:        delete_tmsessionaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"defaultauthorizationaction": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -45,6 +40,12 @@ func NetscalerTmsessionaction() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"persistentcookie": &schema.Schema{
 				Type:     schema.TypeString,
@@ -86,19 +87,15 @@ func NetscalerTmsessionaction() *schema.Resource {
 	}
 }
 
-func key_tmsessionaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_tmsessionaction(d *schema.ResourceData) nitro.Tmsessionaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Tmsessionaction{
-		Name: d.Get("name").(string),
 		Defaultauthorizationaction: d.Get("defaultauthorizationaction").(string),
 		Homepage:                   d.Get("homepage").(string),
 		Httponlycookie:             d.Get("httponlycookie").(string),
 		Kcdaccount:                 d.Get("kcdaccount").(string),
+		Name:                       d.Get("name").(string),
 		Persistentcookie:           d.Get("persistentcookie").(string),
 		Persistentcookievalidity:   d.Get("persistentcookievalidity").(int),
 		Sesstimeout:                d.Get("sesstimeout").(int),
@@ -113,11 +110,11 @@ func get_tmsessionaction(d *schema.ResourceData) nitro.Tmsessionaction {
 func set_tmsessionaction(d *schema.ResourceData, resource *nitro.Tmsessionaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("defaultauthorizationaction", resource.Defaultauthorizationaction)
 	d.Set("homepage", resource.Homepage)
 	d.Set("httponlycookie", resource.Httponlycookie)
 	d.Set("kcdaccount", resource.Kcdaccount)
+	d.Set("name", resource.Name)
 	d.Set("persistentcookie", resource.Persistentcookie)
 	d.Set("persistentcookievalidity", resource.Persistentcookievalidity)
 	d.Set("sesstimeout", resource.Sesstimeout)
@@ -136,7 +133,8 @@ func create_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmsessionaction(d)
+	resource := get_tmsessionaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmsessionaction(key)
 
@@ -184,7 +182,8 @@ func read_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmsessionaction(d)
+	resource := get_tmsessionaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmsessionaction(key)
 
@@ -214,13 +213,14 @@ func read_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 func update_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmsessionaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateTmsessionaction(get_tmsessionaction(d))
+	// err := client.UpdateTmsessionaction(get_tmsessionaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -230,7 +230,8 @@ func delete_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmsessionaction(d)
+	resource := get_tmsessionaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmsessionaction(key)
 

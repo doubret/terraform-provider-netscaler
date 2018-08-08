@@ -17,12 +17,13 @@ func NetscalerSpilloveraction() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_spilloveraction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
+			"action": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
-			"action": &schema.Schema{
+			"name": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -32,16 +33,12 @@ func NetscalerSpilloveraction() *schema.Resource {
 	}
 }
 
-func key_spilloveraction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_spilloveraction(d *schema.ResourceData) nitro.Spilloveraction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Spilloveraction{
-		Name:   d.Get("name").(string),
 		Action: d.Get("action").(string),
+		Name:   d.Get("name").(string),
 	}
 
 	return resource
@@ -50,8 +47,8 @@ func get_spilloveraction(d *schema.ResourceData) nitro.Spilloveraction {
 func set_spilloveraction(d *schema.ResourceData, resource *nitro.Spilloveraction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
+	d.Set("name", resource.Name)
 
 	var key []string
 
@@ -64,7 +61,8 @@ func create_spilloveraction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_spilloveraction(d)
+	resource := get_spilloveraction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsSpilloveraction(key)
 
@@ -112,7 +110,8 @@ func read_spilloveraction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_spilloveraction(d)
+	resource := get_spilloveraction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsSpilloveraction(key)
 
@@ -144,7 +143,8 @@ func delete_spilloveraction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_spilloveraction(d)
+	resource := get_spilloveraction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsSpilloveraction(key)
 

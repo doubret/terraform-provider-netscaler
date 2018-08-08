@@ -17,11 +17,6 @@ func NetscalerDbdbprofile() *schema.Resource {
 		Update:        update_dbdbprofile,
 		Delete:        delete_dbdbprofile,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"conmultiplex": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -46,6 +41,12 @@ func NetscalerDbdbprofile() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"stickiness": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -56,19 +57,15 @@ func NetscalerDbdbprofile() *schema.Resource {
 	}
 }
 
-func key_dbdbprofile(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_dbdbprofile(d *schema.ResourceData) nitro.Dbdbprofile {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Dbdbprofile{
-		Name:                   d.Get("name").(string),
 		Conmultiplex:           d.Get("conmultiplex").(string),
 		Enablecachingconmuxoff: d.Get("enablecachingconmuxoff").(string),
 		Interpretquery:         d.Get("interpretquery").(string),
 		Kcdaccount:             d.Get("kcdaccount").(string),
+		Name:                   d.Get("name").(string),
 		Stickiness:             d.Get("stickiness").(string),
 	}
 
@@ -78,11 +75,11 @@ func get_dbdbprofile(d *schema.ResourceData) nitro.Dbdbprofile {
 func set_dbdbprofile(d *schema.ResourceData, resource *nitro.Dbdbprofile) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("conmultiplex", resource.Conmultiplex)
 	d.Set("enablecachingconmuxoff", resource.Enablecachingconmuxoff)
 	d.Set("interpretquery", resource.Interpretquery)
 	d.Set("kcdaccount", resource.Kcdaccount)
+	d.Set("name", resource.Name)
 	d.Set("stickiness", resource.Stickiness)
 
 	var key []string
@@ -96,7 +93,8 @@ func create_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dbdbprofile(d)
+	resource := get_dbdbprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDbdbprofile(key)
 
@@ -144,7 +142,8 @@ func read_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dbdbprofile(d)
+	resource := get_dbdbprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDbdbprofile(key)
 
@@ -174,13 +173,14 @@ func read_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 func update_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dbdbprofile")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateDbdbprofile(get_dbdbprofile(d))
+	// err := client.UpdateDbdbprofile(get_dbdbprofile(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -190,7 +190,8 @@ func delete_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dbdbprofile(d)
+	resource := get_dbdbprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDbdbprofile(key)
 

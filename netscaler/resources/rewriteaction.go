@@ -17,11 +17,6 @@ func NetscalerRewriteaction() *schema.Resource {
 		Update:        update_rewriteaction,
 		Delete:        delete_rewriteaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"bypasssafetycheck": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -33,6 +28,12 @@ func NetscalerRewriteaction() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"pattern": &schema.Schema{
 				Type:     schema.TypeString,
@@ -74,17 +75,13 @@ func NetscalerRewriteaction() *schema.Resource {
 	}
 }
 
-func key_rewriteaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_rewriteaction(d *schema.ResourceData) nitro.Rewriteaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Rewriteaction{
-		Name:              d.Get("name").(string),
 		Bypasssafetycheck: d.Get("bypasssafetycheck").(string),
 		Comment:           d.Get("comment").(string),
+		Name:              d.Get("name").(string),
 		Pattern:           d.Get("pattern").(string),
 		Refinesearch:      d.Get("refinesearch").(string),
 		Search:            d.Get("search").(string),
@@ -99,9 +96,9 @@ func get_rewriteaction(d *schema.ResourceData) nitro.Rewriteaction {
 func set_rewriteaction(d *schema.ResourceData, resource *nitro.Rewriteaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("bypasssafetycheck", resource.Bypasssafetycheck)
 	d.Set("comment", resource.Comment)
+	d.Set("name", resource.Name)
 	d.Set("pattern", resource.Pattern)
 	d.Set("refinesearch", resource.Refinesearch)
 	d.Set("search", resource.Search)
@@ -120,7 +117,8 @@ func create_rewriteaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewriteaction(d)
+	resource := get_rewriteaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewriteaction(key)
 
@@ -168,7 +166,8 @@ func read_rewriteaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewriteaction(d)
+	resource := get_rewriteaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewriteaction(key)
 
@@ -198,13 +197,14 @@ func read_rewriteaction(d *schema.ResourceData, meta interface{}) error {
 func update_rewriteaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_rewriteaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateRewriteaction(get_rewriteaction(d))
+	// err := client.UpdateRewriteaction(get_rewriteaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -214,7 +214,8 @@ func delete_rewriteaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewriteaction(d)
+	resource := get_rewriteaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewriteaction(key)
 

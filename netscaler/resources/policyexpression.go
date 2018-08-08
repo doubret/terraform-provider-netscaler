@@ -17,11 +17,6 @@ func NetscalerPolicyexpression() *schema.Resource {
 		Update:        update_policyexpression,
 		Delete:        delete_policyexpression,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"clientsecuritymessage": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -40,6 +35,12 @@ func NetscalerPolicyexpression() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"value": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -50,18 +51,14 @@ func NetscalerPolicyexpression() *schema.Resource {
 	}
 }
 
-func key_policyexpression(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_policyexpression(d *schema.ResourceData) nitro.Policyexpression {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Policyexpression{
-		Name: d.Get("name").(string),
 		Clientsecuritymessage: d.Get("clientsecuritymessage").(string),
 		Comment:               d.Get("comment").(string),
 		Description:           d.Get("description").(string),
+		Name:                  d.Get("name").(string),
 		Value:                 d.Get("value").(string),
 	}
 
@@ -71,10 +68,10 @@ func get_policyexpression(d *schema.ResourceData) nitro.Policyexpression {
 func set_policyexpression(d *schema.ResourceData, resource *nitro.Policyexpression) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("clientsecuritymessage", resource.Clientsecuritymessage)
 	d.Set("comment", resource.Comment)
 	d.Set("description", resource.Description)
+	d.Set("name", resource.Name)
 	d.Set("value", resource.Value)
 
 	var key []string
@@ -88,7 +85,8 @@ func create_policyexpression(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policyexpression(d)
+	resource := get_policyexpression(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicyexpression(key)
 
@@ -136,7 +134,8 @@ func read_policyexpression(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policyexpression(d)
+	resource := get_policyexpression(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicyexpression(key)
 
@@ -166,13 +165,14 @@ func read_policyexpression(d *schema.ResourceData, meta interface{}) error {
 func update_policyexpression(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_policyexpression")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdatePolicyexpression(get_policyexpression(d))
+	// err := client.UpdatePolicyexpression(get_policyexpression(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -182,7 +182,8 @@ func delete_policyexpression(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policyexpression(d)
+	resource := get_policyexpression(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicyexpression(key)
 

@@ -37,7 +37,8 @@ func NetscalerAuthorizationpolicylabelAuthorizationpolicyBinding() *schema.Resou
 			},
 			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"labeltype": &schema.Schema{
@@ -48,7 +49,8 @@ func NetscalerAuthorizationpolicylabelAuthorizationpolicyBinding() *schema.Resou
 			},
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"priority": &schema.Schema{
@@ -59,15 +61,6 @@ func NetscalerAuthorizationpolicylabelAuthorizationpolicyBinding() *schema.Resou
 			},
 		},
 	}
-}
-
-func key_authorizationpolicylabel_authorizationpolicy_binding(d *schema.ResourceData) nitro.AuthorizationpolicylabelAuthorizationpolicyBindingKey {
-	key := nitro.AuthorizationpolicylabelAuthorizationpolicyBindingKey{
-		Labelname:  d.Get("labelname").(string),
-		Policyname: d.Get("policyname").(string),
-	}
-
-	return key
 }
 
 func get_authorizationpolicylabel_authorizationpolicy_binding(d *schema.ResourceData) nitro.AuthorizationpolicylabelAuthorizationpolicyBinding {
@@ -96,6 +89,7 @@ func set_authorizationpolicylabel_authorizationpolicy_binding(d *schema.Resource
 	d.Set("labeltype", resource.Labeltype)
 	d.Set("policyname", resource.Policyname)
 	d.Set("priority", resource.Priority)
+
 	var key []string
 
 	key = append(key, resource.Labelname)
@@ -108,7 +102,8 @@ func create_authorizationpolicylabel_authorizationpolicy_binding(d *schema.Resou
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicylabel_authorizationpolicy_binding(d)
+	resource := get_authorizationpolicylabel_authorizationpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicylabelAuthorizationpolicyBinding(key)
 
@@ -156,7 +151,8 @@ func read_authorizationpolicylabel_authorizationpolicy_binding(d *schema.Resourc
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicylabel_authorizationpolicy_binding(d)
+	resource := get_authorizationpolicylabel_authorizationpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicylabelAuthorizationpolicyBinding(key)
 
@@ -188,7 +184,8 @@ func delete_authorizationpolicylabel_authorizationpolicy_binding(d *schema.Resou
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicylabel_authorizationpolicy_binding(d)
+	resource := get_authorizationpolicylabel_authorizationpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicylabelAuthorizationpolicyBinding(key)
 

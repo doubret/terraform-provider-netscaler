@@ -17,17 +17,6 @@ func NetscalerLbvserver() *schema.Resource {
 		Update:        update_lbvserver,
 		Delete:        delete_lbvserver,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
-			"state": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: true,
-			},
 			"appflowlog": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -304,6 +293,12 @@ func NetscalerLbvserver() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"netmask": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -575,16 +570,10 @@ func NetscalerLbvserver() *schema.Resource {
 	}
 }
 
-func key_lbvserver(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_lbvserver(d *schema.ResourceData) nitro.Lbvserver {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Lbvserver{
-		Name:                               d.Get("name").(string),
-		State:                              d.Get("state").(string),
 		Appflowlog:                         d.Get("appflowlog").(string),
 		Authentication:                     d.Get("authentication").(string),
 		Authenticationhost:                 d.Get("authenticationhost").(string),
@@ -631,6 +620,7 @@ func get_lbvserver(d *schema.ResourceData) nitro.Lbvserver {
 		Mysqlprotocolversion:               d.Get("mysqlprotocolversion").(int),
 		Mysqlservercapabilities:            d.Get("mysqlservercapabilities").(int),
 		Mysqlserverversion:                 d.Get("mysqlserverversion").(string),
+		Name:                               d.Get("name").(string),
 		Netmask:                            d.Get("netmask").(string),
 		Netprofile:                         d.Get("netprofile").(string),
 		Newservicerequest:                  d.Get("newservicerequest").(int),
@@ -683,8 +673,6 @@ func get_lbvserver(d *schema.ResourceData) nitro.Lbvserver {
 func set_lbvserver(d *schema.ResourceData, resource *nitro.Lbvserver) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
-	d.Set("state", resource.State)
 	d.Set("appflowlog", resource.Appflowlog)
 	d.Set("authentication", resource.Authentication)
 	d.Set("authenticationhost", resource.Authenticationhost)
@@ -731,6 +719,7 @@ func set_lbvserver(d *schema.ResourceData, resource *nitro.Lbvserver) {
 	d.Set("mysqlprotocolversion", resource.Mysqlprotocolversion)
 	d.Set("mysqlservercapabilities", resource.Mysqlservercapabilities)
 	d.Set("mysqlserverversion", resource.Mysqlserverversion)
+	d.Set("name", resource.Name)
 	d.Set("netmask", resource.Netmask)
 	d.Set("netprofile", resource.Netprofile)
 	d.Set("newservicerequest", resource.Newservicerequest)
@@ -787,7 +776,8 @@ func create_lbvserver(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver(d)
+	resource := get_lbvserver(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserver(key)
 
@@ -835,7 +825,8 @@ func read_lbvserver(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver(d)
+	resource := get_lbvserver(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserver(key)
 
@@ -865,13 +856,14 @@ func read_lbvserver(d *schema.ResourceData, meta interface{}) error {
 func update_lbvserver(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbvserver")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateLbvserver(get_lbvserver(d))
+	// err := client.UpdateLbvserver(get_lbvserver(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -881,7 +873,8 @@ func delete_lbvserver(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver(d)
+	resource := get_lbvserver(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserver(key)
 

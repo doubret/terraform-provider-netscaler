@@ -17,11 +17,6 @@ func NetscalerRewritepolicy() *schema.Resource {
 		Update:        update_rewritepolicy,
 		Delete:        delete_rewritepolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -40,6 +35,12 @@ func NetscalerRewritepolicy() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -56,18 +57,14 @@ func NetscalerRewritepolicy() *schema.Resource {
 	}
 }
 
-func key_rewritepolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_rewritepolicy(d *schema.ResourceData) nitro.Rewritepolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Rewritepolicy{
-		Name:        d.Get("name").(string),
 		Action:      d.Get("action").(string),
 		Comment:     d.Get("comment").(string),
 		Logaction:   d.Get("logaction").(string),
+		Name:        d.Get("name").(string),
 		Rule:        d.Get("rule").(string),
 		Undefaction: d.Get("undefaction").(string),
 	}
@@ -78,10 +75,10 @@ func get_rewritepolicy(d *schema.ResourceData) nitro.Rewritepolicy {
 func set_rewritepolicy(d *schema.ResourceData, resource *nitro.Rewritepolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
 	d.Set("comment", resource.Comment)
 	d.Set("logaction", resource.Logaction)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 	d.Set("undefaction", resource.Undefaction)
 
@@ -96,7 +93,8 @@ func create_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewritepolicy(d)
+	resource := get_rewritepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewritepolicy(key)
 
@@ -144,7 +142,8 @@ func read_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewritepolicy(d)
+	resource := get_rewritepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewritepolicy(key)
 
@@ -174,13 +173,14 @@ func read_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_rewritepolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateRewritepolicy(get_rewritepolicy(d))
+	// err := client.UpdateRewritepolicy(get_rewritepolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -190,7 +190,8 @@ func delete_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewritepolicy(d)
+	resource := get_rewritepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewritepolicy(key)
 

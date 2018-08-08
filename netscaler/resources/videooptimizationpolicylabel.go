@@ -17,12 +17,13 @@ func NetscalerVideooptimizationpolicylabel() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_videooptimizationpolicylabel,
 		Schema: map[string]*schema.Schema{
-			"labelname": &schema.Schema{
+			"comment": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
-			"comment": &schema.Schema{
+			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -38,16 +39,12 @@ func NetscalerVideooptimizationpolicylabel() *schema.Resource {
 	}
 }
 
-func key_videooptimizationpolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
-}
-
 func get_videooptimizationpolicylabel(d *schema.ResourceData) nitro.Videooptimizationpolicylabel {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Videooptimizationpolicylabel{
-		Labelname:       d.Get("labelname").(string),
 		Comment:         d.Get("comment").(string),
+		Labelname:       d.Get("labelname").(string),
 		Policylabeltype: d.Get("policylabeltype").(string),
 	}
 
@@ -57,8 +54,8 @@ func get_videooptimizationpolicylabel(d *schema.ResourceData) nitro.Videooptimiz
 func set_videooptimizationpolicylabel(d *schema.ResourceData, resource *nitro.Videooptimizationpolicylabel) {
 	var _ = strconv.Itoa
 
-	d.Set("labelname", resource.Labelname)
 	d.Set("comment", resource.Comment)
+	d.Set("labelname", resource.Labelname)
 	d.Set("policylabeltype", resource.Policylabeltype)
 
 	var key []string
@@ -72,7 +69,8 @@ func create_videooptimizationpolicylabel(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_videooptimizationpolicylabel(d)
+	resource := get_videooptimizationpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsVideooptimizationpolicylabel(key)
 
@@ -120,7 +118,8 @@ func read_videooptimizationpolicylabel(d *schema.ResourceData, meta interface{})
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_videooptimizationpolicylabel(d)
+	resource := get_videooptimizationpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsVideooptimizationpolicylabel(key)
 
@@ -152,7 +151,8 @@ func delete_videooptimizationpolicylabel(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_videooptimizationpolicylabel(d)
+	resource := get_videooptimizationpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsVideooptimizationpolicylabel(key)
 

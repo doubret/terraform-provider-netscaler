@@ -17,11 +17,6 @@ func NetscalerAppfwpolicy() *schema.Resource {
 		Update:        update_appfwpolicy,
 		Delete:        delete_appfwpolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -33,6 +28,12 @@ func NetscalerAppfwpolicy() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"profilename": &schema.Schema{
 				Type:     schema.TypeString,
@@ -50,17 +51,13 @@ func NetscalerAppfwpolicy() *schema.Resource {
 	}
 }
 
-func key_appfwpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_appfwpolicy(d *schema.ResourceData) nitro.Appfwpolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Appfwpolicy{
-		Name:        d.Get("name").(string),
 		Comment:     d.Get("comment").(string),
 		Logaction:   d.Get("logaction").(string),
+		Name:        d.Get("name").(string),
 		Profilename: d.Get("profilename").(string),
 		Rule:        d.Get("rule").(string),
 	}
@@ -71,9 +68,9 @@ func get_appfwpolicy(d *schema.ResourceData) nitro.Appfwpolicy {
 func set_appfwpolicy(d *schema.ResourceData, resource *nitro.Appfwpolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("logaction", resource.Logaction)
+	d.Set("name", resource.Name)
 	d.Set("profilename", resource.Profilename)
 	d.Set("rule", resource.Rule)
 
@@ -88,7 +85,8 @@ func create_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appfwpolicy(d)
+	resource := get_appfwpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppfwpolicy(key)
 
@@ -136,7 +134,8 @@ func read_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appfwpolicy(d)
+	resource := get_appfwpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppfwpolicy(key)
 
@@ -166,13 +165,14 @@ func read_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appfwpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAppfwpolicy(get_appfwpolicy(d))
+	// err := client.UpdateAppfwpolicy(get_appfwpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -182,7 +182,8 @@ func delete_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appfwpolicy(d)
+	resource := get_appfwpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppfwpolicy(key)
 

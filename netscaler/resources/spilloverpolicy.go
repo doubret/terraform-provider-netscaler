@@ -17,11 +17,6 @@ func NetscalerSpilloverpolicy() *schema.Resource {
 		Update:        update_spilloverpolicy,
 		Delete:        delete_spilloverpolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -34,6 +29,12 @@ func NetscalerSpilloverpolicy() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -44,17 +45,13 @@ func NetscalerSpilloverpolicy() *schema.Resource {
 	}
 }
 
-func key_spilloverpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_spilloverpolicy(d *schema.ResourceData) nitro.Spilloverpolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Spilloverpolicy{
-		Name:    d.Get("name").(string),
 		Action:  d.Get("action").(string),
 		Comment: d.Get("comment").(string),
+		Name:    d.Get("name").(string),
 		Rule:    d.Get("rule").(string),
 	}
 
@@ -64,9 +61,9 @@ func get_spilloverpolicy(d *schema.ResourceData) nitro.Spilloverpolicy {
 func set_spilloverpolicy(d *schema.ResourceData, resource *nitro.Spilloverpolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
 	d.Set("comment", resource.Comment)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 
 	var key []string
@@ -80,7 +77,8 @@ func create_spilloverpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_spilloverpolicy(d)
+	resource := get_spilloverpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsSpilloverpolicy(key)
 
@@ -128,7 +126,8 @@ func read_spilloverpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_spilloverpolicy(d)
+	resource := get_spilloverpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsSpilloverpolicy(key)
 
@@ -158,13 +157,14 @@ func read_spilloverpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_spilloverpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_spilloverpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateSpilloverpolicy(get_spilloverpolicy(d))
+	// err := client.UpdateSpilloverpolicy(get_spilloverpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -174,7 +174,8 @@ func delete_spilloverpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_spilloverpolicy(d)
+	resource := get_spilloverpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsSpilloverpolicy(key)
 

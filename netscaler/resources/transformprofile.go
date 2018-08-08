@@ -17,16 +17,17 @@ func NetscalerTransformprofile() *schema.Resource {
 		Update:        update_transformprofile,
 		Delete:        delete_transformprofile,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"onlytransformabsurlinbody": &schema.Schema{
 				Type:     schema.TypeString,
@@ -44,16 +45,12 @@ func NetscalerTransformprofile() *schema.Resource {
 	}
 }
 
-func key_transformprofile(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_transformprofile(d *schema.ResourceData) nitro.Transformprofile {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Transformprofile{
-		Name:                      d.Get("name").(string),
-		Comment:                   d.Get("comment").(string),
+		Comment: d.Get("comment").(string),
+		Name:    d.Get("name").(string),
 		Onlytransformabsurlinbody: d.Get("onlytransformabsurlinbody").(string),
 		Type: d.Get("type").(string),
 	}
@@ -64,8 +61,8 @@ func get_transformprofile(d *schema.ResourceData) nitro.Transformprofile {
 func set_transformprofile(d *schema.ResourceData, resource *nitro.Transformprofile) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
+	d.Set("name", resource.Name)
 	d.Set("onlytransformabsurlinbody", resource.Onlytransformabsurlinbody)
 	d.Set("type", resource.Type)
 
@@ -80,7 +77,8 @@ func create_transformprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformprofile(d)
+	resource := get_transformprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformprofile(key)
 
@@ -128,7 +126,8 @@ func read_transformprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformprofile(d)
+	resource := get_transformprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformprofile(key)
 
@@ -158,13 +157,14 @@ func read_transformprofile(d *schema.ResourceData, meta interface{}) error {
 func update_transformprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_transformprofile")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateTransformprofile(get_transformprofile(d))
+	// err := client.UpdateTransformprofile(get_transformprofile(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -174,7 +174,8 @@ func delete_transformprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformprofile(d)
+	resource := get_transformprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformprofile(key)
 

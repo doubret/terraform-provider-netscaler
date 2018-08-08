@@ -17,11 +17,6 @@ func NetscalerAppflowaction() *schema.Resource {
 		Update:        update_appflowaction,
 		Delete:        delete_appflowaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"clientsidemeasurements": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -42,6 +37,12 @@ func NetscalerAppflowaction() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"pagetracking": &schema.Schema{
 				Type:     schema.TypeString,
@@ -65,18 +66,14 @@ func NetscalerAppflowaction() *schema.Resource {
 	}
 }
 
-func key_appflowaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_appflowaction(d *schema.ResourceData) nitro.Appflowaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Appflowaction{
-		Name: d.Get("name").(string),
 		Clientsidemeasurements: d.Get("clientsidemeasurements").(string),
 		Collectors:             utils.Convert_set_to_string_array(d.Get("collectors").(*schema.Set)),
 		Comment:                d.Get("comment").(string),
+		Name:                   d.Get("name").(string),
 		Pagetracking:           d.Get("pagetracking").(string),
 		Securityinsight:        d.Get("securityinsight").(string),
 		Webinsight:             d.Get("webinsight").(string),
@@ -88,10 +85,10 @@ func get_appflowaction(d *schema.ResourceData) nitro.Appflowaction {
 func set_appflowaction(d *schema.ResourceData, resource *nitro.Appflowaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("clientsidemeasurements", resource.Clientsidemeasurements)
 	d.Set("collectors", resource.Collectors)
 	d.Set("comment", resource.Comment)
+	d.Set("name", resource.Name)
 	d.Set("pagetracking", resource.Pagetracking)
 	d.Set("securityinsight", resource.Securityinsight)
 	d.Set("webinsight", resource.Webinsight)
@@ -107,7 +104,8 @@ func create_appflowaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowaction(d)
+	resource := get_appflowaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowaction(key)
 
@@ -155,7 +153,8 @@ func read_appflowaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowaction(d)
+	resource := get_appflowaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowaction(key)
 
@@ -185,13 +184,14 @@ func read_appflowaction(d *schema.ResourceData, meta interface{}) error {
 func update_appflowaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appflowaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAppflowaction(get_appflowaction(d))
+	// err := client.UpdateAppflowaction(get_appflowaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -201,7 +201,8 @@ func delete_appflowaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowaction(d)
+	resource := get_appflowaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowaction(key)
 

@@ -31,25 +31,18 @@ func NetscalerPolicypatsetPatternBinding() *schema.Resource {
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"string": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 		},
 	}
-}
-
-func key_policypatset_pattern_binding(d *schema.ResourceData) nitro.PolicypatsetPatternBindingKey {
-	key := nitro.PolicypatsetPatternBindingKey{
-		Name:   d.Get("name").(string),
-		String: d.Get("string").(string),
-	}
-
-	return key
 }
 
 func get_policypatset_pattern_binding(d *schema.ResourceData) nitro.PolicypatsetPatternBinding {
@@ -72,6 +65,7 @@ func set_policypatset_pattern_binding(d *schema.ResourceData, resource *nitro.Po
 	d.Set("index", resource.Index)
 	d.Set("name", resource.Name)
 	d.Set("string", resource.String)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -84,7 +78,8 @@ func create_policypatset_pattern_binding(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policypatset_pattern_binding(d)
+	resource := get_policypatset_pattern_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicypatsetPatternBinding(key)
 
@@ -132,7 +127,8 @@ func read_policypatset_pattern_binding(d *schema.ResourceData, meta interface{})
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policypatset_pattern_binding(d)
+	resource := get_policypatset_pattern_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicypatsetPatternBinding(key)
 
@@ -164,7 +160,8 @@ func delete_policypatset_pattern_binding(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policypatset_pattern_binding(d)
+	resource := get_policypatset_pattern_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicypatsetPatternBinding(key)
 

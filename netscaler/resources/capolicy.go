@@ -17,11 +17,6 @@ func NetscalerCapolicy() *schema.Resource {
 		Update:        update_capolicy,
 		Delete:        delete_capolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -40,6 +35,12 @@ func NetscalerCapolicy() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -56,18 +57,14 @@ func NetscalerCapolicy() *schema.Resource {
 	}
 }
 
-func key_capolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_capolicy(d *schema.ResourceData) nitro.Capolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Capolicy{
-		Name:        d.Get("name").(string),
 		Action:      d.Get("action").(string),
 		Comment:     d.Get("comment").(string),
 		Logaction:   d.Get("logaction").(string),
+		Name:        d.Get("name").(string),
 		Rule:        d.Get("rule").(string),
 		Undefaction: d.Get("undefaction").(string),
 	}
@@ -78,10 +75,10 @@ func get_capolicy(d *schema.ResourceData) nitro.Capolicy {
 func set_capolicy(d *schema.ResourceData, resource *nitro.Capolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
 	d.Set("comment", resource.Comment)
 	d.Set("logaction", resource.Logaction)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 	d.Set("undefaction", resource.Undefaction)
 
@@ -96,7 +93,8 @@ func create_capolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_capolicy(d)
+	resource := get_capolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCapolicy(key)
 
@@ -144,7 +142,8 @@ func read_capolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_capolicy(d)
+	resource := get_capolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCapolicy(key)
 
@@ -174,13 +173,14 @@ func read_capolicy(d *schema.ResourceData, meta interface{}) error {
 func update_capolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_capolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCapolicy(get_capolicy(d))
+	// err := client.UpdateCapolicy(get_capolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -190,7 +190,8 @@ func delete_capolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_capolicy(d)
+	resource := get_capolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCapolicy(key)
 

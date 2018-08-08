@@ -17,17 +17,6 @@ func NetscalerCsvserver() *schema.Resource {
 		Update:        update_csvserver,
 		Delete:        delete_csvserver,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
-			"state": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: true,
-			},
 			"appflowlog": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -202,6 +191,12 @@ func NetscalerCsvserver() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"netprofile": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -316,6 +311,12 @@ func NetscalerCsvserver() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"state": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"stateupdate": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -344,16 +345,10 @@ func NetscalerCsvserver() *schema.Resource {
 	}
 }
 
-func key_csvserver(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_csvserver(d *schema.ResourceData) nitro.Csvserver {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Csvserver{
-		Name:                    d.Get("name").(string),
-		State:                   d.Get("state").(string),
 		Appflowlog:              d.Get("appflowlog").(string),
 		Authentication:          d.Get("authentication").(string),
 		Authenticationhost:      d.Get("authenticationhost").(string),
@@ -383,6 +378,7 @@ func get_csvserver(d *schema.ResourceData) nitro.Csvserver {
 		Mysqlprotocolversion:    d.Get("mysqlprotocolversion").(int),
 		Mysqlservercapabilities: d.Get("mysqlservercapabilities").(int),
 		Mysqlserverversion:      d.Get("mysqlserverversion").(string),
+		Name:                    d.Get("name").(string),
 		Netprofile:              d.Get("netprofile").(string),
 		Oracleserverversion:     d.Get("oracleserverversion").(string),
 		Port:                    d.Get("port").(int),
@@ -402,6 +398,7 @@ func get_csvserver(d *schema.ResourceData) nitro.Csvserver {
 		Sopersistence:           d.Get("sopersistence").(string),
 		Sopersistencetimeout:    d.Get("sopersistencetimeout").(int),
 		Sothreshold:             d.Get("sothreshold").(int),
+		State:                   d.Get("state").(string),
 		Stateupdate:             d.Get("stateupdate").(string),
 		Tcpprofilename:          d.Get("tcpprofilename").(string),
 		Td:                      d.Get("td").(int),
@@ -414,8 +411,6 @@ func get_csvserver(d *schema.ResourceData) nitro.Csvserver {
 func set_csvserver(d *schema.ResourceData, resource *nitro.Csvserver) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
-	d.Set("state", resource.State)
 	d.Set("appflowlog", resource.Appflowlog)
 	d.Set("authentication", resource.Authentication)
 	d.Set("authenticationhost", resource.Authenticationhost)
@@ -445,6 +440,7 @@ func set_csvserver(d *schema.ResourceData, resource *nitro.Csvserver) {
 	d.Set("mysqlprotocolversion", resource.Mysqlprotocolversion)
 	d.Set("mysqlservercapabilities", resource.Mysqlservercapabilities)
 	d.Set("mysqlserverversion", resource.Mysqlserverversion)
+	d.Set("name", resource.Name)
 	d.Set("netprofile", resource.Netprofile)
 	d.Set("oracleserverversion", resource.Oracleserverversion)
 	d.Set("port", resource.Port)
@@ -464,6 +460,7 @@ func set_csvserver(d *schema.ResourceData, resource *nitro.Csvserver) {
 	d.Set("sopersistence", resource.Sopersistence)
 	d.Set("sopersistencetimeout", resource.Sopersistencetimeout)
 	d.Set("sothreshold", resource.Sothreshold)
+	d.Set("state", resource.State)
 	d.Set("stateupdate", resource.Stateupdate)
 	d.Set("tcpprofilename", resource.Tcpprofilename)
 	d.Set("td", resource.Td)
@@ -480,7 +477,8 @@ func create_csvserver(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_csvserver(d)
+	resource := get_csvserver(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCsvserver(key)
 
@@ -528,7 +526,8 @@ func read_csvserver(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_csvserver(d)
+	resource := get_csvserver(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCsvserver(key)
 
@@ -558,13 +557,14 @@ func read_csvserver(d *schema.ResourceData, meta interface{}) error {
 func update_csvserver(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_csvserver")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCsvserver(get_csvserver(d))
+	// err := client.UpdateCsvserver(get_csvserver(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -574,7 +574,8 @@ func delete_csvserver(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_csvserver(d)
+	resource := get_csvserver(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCsvserver(key)
 

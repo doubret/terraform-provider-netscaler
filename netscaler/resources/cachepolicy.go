@@ -17,11 +17,6 @@ func NetscalerCachepolicy() *schema.Resource {
 		Update:        update_cachepolicy,
 		Delete:        delete_cachepolicy,
 		Schema: map[string]*schema.Schema{
-			"policyname": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -46,6 +41,12 @@ func NetscalerCachepolicy() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"policyname": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -68,18 +69,14 @@ func NetscalerCachepolicy() *schema.Resource {
 	}
 }
 
-func key_cachepolicy(d *schema.ResourceData) string {
-	return d.Get("policyname").(string)
-}
-
 func get_cachepolicy(d *schema.ResourceData) nitro.Cachepolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Cachepolicy{
-		Policyname:   d.Get("policyname").(string),
 		Action:       d.Get("action").(string),
 		Invalgroups:  utils.Convert_set_to_string_array(d.Get("invalgroups").(*schema.Set)),
 		Invalobjects: utils.Convert_set_to_string_array(d.Get("invalobjects").(*schema.Set)),
+		Policyname:   d.Get("policyname").(string),
 		Rule:         d.Get("rule").(string),
 		Storeingroup: d.Get("storeingroup").(string),
 		Undefaction:  d.Get("undefaction").(string),
@@ -91,10 +88,10 @@ func get_cachepolicy(d *schema.ResourceData) nitro.Cachepolicy {
 func set_cachepolicy(d *schema.ResourceData, resource *nitro.Cachepolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("policyname", resource.Policyname)
 	d.Set("action", resource.Action)
 	d.Set("invalgroups", resource.Invalgroups)
 	d.Set("invalobjects", resource.Invalobjects)
+	d.Set("policyname", resource.Policyname)
 	d.Set("rule", resource.Rule)
 	d.Set("storeingroup", resource.Storeingroup)
 	d.Set("undefaction", resource.Undefaction)
@@ -110,7 +107,8 @@ func create_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachepolicy(d)
+	resource := get_cachepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachepolicy(key)
 
@@ -158,7 +156,8 @@ func read_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachepolicy(d)
+	resource := get_cachepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachepolicy(key)
 
@@ -188,13 +187,14 @@ func read_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cachepolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCachepolicy(get_cachepolicy(d))
+	// err := client.UpdateCachepolicy(get_cachepolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -204,7 +204,8 @@ func delete_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachepolicy(d)
+	resource := get_cachepolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachepolicy(key)
 

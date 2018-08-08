@@ -17,31 +17,28 @@ func NetscalerPolicystringmap() *schema.Resource {
 		Update:        update_policystringmap,
 		Delete:        delete_policystringmap,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 		},
 	}
-}
-
-func key_policystringmap(d *schema.ResourceData) string {
-	return d.Get("name").(string)
 }
 
 func get_policystringmap(d *schema.ResourceData) nitro.Policystringmap {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Policystringmap{
-		Name:    d.Get("name").(string),
 		Comment: d.Get("comment").(string),
+		Name:    d.Get("name").(string),
 	}
 
 	return resource
@@ -50,8 +47,8 @@ func get_policystringmap(d *schema.ResourceData) nitro.Policystringmap {
 func set_policystringmap(d *schema.ResourceData, resource *nitro.Policystringmap) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
+	d.Set("name", resource.Name)
 
 	var key []string
 
@@ -64,7 +61,8 @@ func create_policystringmap(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policystringmap(d)
+	resource := get_policystringmap(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicystringmap(key)
 
@@ -112,7 +110,8 @@ func read_policystringmap(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policystringmap(d)
+	resource := get_policystringmap(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicystringmap(key)
 
@@ -142,13 +141,14 @@ func read_policystringmap(d *schema.ResourceData, meta interface{}) error {
 func update_policystringmap(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_policystringmap")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdatePolicystringmap(get_policystringmap(d))
+	// err := client.UpdatePolicystringmap(get_policystringmap(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -158,7 +158,8 @@ func delete_policystringmap(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policystringmap(d)
+	resource := get_policystringmap(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicystringmap(key)
 

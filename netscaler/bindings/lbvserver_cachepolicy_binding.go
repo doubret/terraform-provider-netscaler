@@ -19,7 +19,8 @@ func NetscalerLbvserverCachepolicyBinding() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"bindpoint": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"gotopriorityexpression": &schema.Schema{
@@ -48,12 +49,14 @@ func NetscalerLbvserverCachepolicyBinding() *schema.Resource {
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"priority": &schema.Schema{
@@ -64,16 +67,6 @@ func NetscalerLbvserverCachepolicyBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_lbvserver_cachepolicy_binding(d *schema.ResourceData) nitro.LbvserverCachepolicyBindingKey {
-	key := nitro.LbvserverCachepolicyBindingKey{
-		Name:       d.Get("name").(string),
-		Policyname: d.Get("policyname").(string),
-		Bindpoint:  d.Get("bindpoint").(string),
-	}
-
-	return key
 }
 
 func get_lbvserver_cachepolicy_binding(d *schema.ResourceData) nitro.LbvserverCachepolicyBinding {
@@ -104,6 +97,7 @@ func set_lbvserver_cachepolicy_binding(d *schema.ResourceData, resource *nitro.L
 	d.Set("name", resource.Name)
 	d.Set("policyname", resource.Policyname)
 	d.Set("priority", resource.Priority)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -117,7 +111,8 @@ func create_lbvserver_cachepolicy_binding(d *schema.ResourceData, meta interface
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_cachepolicy_binding(d)
+	resource := get_lbvserver_cachepolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverCachepolicyBinding(key)
 
@@ -165,7 +160,8 @@ func read_lbvserver_cachepolicy_binding(d *schema.ResourceData, meta interface{}
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_cachepolicy_binding(d)
+	resource := get_lbvserver_cachepolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverCachepolicyBinding(key)
 
@@ -197,7 +193,8 @@ func delete_lbvserver_cachepolicy_binding(d *schema.ResourceData, meta interface
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_cachepolicy_binding(d)
+	resource := get_lbvserver_cachepolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverCachepolicyBinding(key)
 

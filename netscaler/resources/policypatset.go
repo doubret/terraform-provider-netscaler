@@ -17,11 +17,6 @@ func NetscalerPolicypatset() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_policypatset,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -34,21 +29,23 @@ func NetscalerPolicypatset() *schema.Resource {
 				Computed: true,
 				ForceNew: true,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 		},
 	}
-}
-
-func key_policypatset(d *schema.ResourceData) string {
-	return d.Get("name").(string)
 }
 
 func get_policypatset(d *schema.ResourceData) nitro.Policypatset {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Policypatset{
-		Name:      d.Get("name").(string),
 		Comment:   d.Get("comment").(string),
 		Indextype: d.Get("indextype").(string),
+		Name:      d.Get("name").(string),
 	}
 
 	return resource
@@ -57,9 +54,9 @@ func get_policypatset(d *schema.ResourceData) nitro.Policypatset {
 func set_policypatset(d *schema.ResourceData, resource *nitro.Policypatset) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("indextype", resource.Indextype)
+	d.Set("name", resource.Name)
 
 	var key []string
 
@@ -72,7 +69,8 @@ func create_policypatset(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policypatset(d)
+	resource := get_policypatset(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicypatset(key)
 
@@ -120,7 +118,8 @@ func read_policypatset(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policypatset(d)
+	resource := get_policypatset(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicypatset(key)
 
@@ -152,7 +151,8 @@ func delete_policypatset(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policypatset(d)
+	resource := get_policypatset(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicypatset(key)
 

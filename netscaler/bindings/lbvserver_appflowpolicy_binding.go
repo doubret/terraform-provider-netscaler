@@ -43,12 +43,14 @@ func NetscalerLbvserverAppflowpolicyBinding() *schema.Resource {
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"priority": &schema.Schema{
@@ -59,15 +61,6 @@ func NetscalerLbvserverAppflowpolicyBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_lbvserver_appflowpolicy_binding(d *schema.ResourceData) nitro.LbvserverAppflowpolicyBindingKey {
-	key := nitro.LbvserverAppflowpolicyBindingKey{
-		Name:       d.Get("name").(string),
-		Policyname: d.Get("policyname").(string),
-	}
-
-	return key
 }
 
 func get_lbvserver_appflowpolicy_binding(d *schema.ResourceData) nitro.LbvserverAppflowpolicyBinding {
@@ -96,6 +89,7 @@ func set_lbvserver_appflowpolicy_binding(d *schema.ResourceData, resource *nitro
 	d.Set("name", resource.Name)
 	d.Set("policyname", resource.Policyname)
 	d.Set("priority", resource.Priority)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -108,7 +102,8 @@ func create_lbvserver_appflowpolicy_binding(d *schema.ResourceData, meta interfa
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_appflowpolicy_binding(d)
+	resource := get_lbvserver_appflowpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverAppflowpolicyBinding(key)
 
@@ -156,7 +151,8 @@ func read_lbvserver_appflowpolicy_binding(d *schema.ResourceData, meta interface
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_appflowpolicy_binding(d)
+	resource := get_lbvserver_appflowpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverAppflowpolicyBinding(key)
 
@@ -188,7 +184,8 @@ func delete_lbvserver_appflowpolicy_binding(d *schema.ResourceData, meta interfa
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_appflowpolicy_binding(d)
+	resource := get_lbvserver_appflowpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverAppflowpolicyBinding(key)
 

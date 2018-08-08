@@ -19,12 +19,14 @@ func NetscalerServicegroupLbmonitorBinding() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"monitor_name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"servicegroupname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"weight": &schema.Schema{
@@ -35,15 +37,6 @@ func NetscalerServicegroupLbmonitorBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_servicegroup_lbmonitor_binding(d *schema.ResourceData) nitro.ServicegroupLbmonitorBindingKey {
-	key := nitro.ServicegroupLbmonitorBindingKey{
-		Servicegroupname: d.Get("servicegroupname").(string),
-		Monitor_name:     d.Get("monitor_name").(string),
-	}
-
-	return key
 }
 
 func get_servicegroup_lbmonitor_binding(d *schema.ResourceData) nitro.ServicegroupLbmonitorBinding {
@@ -64,6 +57,7 @@ func set_servicegroup_lbmonitor_binding(d *schema.ResourceData, resource *nitro.
 	d.Set("monitor_name", resource.Monitor_name)
 	d.Set("servicegroupname", resource.Servicegroupname)
 	d.Set("weight", resource.Weight)
+
 	var key []string
 
 	key = append(key, resource.Servicegroupname)
@@ -76,7 +70,8 @@ func create_servicegroup_lbmonitor_binding(d *schema.ResourceData, meta interfac
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup_lbmonitor_binding(d)
+	resource := get_servicegroup_lbmonitor_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroupLbmonitorBinding(key)
 
@@ -124,7 +119,8 @@ func read_servicegroup_lbmonitor_binding(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup_lbmonitor_binding(d)
+	resource := get_servicegroup_lbmonitor_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroupLbmonitorBinding(key)
 
@@ -156,7 +152,8 @@ func delete_servicegroup_lbmonitor_binding(d *schema.ResourceData, meta interfac
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup_lbmonitor_binding(d)
+	resource := get_servicegroup_lbmonitor_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroupLbmonitorBinding(key)
 

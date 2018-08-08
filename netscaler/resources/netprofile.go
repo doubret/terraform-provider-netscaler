@@ -19,7 +19,8 @@ func NetscalerNetprofile() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"overridelsn": &schema.Schema{
@@ -48,10 +49,6 @@ func NetscalerNetprofile() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_netprofile(d *schema.ResourceData) string {
-	return d.Get("name").(string)
 }
 
 func get_netprofile(d *schema.ResourceData) nitro.Netprofile {
@@ -88,7 +85,8 @@ func create_netprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_netprofile(d)
+	resource := get_netprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNetprofile(key)
 
@@ -136,7 +134,8 @@ func read_netprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_netprofile(d)
+	resource := get_netprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNetprofile(key)
 
@@ -166,13 +165,14 @@ func read_netprofile(d *schema.ResourceData, meta interface{}) error {
 func update_netprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_netprofile")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateNetprofile(get_netprofile(d))
+	// err := client.UpdateNetprofile(get_netprofile(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -182,7 +182,8 @@ func delete_netprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_netprofile(d)
+	resource := get_netprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNetprofile(key)
 

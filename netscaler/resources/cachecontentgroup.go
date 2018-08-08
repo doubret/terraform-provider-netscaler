@@ -17,11 +17,6 @@ func NetscalerCachecontentgroup() *schema.Resource {
 		Update:        update_cachecontentgroup,
 		Delete:        delete_cachecontentgroup,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"absexpiry": &schema.Schema{
 				Type: schema.TypeSet,
 				Elem: &schema.Schema{
@@ -178,6 +173,12 @@ func NetscalerCachecontentgroup() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"persistha": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -266,15 +267,10 @@ func NetscalerCachecontentgroup() *schema.Resource {
 	}
 }
 
-func key_cachecontentgroup(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_cachecontentgroup(d *schema.ResourceData) nitro.Cachecontentgroup {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Cachecontentgroup{
-		Name:                   d.Get("name").(string),
 		Absexpiry:              utils.Convert_set_to_string_array(d.Get("absexpiry").(*schema.Set)),
 		Absexpirygmt:           utils.Convert_set_to_string_array(d.Get("absexpirygmt").(*schema.Set)),
 		Alwaysevalpolicies:     d.Get("alwaysevalpolicies").(string),
@@ -299,6 +295,7 @@ func get_cachecontentgroup(d *schema.ResourceData) nitro.Cachecontentgroup {
 		Memlimit:               d.Get("memlimit").(int),
 		Minhits:                d.Get("minhits").(int),
 		Minressize:             d.Get("minressize").(int),
+		Name:                   d.Get("name").(string),
 		Persistha:              d.Get("persistha").(string),
 		Pinned:                 d.Get("pinned").(string),
 		Polleverytime:          d.Get("polleverytime").(string),
@@ -321,7 +318,6 @@ func get_cachecontentgroup(d *schema.ResourceData) nitro.Cachecontentgroup {
 func set_cachecontentgroup(d *schema.ResourceData, resource *nitro.Cachecontentgroup) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("absexpiry", resource.Absexpiry)
 	d.Set("absexpirygmt", resource.Absexpirygmt)
 	d.Set("alwaysevalpolicies", resource.Alwaysevalpolicies)
@@ -346,6 +342,7 @@ func set_cachecontentgroup(d *schema.ResourceData, resource *nitro.Cachecontentg
 	d.Set("memlimit", resource.Memlimit)
 	d.Set("minhits", resource.Minhits)
 	d.Set("minressize", resource.Minressize)
+	d.Set("name", resource.Name)
 	d.Set("persistha", resource.Persistha)
 	d.Set("pinned", resource.Pinned)
 	d.Set("polleverytime", resource.Polleverytime)
@@ -372,7 +369,8 @@ func create_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachecontentgroup(d)
+	resource := get_cachecontentgroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachecontentgroup(key)
 
@@ -420,7 +418,8 @@ func read_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachecontentgroup(d)
+	resource := get_cachecontentgroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachecontentgroup(key)
 
@@ -450,13 +449,14 @@ func read_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
 func update_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cachecontentgroup")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCachecontentgroup(get_cachecontentgroup(d))
+	// err := client.UpdateCachecontentgroup(get_cachecontentgroup(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -466,7 +466,8 @@ func delete_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachecontentgroup(d)
+	resource := get_cachecontentgroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachecontentgroup(key)
 

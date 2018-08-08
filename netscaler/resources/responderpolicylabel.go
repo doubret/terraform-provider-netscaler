@@ -17,12 +17,13 @@ func NetscalerResponderpolicylabel() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_responderpolicylabel,
 		Schema: map[string]*schema.Schema{
-			"labelname": &schema.Schema{
+			"comment": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
-			"comment": &schema.Schema{
+			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -38,16 +39,12 @@ func NetscalerResponderpolicylabel() *schema.Resource {
 	}
 }
 
-func key_responderpolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
-}
-
 func get_responderpolicylabel(d *schema.ResourceData) nitro.Responderpolicylabel {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Responderpolicylabel{
-		Labelname:       d.Get("labelname").(string),
 		Comment:         d.Get("comment").(string),
+		Labelname:       d.Get("labelname").(string),
 		Policylabeltype: d.Get("policylabeltype").(string),
 	}
 
@@ -57,8 +54,8 @@ func get_responderpolicylabel(d *schema.ResourceData) nitro.Responderpolicylabel
 func set_responderpolicylabel(d *schema.ResourceData, resource *nitro.Responderpolicylabel) {
 	var _ = strconv.Itoa
 
-	d.Set("labelname", resource.Labelname)
 	d.Set("comment", resource.Comment)
+	d.Set("labelname", resource.Labelname)
 	d.Set("policylabeltype", resource.Policylabeltype)
 
 	var key []string
@@ -72,7 +69,8 @@ func create_responderpolicylabel(d *schema.ResourceData, meta interface{}) error
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderpolicylabel(d)
+	resource := get_responderpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderpolicylabel(key)
 
@@ -120,7 +118,8 @@ func read_responderpolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderpolicylabel(d)
+	resource := get_responderpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderpolicylabel(key)
 
@@ -152,7 +151,8 @@ func delete_responderpolicylabel(d *schema.ResourceData, meta interface{}) error
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderpolicylabel(d)
+	resource := get_responderpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderpolicylabel(key)
 

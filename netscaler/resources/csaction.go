@@ -17,16 +17,17 @@ func NetscalerCsaction() *schema.Resource {
 		Update:        update_csaction,
 		Delete:        delete_csaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"targetlbvserver": &schema.Schema{
 				Type:     schema.TypeString,
@@ -50,16 +51,12 @@ func NetscalerCsaction() *schema.Resource {
 	}
 }
 
-func key_csaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_csaction(d *schema.ResourceData) nitro.Csaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Csaction{
-		Name:              d.Get("name").(string),
 		Comment:           d.Get("comment").(string),
+		Name:              d.Get("name").(string),
 		Targetlbvserver:   d.Get("targetlbvserver").(string),
 		Targetvserver:     d.Get("targetvserver").(string),
 		Targetvserverexpr: d.Get("targetvserverexpr").(string),
@@ -71,8 +68,8 @@ func get_csaction(d *schema.ResourceData) nitro.Csaction {
 func set_csaction(d *schema.ResourceData, resource *nitro.Csaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
+	d.Set("name", resource.Name)
 	d.Set("targetlbvserver", resource.Targetlbvserver)
 	d.Set("targetvserver", resource.Targetvserver)
 	d.Set("targetvserverexpr", resource.Targetvserverexpr)
@@ -88,7 +85,8 @@ func create_csaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_csaction(d)
+	resource := get_csaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCsaction(key)
 
@@ -136,7 +134,8 @@ func read_csaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_csaction(d)
+	resource := get_csaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCsaction(key)
 
@@ -166,13 +165,14 @@ func read_csaction(d *schema.ResourceData, meta interface{}) error {
 func update_csaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_csaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCsaction(get_csaction(d))
+	// err := client.UpdateCsaction(get_csaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -182,7 +182,8 @@ func delete_csaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_csaction(d)
+	resource := get_csaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCsaction(key)
 

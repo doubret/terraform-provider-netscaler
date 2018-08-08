@@ -17,11 +17,6 @@ func NetscalerAuditnslogaction() *schema.Resource {
 		Update:        update_auditnslogaction,
 		Delete:        delete_auditnslogaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"acl": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -72,6 +67,12 @@ func NetscalerAuditnslogaction() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"serverdomainname": &schema.Schema{
 				Type:     schema.TypeString,
@@ -125,15 +126,10 @@ func NetscalerAuditnslogaction() *schema.Resource {
 	}
 }
 
-func key_auditnslogaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_auditnslogaction(d *schema.ResourceData) nitro.Auditnslogaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Auditnslogaction{
-		Name:                d.Get("name").(string),
 		Acl:                 d.Get("acl").(string),
 		Alg:                 d.Get("alg").(string),
 		Appflowexport:       d.Get("appflowexport").(string),
@@ -142,6 +138,7 @@ func get_auditnslogaction(d *schema.ResourceData) nitro.Auditnslogaction {
 		Logfacility:         d.Get("logfacility").(string),
 		Loglevel:            utils.Convert_set_to_string_array(d.Get("loglevel").(*schema.Set)),
 		Lsn:                 d.Get("lsn").(string),
+		Name:                d.Get("name").(string),
 		Serverdomainname:    d.Get("serverdomainname").(string),
 		Serverip:            d.Get("serverip").(string),
 		Serverport:          d.Get("serverport").(int),
@@ -158,7 +155,6 @@ func get_auditnslogaction(d *schema.ResourceData) nitro.Auditnslogaction {
 func set_auditnslogaction(d *schema.ResourceData, resource *nitro.Auditnslogaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("acl", resource.Acl)
 	d.Set("alg", resource.Alg)
 	d.Set("appflowexport", resource.Appflowexport)
@@ -167,6 +163,7 @@ func set_auditnslogaction(d *schema.ResourceData, resource *nitro.Auditnslogacti
 	d.Set("logfacility", resource.Logfacility)
 	d.Set("loglevel", resource.Loglevel)
 	d.Set("lsn", resource.Lsn)
+	d.Set("name", resource.Name)
 	d.Set("serverdomainname", resource.Serverdomainname)
 	d.Set("serverip", resource.Serverip)
 	d.Set("serverport", resource.Serverport)
@@ -187,7 +184,8 @@ func create_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditnslogaction(d)
+	resource := get_auditnslogaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditnslogaction(key)
 
@@ -235,7 +233,8 @@ func read_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditnslogaction(d)
+	resource := get_auditnslogaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditnslogaction(key)
 
@@ -265,13 +264,14 @@ func read_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
 func update_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_auditnslogaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAuditnslogaction(get_auditnslogaction(d))
+	// err := client.UpdateAuditnslogaction(get_auditnslogaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -281,7 +281,8 @@ func delete_auditnslogaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditnslogaction(d)
+	resource := get_auditnslogaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditnslogaction(key)
 

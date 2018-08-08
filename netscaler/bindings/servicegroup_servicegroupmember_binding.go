@@ -19,17 +19,20 @@ func NetscalerServicegroupServicegroupmemberBinding() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"port": &schema.Schema{
 				Type:     schema.TypeInt,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"servername": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"servicegroupname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"weight": &schema.Schema{
@@ -40,16 +43,6 @@ func NetscalerServicegroupServicegroupmemberBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_servicegroup_servicegroupmember_binding(d *schema.ResourceData) nitro.ServicegroupServicegroupmemberBindingKey {
-	key := nitro.ServicegroupServicegroupmemberBindingKey{
-		Servicegroupname: d.Get("servicegroupname").(string),
-		Servername:       d.Get("servername").(string),
-		Port:             d.Get("port").(int),
-	}
-
-	return key
 }
 
 func get_servicegroup_servicegroupmember_binding(d *schema.ResourceData) nitro.ServicegroupServicegroupmemberBinding {
@@ -72,6 +65,7 @@ func set_servicegroup_servicegroupmember_binding(d *schema.ResourceData, resourc
 	d.Set("servername", resource.Servername)
 	d.Set("servicegroupname", resource.Servicegroupname)
 	d.Set("weight", resource.Weight)
+
 	var key []string
 
 	key = append(key, resource.Servicegroupname)
@@ -85,7 +79,8 @@ func create_servicegroup_servicegroupmember_binding(d *schema.ResourceData, meta
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup_servicegroupmember_binding(d)
+	resource := get_servicegroup_servicegroupmember_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroupServicegroupmemberBinding(key)
 
@@ -133,7 +128,8 @@ func read_servicegroup_servicegroupmember_binding(d *schema.ResourceData, meta i
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup_servicegroupmember_binding(d)
+	resource := get_servicegroup_servicegroupmember_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroupServicegroupmemberBinding(key)
 
@@ -165,7 +161,8 @@ func delete_servicegroup_servicegroupmember_binding(d *schema.ResourceData, meta
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup_servicegroupmember_binding(d)
+	resource := get_servicegroup_servicegroupmember_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroupServicegroupmemberBinding(key)
 

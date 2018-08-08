@@ -17,11 +17,6 @@ func NetscalerCspolicy() *schema.Resource {
 		Update:        update_cspolicy,
 		Delete:        delete_cspolicy,
 		Schema: map[string]*schema.Schema{
-			"policyname": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -40,6 +35,12 @@ func NetscalerCspolicy() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"policyname": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -56,18 +57,14 @@ func NetscalerCspolicy() *schema.Resource {
 	}
 }
 
-func key_cspolicy(d *schema.ResourceData) string {
-	return d.Get("policyname").(string)
-}
-
 func get_cspolicy(d *schema.ResourceData) nitro.Cspolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Cspolicy{
-		Policyname: d.Get("policyname").(string),
 		Action:     d.Get("action").(string),
 		Domain:     d.Get("domain").(string),
 		Logaction:  d.Get("logaction").(string),
+		Policyname: d.Get("policyname").(string),
 		Rule:       d.Get("rule").(string),
 		Url:        d.Get("url").(string),
 	}
@@ -78,10 +75,10 @@ func get_cspolicy(d *schema.ResourceData) nitro.Cspolicy {
 func set_cspolicy(d *schema.ResourceData, resource *nitro.Cspolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("policyname", resource.Policyname)
 	d.Set("action", resource.Action)
 	d.Set("domain", resource.Domain)
 	d.Set("logaction", resource.Logaction)
+	d.Set("policyname", resource.Policyname)
 	d.Set("rule", resource.Rule)
 	d.Set("url", resource.Url)
 
@@ -96,7 +93,8 @@ func create_cspolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cspolicy(d)
+	resource := get_cspolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCspolicy(key)
 
@@ -144,7 +142,8 @@ func read_cspolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cspolicy(d)
+	resource := get_cspolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCspolicy(key)
 
@@ -174,13 +173,14 @@ func read_cspolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cspolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cspolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCspolicy(get_cspolicy(d))
+	// err := client.UpdateCspolicy(get_cspolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -190,7 +190,8 @@ func delete_cspolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cspolicy(d)
+	resource := get_cspolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCspolicy(key)
 

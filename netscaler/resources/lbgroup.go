@@ -17,11 +17,6 @@ func NetscalerLbgroup() *schema.Resource {
 		Update:        update_lbgroup,
 		Delete:        delete_lbgroup,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"backuppersistencetimeout": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -39,6 +34,12 @@ func NetscalerLbgroup() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"persistencebackup": &schema.Schema{
 				Type:     schema.TypeString,
@@ -86,18 +87,14 @@ func NetscalerLbgroup() *schema.Resource {
 	}
 }
 
-func key_lbgroup(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_lbgroup(d *schema.ResourceData) nitro.Lbgroup {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Lbgroup{
-		Name: d.Get("name").(string),
 		Backuppersistencetimeout: d.Get("backuppersistencetimeout").(int),
 		Cookiedomain:             d.Get("cookiedomain").(string),
 		Cookiename:               d.Get("cookiename").(string),
+		Name:                     d.Get("name").(string),
 		Persistencebackup:        d.Get("persistencebackup").(string),
 		Persistencetype:          d.Get("persistencetype").(string),
 		Persistmask:              d.Get("persistmask").(string),
@@ -113,10 +110,10 @@ func get_lbgroup(d *schema.ResourceData) nitro.Lbgroup {
 func set_lbgroup(d *schema.ResourceData, resource *nitro.Lbgroup) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("backuppersistencetimeout", resource.Backuppersistencetimeout)
 	d.Set("cookiedomain", resource.Cookiedomain)
 	d.Set("cookiename", resource.Cookiename)
+	d.Set("name", resource.Name)
 	d.Set("persistencebackup", resource.Persistencebackup)
 	d.Set("persistencetype", resource.Persistencetype)
 	d.Set("persistmask", resource.Persistmask)
@@ -136,7 +133,8 @@ func create_lbgroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbgroup(d)
+	resource := get_lbgroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbgroup(key)
 
@@ -184,7 +182,8 @@ func read_lbgroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbgroup(d)
+	resource := get_lbgroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbgroup(key)
 
@@ -214,13 +213,14 @@ func read_lbgroup(d *schema.ResourceData, meta interface{}) error {
 func update_lbgroup(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbgroup")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateLbgroup(get_lbgroup(d))
+	// err := client.UpdateLbgroup(get_lbgroup(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -230,7 +230,8 @@ func delete_lbgroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbgroup(d)
+	resource := get_lbgroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbgroup(key)
 

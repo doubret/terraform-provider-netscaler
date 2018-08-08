@@ -17,11 +17,6 @@ func NetscalerCaaction() *schema.Resource {
 		Update:        update_caaction,
 		Delete:        delete_caaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"accumressize": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -40,6 +35,12 @@ func NetscalerCaaction() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"type": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -50,18 +51,14 @@ func NetscalerCaaction() *schema.Resource {
 	}
 }
 
-func key_caaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_caaction(d *schema.ResourceData) nitro.Caaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Caaction{
-		Name:         d.Get("name").(string),
 		Accumressize: d.Get("accumressize").(int),
 		Comment:      d.Get("comment").(string),
 		Lbvserver:    d.Get("lbvserver").(string),
+		Name:         d.Get("name").(string),
 		Type:         d.Get("type").(string),
 	}
 
@@ -71,10 +68,10 @@ func get_caaction(d *schema.ResourceData) nitro.Caaction {
 func set_caaction(d *schema.ResourceData, resource *nitro.Caaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("accumressize", resource.Accumressize)
 	d.Set("comment", resource.Comment)
 	d.Set("lbvserver", resource.Lbvserver)
+	d.Set("name", resource.Name)
 	d.Set("type", resource.Type)
 
 	var key []string
@@ -88,7 +85,8 @@ func create_caaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_caaction(d)
+	resource := get_caaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCaaction(key)
 
@@ -136,7 +134,8 @@ func read_caaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_caaction(d)
+	resource := get_caaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCaaction(key)
 
@@ -166,13 +165,14 @@ func read_caaction(d *schema.ResourceData, meta interface{}) error {
 func update_caaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_caaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCaaction(get_caaction(d))
+	// err := client.UpdateCaaction(get_caaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -182,7 +182,8 @@ func delete_caaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_caaction(d)
+	resource := get_caaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCaaction(key)
 

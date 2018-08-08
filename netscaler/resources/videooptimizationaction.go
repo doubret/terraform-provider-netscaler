@@ -17,16 +17,17 @@ func NetscalerVideooptimizationaction() *schema.Resource {
 		Update:        update_videooptimizationaction,
 		Delete:        delete_videooptimizationaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"rate": &schema.Schema{
 				Type:     schema.TypeInt,
@@ -44,16 +45,12 @@ func NetscalerVideooptimizationaction() *schema.Resource {
 	}
 }
 
-func key_videooptimizationaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_videooptimizationaction(d *schema.ResourceData) nitro.Videooptimizationaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Videooptimizationaction{
-		Name:    d.Get("name").(string),
 		Comment: d.Get("comment").(string),
+		Name:    d.Get("name").(string),
 		Rate:    d.Get("rate").(int),
 		Type:    d.Get("type").(string),
 	}
@@ -64,8 +61,8 @@ func get_videooptimizationaction(d *schema.ResourceData) nitro.Videooptimization
 func set_videooptimizationaction(d *schema.ResourceData, resource *nitro.Videooptimizationaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
+	d.Set("name", resource.Name)
 	d.Set("rate", resource.Rate)
 	d.Set("type", resource.Type)
 
@@ -80,7 +77,8 @@ func create_videooptimizationaction(d *schema.ResourceData, meta interface{}) er
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_videooptimizationaction(d)
+	resource := get_videooptimizationaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsVideooptimizationaction(key)
 
@@ -128,7 +126,8 @@ func read_videooptimizationaction(d *schema.ResourceData, meta interface{}) erro
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_videooptimizationaction(d)
+	resource := get_videooptimizationaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsVideooptimizationaction(key)
 
@@ -158,13 +157,14 @@ func read_videooptimizationaction(d *schema.ResourceData, meta interface{}) erro
 func update_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_videooptimizationaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateVideooptimizationaction(get_videooptimizationaction(d))
+	// err := client.UpdateVideooptimizationaction(get_videooptimizationaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -174,7 +174,8 @@ func delete_videooptimizationaction(d *schema.ResourceData, meta interface{}) er
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_videooptimizationaction(d)
+	resource := get_videooptimizationaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsVideooptimizationaction(key)
 

@@ -17,11 +17,6 @@ func NetscalerService() *schema.Resource {
 		Update:        update_service,
 		Delete:        delete_service,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"accessdown": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -160,6 +155,12 @@ func NetscalerService() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"netprofile": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -266,15 +267,10 @@ func NetscalerService() *schema.Resource {
 	}
 }
 
-func key_service(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_service(d *schema.ResourceData) nitro.Service {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Service{
-		Name:               d.Get("name").(string),
 		Accessdown:         d.Get("accessdown").(string),
 		Appflowlog:         d.Get("appflowlog").(string),
 		Cacheable:          d.Get("cacheable").(string),
@@ -298,6 +294,7 @@ func get_service(d *schema.ResourceData) nitro.Service {
 		Maxreq:             d.Get("maxreq").(int),
 		Monconnectionclose: d.Get("monconnectionclose").(string),
 		Monthreshold:       d.Get("monthreshold").(int),
+		Name:               d.Get("name").(string),
 		Netprofile:         d.Get("netprofile").(string),
 		Pathmonitor:        d.Get("pathmonitor").(string),
 		Pathmonitorindv:    d.Get("pathmonitorindv").(string),
@@ -323,7 +320,6 @@ func get_service(d *schema.ResourceData) nitro.Service {
 func set_service(d *schema.ResourceData, resource *nitro.Service) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("accessdown", resource.Accessdown)
 	d.Set("appflowlog", resource.Appflowlog)
 	d.Set("cacheable", resource.Cacheable)
@@ -347,6 +343,7 @@ func set_service(d *schema.ResourceData, resource *nitro.Service) {
 	d.Set("maxreq", resource.Maxreq)
 	d.Set("monconnectionclose", resource.Monconnectionclose)
 	d.Set("monthreshold", resource.Monthreshold)
+	d.Set("name", resource.Name)
 	d.Set("netprofile", resource.Netprofile)
 	d.Set("pathmonitor", resource.Pathmonitor)
 	d.Set("pathmonitorindv", resource.Pathmonitorindv)
@@ -376,7 +373,8 @@ func create_service(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_service(d)
+	resource := get_service(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsService(key)
 
@@ -424,7 +422,8 @@ func read_service(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_service(d)
+	resource := get_service(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsService(key)
 
@@ -454,13 +453,14 @@ func read_service(d *schema.ResourceData, meta interface{}) error {
 func update_service(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_service")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateService(get_service(d))
+	// err := client.UpdateService(get_service(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -470,7 +470,8 @@ func delete_service(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_service(d)
+	resource := get_service(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsService(key)
 

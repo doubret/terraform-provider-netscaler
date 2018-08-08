@@ -61,12 +61,16 @@ func main() {
 				"is_in":          nitro.IsIn,
 			}
 
-			templates := template.Must(template.New("").Funcs(funcMap).ParseFiles("templates/resource.tmpl", "templates/binding.tmpl", "templates/provider.tmpl"))
+			templates := template.Must(template.New("").Funcs(funcMap).ParseFiles(
+				"templates/common.tmpl",
+				"templates/resource.tmpl", "templates/binding.tmpl",
+				"templates/provider.tmpl",
+			))
 
 			for key, value := range spec.Resources {
 				context := struct {
 					Name   string
-					Schema *nitro.Resource
+					Schema *nitro.SpecFile
 				}{
 					key,
 					value,
@@ -88,7 +92,7 @@ func main() {
 			for key, value := range spec.Bindings {
 				context := struct {
 					Name   string
-					Schema *nitro.Binding
+					Schema *nitro.SpecFile
 				}{
 					key,
 					value,

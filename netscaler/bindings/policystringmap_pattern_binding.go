@@ -19,12 +19,14 @@ func NetscalerPolicystringmapPatternBinding() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"key": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"value": &schema.Schema{
@@ -35,15 +37,6 @@ func NetscalerPolicystringmapPatternBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_policystringmap_pattern_binding(d *schema.ResourceData) nitro.PolicystringmapPatternBindingKey {
-	key := nitro.PolicystringmapPatternBindingKey{
-		Name: d.Get("name").(string),
-		Key:  d.Get("key").(string),
-	}
-
-	return key
 }
 
 func get_policystringmap_pattern_binding(d *schema.ResourceData) nitro.PolicystringmapPatternBinding {
@@ -64,6 +57,7 @@ func set_policystringmap_pattern_binding(d *schema.ResourceData, resource *nitro
 	d.Set("key", resource.Key)
 	d.Set("name", resource.Name)
 	d.Set("value", resource.Value)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -76,7 +70,8 @@ func create_policystringmap_pattern_binding(d *schema.ResourceData, meta interfa
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policystringmap_pattern_binding(d)
+	resource := get_policystringmap_pattern_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicystringmapPatternBinding(key)
 
@@ -124,7 +119,8 @@ func read_policystringmap_pattern_binding(d *schema.ResourceData, meta interface
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policystringmap_pattern_binding(d)
+	resource := get_policystringmap_pattern_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicystringmapPatternBinding(key)
 
@@ -156,7 +152,8 @@ func delete_policystringmap_pattern_binding(d *schema.ResourceData, meta interfa
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policystringmap_pattern_binding(d)
+	resource := get_policystringmap_pattern_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicystringmapPatternBinding(key)
 

@@ -19,7 +19,8 @@ func NetscalerLbmonitorMetricBinding() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"metric": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"metricthreshold": &schema.Schema{
@@ -36,20 +37,12 @@ func NetscalerLbmonitorMetricBinding() *schema.Resource {
 			},
 			"monitorname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 		},
 	}
-}
-
-func key_lbmonitor_metric_binding(d *schema.ResourceData) nitro.LbmonitorMetricBindingKey {
-	key := nitro.LbmonitorMetricBindingKey{
-		Monitorname: d.Get("monitorname").(string),
-		Metric:      d.Get("metric").(string),
-	}
-
-	return key
 }
 
 func get_lbmonitor_metric_binding(d *schema.ResourceData) nitro.LbmonitorMetricBinding {
@@ -72,6 +65,7 @@ func set_lbmonitor_metric_binding(d *schema.ResourceData, resource *nitro.Lbmoni
 	d.Set("metricthreshold", resource.Metricthreshold)
 	d.Set("metricweight", resource.Metricweight)
 	d.Set("monitorname", resource.Monitorname)
+
 	var key []string
 
 	key = append(key, resource.Monitorname)
@@ -84,7 +78,8 @@ func create_lbmonitor_metric_binding(d *schema.ResourceData, meta interface{}) e
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor_metric_binding(d)
+	resource := get_lbmonitor_metric_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitorMetricBinding(key)
 
@@ -132,7 +127,8 @@ func read_lbmonitor_metric_binding(d *schema.ResourceData, meta interface{}) err
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor_metric_binding(d)
+	resource := get_lbmonitor_metric_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitorMetricBinding(key)
 
@@ -164,7 +160,8 @@ func delete_lbmonitor_metric_binding(d *schema.ResourceData, meta interface{}) e
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor_metric_binding(d)
+	resource := get_lbmonitor_metric_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitorMetricBinding(key)
 

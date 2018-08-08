@@ -17,12 +17,13 @@ func NetscalerCachepolicylabel() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_cachepolicylabel,
 		Schema: map[string]*schema.Schema{
-			"labelname": &schema.Schema{
+			"evaluates": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
-			"evaluates": &schema.Schema{
+			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -32,16 +33,12 @@ func NetscalerCachepolicylabel() *schema.Resource {
 	}
 }
 
-func key_cachepolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
-}
-
 func get_cachepolicylabel(d *schema.ResourceData) nitro.Cachepolicylabel {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Cachepolicylabel{
-		Labelname: d.Get("labelname").(string),
 		Evaluates: d.Get("evaluates").(string),
+		Labelname: d.Get("labelname").(string),
 	}
 
 	return resource
@@ -50,8 +47,8 @@ func get_cachepolicylabel(d *schema.ResourceData) nitro.Cachepolicylabel {
 func set_cachepolicylabel(d *schema.ResourceData, resource *nitro.Cachepolicylabel) {
 	var _ = strconv.Itoa
 
-	d.Set("labelname", resource.Labelname)
 	d.Set("evaluates", resource.Evaluates)
+	d.Set("labelname", resource.Labelname)
 
 	var key []string
 
@@ -64,7 +61,8 @@ func create_cachepolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachepolicylabel(d)
+	resource := get_cachepolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachepolicylabel(key)
 
@@ -112,7 +110,8 @@ func read_cachepolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachepolicylabel(d)
+	resource := get_cachepolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachepolicylabel(key)
 
@@ -144,7 +143,8 @@ func delete_cachepolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cachepolicylabel(d)
+	resource := get_cachepolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCachepolicylabel(key)
 

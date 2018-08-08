@@ -19,7 +19,8 @@ func NetscalerAppflowpolicylabel() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"policylabeltype": &schema.Schema{
@@ -30,10 +31,6 @@ func NetscalerAppflowpolicylabel() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_appflowpolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
 }
 
 func get_appflowpolicylabel(d *schema.ResourceData) nitro.Appflowpolicylabel {
@@ -64,7 +61,8 @@ func create_appflowpolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowpolicylabel(d)
+	resource := get_appflowpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowpolicylabel(key)
 
@@ -112,7 +110,8 @@ func read_appflowpolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowpolicylabel(d)
+	resource := get_appflowpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowpolicylabel(key)
 
@@ -144,7 +143,8 @@ func delete_appflowpolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowpolicylabel(d)
+	resource := get_appflowpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowpolicylabel(key)
 

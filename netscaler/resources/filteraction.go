@@ -19,7 +19,8 @@ func NetscalerFilteraction() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"page": &schema.Schema{
@@ -54,10 +55,6 @@ func NetscalerFilteraction() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_filteraction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
 }
 
 func get_filteraction(d *schema.ResourceData) nitro.Filteraction {
@@ -96,7 +93,8 @@ func create_filteraction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_filteraction(d)
+	resource := get_filteraction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFilteraction(key)
 
@@ -144,7 +142,8 @@ func read_filteraction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_filteraction(d)
+	resource := get_filteraction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFilteraction(key)
 
@@ -174,13 +173,14 @@ func read_filteraction(d *schema.ResourceData, meta interface{}) error {
 func update_filteraction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_filteraction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateFilteraction(get_filteraction(d))
+	// err := client.UpdateFilteraction(get_filteraction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -190,7 +190,8 @@ func delete_filteraction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_filteraction(d)
+	resource := get_filteraction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsFilteraction(key)
 

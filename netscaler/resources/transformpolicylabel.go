@@ -19,7 +19,8 @@ func NetscalerTransformpolicylabel() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"policylabeltype": &schema.Schema{
@@ -30,10 +31,6 @@ func NetscalerTransformpolicylabel() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_transformpolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
 }
 
 func get_transformpolicylabel(d *schema.ResourceData) nitro.Transformpolicylabel {
@@ -64,7 +61,8 @@ func create_transformpolicylabel(d *schema.ResourceData, meta interface{}) error
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformpolicylabel(d)
+	resource := get_transformpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformpolicylabel(key)
 
@@ -112,7 +110,8 @@ func read_transformpolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformpolicylabel(d)
+	resource := get_transformpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformpolicylabel(key)
 
@@ -144,7 +143,8 @@ func delete_transformpolicylabel(d *schema.ResourceData, meta interface{}) error
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformpolicylabel(d)
+	resource := get_transformpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformpolicylabel(key)
 

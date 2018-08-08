@@ -19,7 +19,8 @@ func NetscalerDnsaction64() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"actionname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"excluderule": &schema.Schema{
@@ -42,10 +43,6 @@ func NetscalerDnsaction64() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_dnsaction64(d *schema.ResourceData) string {
-	return d.Get("actionname").(string)
 }
 
 func get_dnsaction64(d *schema.ResourceData) nitro.Dnsaction64 {
@@ -80,7 +77,8 @@ func create_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dnsaction64(d)
+	resource := get_dnsaction64(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDnsaction64(key)
 
@@ -128,7 +126,8 @@ func read_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dnsaction64(d)
+	resource := get_dnsaction64(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDnsaction64(key)
 
@@ -158,13 +157,14 @@ func read_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 func update_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dnsaction64")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateDnsaction64(get_dnsaction64(d))
+	// err := client.UpdateDnsaction64(get_dnsaction64(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -174,7 +174,8 @@ func delete_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dnsaction64(d)
+	resource := get_dnsaction64(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDnsaction64(key)
 

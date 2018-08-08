@@ -25,25 +25,18 @@ func NetscalerPolicydatasetValueBinding() *schema.Resource {
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"value": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 		},
 	}
-}
-
-func key_policydataset_value_binding(d *schema.ResourceData) nitro.PolicydatasetValueBindingKey {
-	key := nitro.PolicydatasetValueBindingKey{
-		Name:  d.Get("name").(string),
-		Value: d.Get("value").(string),
-	}
-
-	return key
 }
 
 func get_policydataset_value_binding(d *schema.ResourceData) nitro.PolicydatasetValueBinding {
@@ -64,6 +57,7 @@ func set_policydataset_value_binding(d *schema.ResourceData, resource *nitro.Pol
 	d.Set("index", resource.Index)
 	d.Set("name", resource.Name)
 	d.Set("value", resource.Value)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -76,7 +70,8 @@ func create_policydataset_value_binding(d *schema.ResourceData, meta interface{}
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policydataset_value_binding(d)
+	resource := get_policydataset_value_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicydatasetValueBinding(key)
 
@@ -124,7 +119,8 @@ func read_policydataset_value_binding(d *schema.ResourceData, meta interface{}) 
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policydataset_value_binding(d)
+	resource := get_policydataset_value_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicydatasetValueBinding(key)
 
@@ -156,7 +152,8 @@ func delete_policydataset_value_binding(d *schema.ResourceData, meta interface{}
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policydataset_value_binding(d)
+	resource := get_policydataset_value_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicydatasetValueBinding(key)
 

@@ -19,12 +19,14 @@ func NetscalerLbvserverServiceBinding() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"servicename": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"weight": &schema.Schema{
@@ -35,15 +37,6 @@ func NetscalerLbvserverServiceBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_lbvserver_service_binding(d *schema.ResourceData) nitro.LbvserverServiceBindingKey {
-	key := nitro.LbvserverServiceBindingKey{
-		Name:        d.Get("name").(string),
-		Servicename: d.Get("servicename").(string),
-	}
-
-	return key
 }
 
 func get_lbvserver_service_binding(d *schema.ResourceData) nitro.LbvserverServiceBinding {
@@ -64,6 +57,7 @@ func set_lbvserver_service_binding(d *schema.ResourceData, resource *nitro.Lbvse
 	d.Set("name", resource.Name)
 	d.Set("servicename", resource.Servicename)
 	d.Set("weight", resource.Weight)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -76,7 +70,8 @@ func create_lbvserver_service_binding(d *schema.ResourceData, meta interface{}) 
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_service_binding(d)
+	resource := get_lbvserver_service_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverServiceBinding(key)
 
@@ -124,7 +119,8 @@ func read_lbvserver_service_binding(d *schema.ResourceData, meta interface{}) er
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_service_binding(d)
+	resource := get_lbvserver_service_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverServiceBinding(key)
 
@@ -156,7 +152,8 @@ func delete_lbvserver_service_binding(d *schema.ResourceData, meta interface{}) 
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_service_binding(d)
+	resource := get_lbvserver_service_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverServiceBinding(key)
 

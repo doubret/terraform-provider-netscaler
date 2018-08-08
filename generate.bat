@@ -1,3 +1,6 @@
+go fmt github.com/doubret/terraform-provider-netscaler/generator
+go build github.com/doubret/terraform-provider-netscaler/generator
+
 generator.exe -i %GOPATH%/src/github.com/doubret/citrix-netscaler-nitro-11-yaml-specs/yml
 
 go fmt github.com/doubret/terraform-provider-netscaler/netscaler/utils

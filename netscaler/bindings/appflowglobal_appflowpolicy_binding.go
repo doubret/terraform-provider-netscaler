@@ -31,7 +31,8 @@ func NetscalerAppflowglobalAppflowpolicyBinding() *schema.Resource {
 			},
 			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"labeltype": &schema.Schema{
@@ -42,7 +43,8 @@ func NetscalerAppflowglobalAppflowpolicyBinding() *schema.Resource {
 			},
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"priority": &schema.Schema{
@@ -59,15 +61,6 @@ func NetscalerAppflowglobalAppflowpolicyBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_appflowglobal_appflowpolicy_binding(d *schema.ResourceData) nitro.AppflowglobalAppflowpolicyBindingKey {
-	key := nitro.AppflowglobalAppflowpolicyBindingKey{
-		Labelname:  d.Get("labelname").(string),
-		Policyname: d.Get("policyname").(string),
-	}
-
-	return key
 }
 
 func get_appflowglobal_appflowpolicy_binding(d *schema.ResourceData) nitro.AppflowglobalAppflowpolicyBinding {
@@ -96,6 +89,7 @@ func set_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, resource *n
 	d.Set("policyname", resource.Policyname)
 	d.Set("priority", resource.Priority)
 	d.Set("type", resource.Type)
+
 	var key []string
 
 	key = append(key, resource.Labelname)
@@ -108,7 +102,8 @@ func create_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, meta int
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowglobal_appflowpolicy_binding(d)
+	resource := get_appflowglobal_appflowpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowglobalAppflowpolicyBinding(key)
 
@@ -156,7 +151,8 @@ func read_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, meta inter
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowglobal_appflowpolicy_binding(d)
+	resource := get_appflowglobal_appflowpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowglobalAppflowpolicyBinding(key)
 
@@ -188,7 +184,8 @@ func delete_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, meta int
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appflowglobal_appflowpolicy_binding(d)
+	resource := get_appflowglobal_appflowpolicy_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppflowglobalAppflowpolicyBinding(key)
 

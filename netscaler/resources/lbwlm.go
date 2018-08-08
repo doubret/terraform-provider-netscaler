@@ -17,11 +17,6 @@ func NetscalerLbwlm() *schema.Resource {
 		Update:        update_lbwlm,
 		Delete:        delete_lbwlm,
 		Schema: map[string]*schema.Schema{
-			"wlmname": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"ipaddress": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -46,23 +41,25 @@ func NetscalerLbwlm() *schema.Resource {
 				Computed: true,
 				ForceNew: true,
 			},
+			"wlmname": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 		},
 	}
-}
-
-func key_lbwlm(d *schema.ResourceData) string {
-	return d.Get("wlmname").(string)
 }
 
 func get_lbwlm(d *schema.ResourceData) nitro.Lbwlm {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Lbwlm{
-		Wlmname:   d.Get("wlmname").(string),
 		Ipaddress: d.Get("ipaddress").(string),
 		Katimeout: d.Get("katimeout").(int),
 		Lbuid:     d.Get("lbuid").(string),
 		Port:      d.Get("port").(int),
+		Wlmname:   d.Get("wlmname").(string),
 	}
 
 	return resource
@@ -71,11 +68,11 @@ func get_lbwlm(d *schema.ResourceData) nitro.Lbwlm {
 func set_lbwlm(d *schema.ResourceData, resource *nitro.Lbwlm) {
 	var _ = strconv.Itoa
 
-	d.Set("wlmname", resource.Wlmname)
 	d.Set("ipaddress", resource.Ipaddress)
 	d.Set("katimeout", resource.Katimeout)
 	d.Set("lbuid", resource.Lbuid)
 	d.Set("port", resource.Port)
+	d.Set("wlmname", resource.Wlmname)
 
 	var key []string
 
@@ -88,7 +85,8 @@ func create_lbwlm(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbwlm(d)
+	resource := get_lbwlm(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbwlm(key)
 
@@ -136,7 +134,8 @@ func read_lbwlm(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbwlm(d)
+	resource := get_lbwlm(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbwlm(key)
 
@@ -166,13 +165,14 @@ func read_lbwlm(d *schema.ResourceData, meta interface{}) error {
 func update_lbwlm(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbwlm")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateLbwlm(get_lbwlm(d))
+	// err := client.UpdateLbwlm(get_lbwlm(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -182,7 +182,8 @@ func delete_lbwlm(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbwlm(d)
+	resource := get_lbwlm(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbwlm(key)
 

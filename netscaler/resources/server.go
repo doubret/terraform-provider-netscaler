@@ -17,17 +17,6 @@ func NetscalerServer() *schema.Resource {
 		Update:        update_server,
 		Delete:        delete_server,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
-			"state": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -58,6 +47,18 @@ func NetscalerServer() *schema.Resource {
 				Computed: true,
 				ForceNew: true,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
+			"state": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"td": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -80,21 +81,17 @@ func NetscalerServer() *schema.Resource {
 	}
 }
 
-func key_server(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_server(d *schema.ResourceData) nitro.Server {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Server{
-		Name:               d.Get("name").(string),
-		State:              d.Get("state").(string),
 		Comment:            d.Get("comment").(string),
 		Domain:             d.Get("domain").(string),
 		Domainresolveretry: d.Get("domainresolveretry").(int),
 		Ipaddress:          d.Get("ipaddress").(string),
 		Ipv6address:        d.Get("ipv6address").(string),
+		Name:               d.Get("name").(string),
+		State:              d.Get("state").(string),
 		Td:                 d.Get("td").(int),
 		Translationip:      d.Get("translationip").(string),
 		Translationmask:    d.Get("translationmask").(string),
@@ -106,13 +103,13 @@ func get_server(d *schema.ResourceData) nitro.Server {
 func set_server(d *schema.ResourceData, resource *nitro.Server) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
-	d.Set("state", resource.State)
 	d.Set("comment", resource.Comment)
 	d.Set("domain", resource.Domain)
 	d.Set("domainresolveretry", resource.Domainresolveretry)
 	d.Set("ipaddress", resource.Ipaddress)
 	d.Set("ipv6address", resource.Ipv6address)
+	d.Set("name", resource.Name)
+	d.Set("state", resource.State)
 	d.Set("td", resource.Td)
 	d.Set("translationip", resource.Translationip)
 	d.Set("translationmask", resource.Translationmask)
@@ -128,7 +125,8 @@ func create_server(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_server(d)
+	resource := get_server(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServer(key)
 
@@ -176,7 +174,8 @@ func read_server(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_server(d)
+	resource := get_server(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServer(key)
 
@@ -206,13 +205,14 @@ func read_server(d *schema.ResourceData, meta interface{}) error {
 func update_server(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_server")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateServer(get_server(d))
+	// err := client.UpdateServer(get_server(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -222,7 +222,8 @@ func delete_server(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_server(d)
+	resource := get_server(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServer(key)
 

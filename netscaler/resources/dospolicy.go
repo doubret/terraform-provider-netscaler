@@ -17,16 +17,17 @@ func NetscalerDospolicy() *schema.Resource {
 		Update:        update_dospolicy,
 		Delete:        delete_dospolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"cltdetectrate": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"qdepth": &schema.Schema{
 				Type:     schema.TypeInt,
@@ -38,16 +39,12 @@ func NetscalerDospolicy() *schema.Resource {
 	}
 }
 
-func key_dospolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_dospolicy(d *schema.ResourceData) nitro.Dospolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Dospolicy{
-		Name:          d.Get("name").(string),
 		Cltdetectrate: d.Get("cltdetectrate").(int),
+		Name:          d.Get("name").(string),
 		Qdepth:        d.Get("qdepth").(int),
 	}
 
@@ -57,8 +54,8 @@ func get_dospolicy(d *schema.ResourceData) nitro.Dospolicy {
 func set_dospolicy(d *schema.ResourceData, resource *nitro.Dospolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("cltdetectrate", resource.Cltdetectrate)
+	d.Set("name", resource.Name)
 	d.Set("qdepth", resource.Qdepth)
 
 	var key []string
@@ -72,7 +69,8 @@ func create_dospolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dospolicy(d)
+	resource := get_dospolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDospolicy(key)
 
@@ -120,7 +118,8 @@ func read_dospolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dospolicy(d)
+	resource := get_dospolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDospolicy(key)
 
@@ -150,13 +149,14 @@ func read_dospolicy(d *schema.ResourceData, meta interface{}) error {
 func update_dospolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dospolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateDospolicy(get_dospolicy(d))
+	// err := client.UpdateDospolicy(get_dospolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -166,7 +166,8 @@ func delete_dospolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dospolicy(d)
+	resource := get_dospolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDospolicy(key)
 

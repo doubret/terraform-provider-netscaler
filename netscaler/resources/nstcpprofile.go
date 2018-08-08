@@ -17,11 +17,6 @@ func NetscalerNstcpprofile() *schema.Resource {
 		Update:        update_nstcpprofile,
 		Delete:        delete_nstcpprofile,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"ackaggregation": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -214,6 +209,12 @@ func NetscalerNstcpprofile() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"oooqsize": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -320,15 +321,10 @@ func NetscalerNstcpprofile() *schema.Resource {
 	}
 }
 
-func key_nstcpprofile(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_nstcpprofile(d *schema.ResourceData) nitro.Nstcpprofile {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Nstcpprofile{
-		Name:                        d.Get("name").(string),
 		Ackaggregation:              d.Get("ackaggregation").(string),
 		Ackonpush:                   d.Get("ackonpush").(string),
 		Buffersize:                  d.Get("buffersize").(int),
@@ -361,6 +357,7 @@ func get_nstcpprofile(d *schema.ResourceData) nitro.Nstcpprofile {
 		Mptcpsessiontimeout:     d.Get("mptcpsessiontimeout").(int),
 		Mss:                     d.Get("mss").(int),
 		Nagle:                   d.Get("nagle").(string),
+		Name:                    d.Get("name").(string),
 		Oooqsize:                d.Get("oooqsize").(int),
 		Pktperretx:              d.Get("pktperretx").(int),
 		Rateqmax:                d.Get("rateqmax").(int),
@@ -386,7 +383,6 @@ func get_nstcpprofile(d *schema.ResourceData) nitro.Nstcpprofile {
 func set_nstcpprofile(d *schema.ResourceData, resource *nitro.Nstcpprofile) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("ackaggregation", resource.Ackaggregation)
 	d.Set("ackonpush", resource.Ackonpush)
 	d.Set("buffersize", resource.Buffersize)
@@ -419,6 +415,7 @@ func set_nstcpprofile(d *schema.ResourceData, resource *nitro.Nstcpprofile) {
 	d.Set("mptcpsessiontimeout", resource.Mptcpsessiontimeout)
 	d.Set("mss", resource.Mss)
 	d.Set("nagle", resource.Nagle)
+	d.Set("name", resource.Name)
 	d.Set("oooqsize", resource.Oooqsize)
 	d.Set("pktperretx", resource.Pktperretx)
 	d.Set("rateqmax", resource.Rateqmax)
@@ -448,7 +445,8 @@ func create_nstcpprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_nstcpprofile(d)
+	resource := get_nstcpprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNstcpprofile(key)
 
@@ -496,7 +494,8 @@ func read_nstcpprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_nstcpprofile(d)
+	resource := get_nstcpprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNstcpprofile(key)
 
@@ -526,13 +525,14 @@ func read_nstcpprofile(d *schema.ResourceData, meta interface{}) error {
 func update_nstcpprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_nstcpprofile")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateNstcpprofile(get_nstcpprofile(d))
+	// err := client.UpdateNstcpprofile(get_nstcpprofile(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -542,7 +542,8 @@ func delete_nstcpprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_nstcpprofile(d)
+	resource := get_nstcpprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsNstcpprofile(key)
 

@@ -17,11 +17,6 @@ func NetscalerTransformaction() *schema.Resource {
 		Update:        update_transformaction,
 		Delete:        delete_transformaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -39,6 +34,12 @@ func NetscalerTransformaction() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"priority": &schema.Schema{
 				Type:     schema.TypeInt,
@@ -86,18 +87,14 @@ func NetscalerTransformaction() *schema.Resource {
 	}
 }
 
-func key_transformaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_transformaction(d *schema.ResourceData) nitro.Transformaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Transformaction{
-		Name:             d.Get("name").(string),
 		Comment:          d.Get("comment").(string),
 		Cookiedomainfrom: d.Get("cookiedomainfrom").(string),
 		Cookiedomaininto: d.Get("cookiedomaininto").(string),
+		Name:             d.Get("name").(string),
 		Priority:         d.Get("priority").(int),
 		Profilename:      d.Get("profilename").(string),
 		Requrlfrom:       d.Get("requrlfrom").(string),
@@ -113,10 +110,10 @@ func get_transformaction(d *schema.ResourceData) nitro.Transformaction {
 func set_transformaction(d *schema.ResourceData, resource *nitro.Transformaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("cookiedomainfrom", resource.Cookiedomainfrom)
 	d.Set("cookiedomaininto", resource.Cookiedomaininto)
+	d.Set("name", resource.Name)
 	d.Set("priority", resource.Priority)
 	d.Set("profilename", resource.Profilename)
 	d.Set("requrlfrom", resource.Requrlfrom)
@@ -136,7 +133,8 @@ func create_transformaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformaction(d)
+	resource := get_transformaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformaction(key)
 
@@ -184,7 +182,8 @@ func read_transformaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformaction(d)
+	resource := get_transformaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformaction(key)
 
@@ -214,13 +213,14 @@ func read_transformaction(d *schema.ResourceData, meta interface{}) error {
 func update_transformaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_transformaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateTransformaction(get_transformaction(d))
+	// err := client.UpdateTransformaction(get_transformaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -230,7 +230,8 @@ func delete_transformaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_transformaction(d)
+	resource := get_transformaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTransformaction(key)
 

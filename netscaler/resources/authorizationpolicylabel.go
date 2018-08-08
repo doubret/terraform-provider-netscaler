@@ -19,15 +19,12 @@ func NetscalerAuthorizationpolicylabel() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 		},
 	}
-}
-
-func key_authorizationpolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
 }
 
 func get_authorizationpolicylabel(d *schema.ResourceData) nitro.Authorizationpolicylabel {
@@ -56,7 +53,8 @@ func create_authorizationpolicylabel(d *schema.ResourceData, meta interface{}) e
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicylabel(d)
+	resource := get_authorizationpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicylabel(key)
 
@@ -104,7 +102,8 @@ func read_authorizationpolicylabel(d *schema.ResourceData, meta interface{}) err
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicylabel(d)
+	resource := get_authorizationpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicylabel(key)
 
@@ -136,7 +135,8 @@ func delete_authorizationpolicylabel(d *schema.ResourceData, meta interface{}) e
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_authorizationpolicylabel(d)
+	resource := get_authorizationpolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuthorizationpolicylabel(key)
 

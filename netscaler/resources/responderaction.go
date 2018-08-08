@@ -17,11 +17,6 @@ func NetscalerResponderaction() *schema.Resource {
 		Update:        update_responderaction,
 		Delete:        delete_responderaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"bypasssafetycheck": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -39,6 +34,12 @@ func NetscalerResponderaction() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"reasonphrase": &schema.Schema{
 				Type:     schema.TypeString,
@@ -68,18 +69,14 @@ func NetscalerResponderaction() *schema.Resource {
 	}
 }
 
-func key_responderaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_responderaction(d *schema.ResourceData) nitro.Responderaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Responderaction{
-		Name:               d.Get("name").(string),
 		Bypasssafetycheck:  d.Get("bypasssafetycheck").(string),
 		Comment:            d.Get("comment").(string),
 		Htmlpage:           d.Get("htmlpage").(string),
+		Name:               d.Get("name").(string),
 		Reasonphrase:       d.Get("reasonphrase").(string),
 		Responsestatuscode: d.Get("responsestatuscode").(int),
 		Target:             d.Get("target").(string),
@@ -92,10 +89,10 @@ func get_responderaction(d *schema.ResourceData) nitro.Responderaction {
 func set_responderaction(d *schema.ResourceData, resource *nitro.Responderaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("bypasssafetycheck", resource.Bypasssafetycheck)
 	d.Set("comment", resource.Comment)
 	d.Set("htmlpage", resource.Htmlpage)
+	d.Set("name", resource.Name)
 	d.Set("reasonphrase", resource.Reasonphrase)
 	d.Set("responsestatuscode", resource.Responsestatuscode)
 	d.Set("target", resource.Target)
@@ -112,7 +109,8 @@ func create_responderaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderaction(d)
+	resource := get_responderaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderaction(key)
 
@@ -160,7 +158,8 @@ func read_responderaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderaction(d)
+	resource := get_responderaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderaction(key)
 
@@ -190,13 +189,14 @@ func read_responderaction(d *schema.ResourceData, meta interface{}) error {
 func update_responderaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_responderaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateResponderaction(get_responderaction(d))
+	// err := client.UpdateResponderaction(get_responderaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -206,7 +206,8 @@ func delete_responderaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_responderaction(d)
+	resource := get_responderaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsResponderaction(key)
 

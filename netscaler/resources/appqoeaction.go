@@ -17,11 +17,6 @@ func NetscalerAppqoeaction() *schema.Resource {
 		Update:        update_appqoeaction,
 		Delete:        delete_appqoeaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"altcontentpath": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -64,6 +59,12 @@ func NetscalerAppqoeaction() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"polqdepth": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -98,15 +99,10 @@ func NetscalerAppqoeaction() *schema.Resource {
 	}
 }
 
-func key_appqoeaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_appqoeaction(d *schema.ResourceData) nitro.Appqoeaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Appqoeaction{
-		Name:              d.Get("name").(string),
 		Altcontentpath:    d.Get("altcontentpath").(string),
 		Altcontentsvcname: d.Get("altcontentsvcname").(string),
 		Customfile:        d.Get("customfile").(string),
@@ -114,6 +110,7 @@ func get_appqoeaction(d *schema.ResourceData) nitro.Appqoeaction {
 		Dosaction:         d.Get("dosaction").(string),
 		Dostrigexpression: d.Get("dostrigexpression").(string),
 		Maxconn:           d.Get("maxconn").(int),
+		Name:              d.Get("name").(string),
 		Polqdepth:         d.Get("polqdepth").(int),
 		Priority:          d.Get("priority").(string),
 		Priqdepth:         d.Get("priqdepth").(int),
@@ -127,7 +124,6 @@ func get_appqoeaction(d *schema.ResourceData) nitro.Appqoeaction {
 func set_appqoeaction(d *schema.ResourceData, resource *nitro.Appqoeaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("altcontentpath", resource.Altcontentpath)
 	d.Set("altcontentsvcname", resource.Altcontentsvcname)
 	d.Set("customfile", resource.Customfile)
@@ -135,6 +131,7 @@ func set_appqoeaction(d *schema.ResourceData, resource *nitro.Appqoeaction) {
 	d.Set("dosaction", resource.Dosaction)
 	d.Set("dostrigexpression", resource.Dostrigexpression)
 	d.Set("maxconn", resource.Maxconn)
+	d.Set("name", resource.Name)
 	d.Set("polqdepth", resource.Polqdepth)
 	d.Set("priority", resource.Priority)
 	d.Set("priqdepth", resource.Priqdepth)
@@ -152,7 +149,8 @@ func create_appqoeaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appqoeaction(d)
+	resource := get_appqoeaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppqoeaction(key)
 
@@ -200,7 +198,8 @@ func read_appqoeaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appqoeaction(d)
+	resource := get_appqoeaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppqoeaction(key)
 
@@ -230,13 +229,14 @@ func read_appqoeaction(d *schema.ResourceData, meta interface{}) error {
 func update_appqoeaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appqoeaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAppqoeaction(get_appqoeaction(d))
+	// err := client.UpdateAppqoeaction(get_appqoeaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -246,7 +246,8 @@ func delete_appqoeaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_appqoeaction(d)
+	resource := get_appqoeaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAppqoeaction(key)
 

@@ -19,12 +19,14 @@ func NetscalerLbmetrictableMetricBinding() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"metric": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"metrictable": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"snmpoid": &schema.Schema{
@@ -35,15 +37,6 @@ func NetscalerLbmetrictableMetricBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_lbmetrictable_metric_binding(d *schema.ResourceData) nitro.LbmetrictableMetricBindingKey {
-	key := nitro.LbmetrictableMetricBindingKey{
-		Metrictable: d.Get("metrictable").(string),
-		Metric:      d.Get("metric").(string),
-	}
-
-	return key
 }
 
 func get_lbmetrictable_metric_binding(d *schema.ResourceData) nitro.LbmetrictableMetricBinding {
@@ -64,6 +57,7 @@ func set_lbmetrictable_metric_binding(d *schema.ResourceData, resource *nitro.Lb
 	d.Set("metric", resource.Metric)
 	d.Set("metrictable", resource.Metrictable)
 	d.Set("snmpoid", resource.Snmpoid)
+
 	var key []string
 
 	key = append(key, resource.Metrictable)
@@ -76,7 +70,8 @@ func create_lbmetrictable_metric_binding(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmetrictable_metric_binding(d)
+	resource := get_lbmetrictable_metric_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmetrictableMetricBinding(key)
 
@@ -124,7 +119,8 @@ func read_lbmetrictable_metric_binding(d *schema.ResourceData, meta interface{})
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmetrictable_metric_binding(d)
+	resource := get_lbmetrictable_metric_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmetrictableMetricBinding(key)
 
@@ -156,7 +152,8 @@ func delete_lbmetrictable_metric_binding(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmetrictable_metric_binding(d)
+	resource := get_lbmetrictable_metric_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmetrictableMetricBinding(key)
 

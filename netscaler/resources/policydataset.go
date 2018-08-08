@@ -17,11 +17,6 @@ func NetscalerPolicydataset() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_policydataset,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"comment": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -29,6 +24,12 @@ func NetscalerPolicydataset() *schema.Resource {
 				ForceNew: true,
 			},
 			"indextype": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
+			"name": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -44,17 +45,13 @@ func NetscalerPolicydataset() *schema.Resource {
 	}
 }
 
-func key_policydataset(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_policydataset(d *schema.ResourceData) nitro.Policydataset {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Policydataset{
-		Name:      d.Get("name").(string),
 		Comment:   d.Get("comment").(string),
 		Indextype: d.Get("indextype").(string),
+		Name:      d.Get("name").(string),
 		Type:      d.Get("type").(string),
 	}
 
@@ -64,9 +61,9 @@ func get_policydataset(d *schema.ResourceData) nitro.Policydataset {
 func set_policydataset(d *schema.ResourceData, resource *nitro.Policydataset) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("comment", resource.Comment)
 	d.Set("indextype", resource.Indextype)
+	d.Set("name", resource.Name)
 	d.Set("type", resource.Type)
 
 	var key []string
@@ -80,7 +77,8 @@ func create_policydataset(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policydataset(d)
+	resource := get_policydataset(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicydataset(key)
 
@@ -128,7 +126,8 @@ func read_policydataset(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policydataset(d)
+	resource := get_policydataset(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicydataset(key)
 
@@ -160,7 +159,8 @@ func delete_policydataset(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_policydataset(d)
+	resource := get_policydataset(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPolicydataset(key)
 

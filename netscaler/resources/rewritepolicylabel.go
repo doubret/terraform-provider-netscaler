@@ -17,12 +17,13 @@ func NetscalerRewritepolicylabel() *schema.Resource {
 		Update:        nil,
 		Delete:        delete_rewritepolicylabel,
 		Schema: map[string]*schema.Schema{
-			"labelname": &schema.Schema{
+			"comment": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
-			"comment": &schema.Schema{
+			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
@@ -38,16 +39,12 @@ func NetscalerRewritepolicylabel() *schema.Resource {
 	}
 }
 
-func key_rewritepolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
-}
-
 func get_rewritepolicylabel(d *schema.ResourceData) nitro.Rewritepolicylabel {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Rewritepolicylabel{
-		Labelname: d.Get("labelname").(string),
 		Comment:   d.Get("comment").(string),
+		Labelname: d.Get("labelname").(string),
 		Transform: d.Get("transform").(string),
 	}
 
@@ -57,8 +54,8 @@ func get_rewritepolicylabel(d *schema.ResourceData) nitro.Rewritepolicylabel {
 func set_rewritepolicylabel(d *schema.ResourceData, resource *nitro.Rewritepolicylabel) {
 	var _ = strconv.Itoa
 
-	d.Set("labelname", resource.Labelname)
 	d.Set("comment", resource.Comment)
+	d.Set("labelname", resource.Labelname)
 	d.Set("transform", resource.Transform)
 
 	var key []string
@@ -72,7 +69,8 @@ func create_rewritepolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewritepolicylabel(d)
+	resource := get_rewritepolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewritepolicylabel(key)
 
@@ -120,7 +118,8 @@ func read_rewritepolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewritepolicylabel(d)
+	resource := get_rewritepolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewritepolicylabel(key)
 
@@ -152,7 +151,8 @@ func delete_rewritepolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_rewritepolicylabel(d)
+	resource := get_rewritepolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsRewritepolicylabel(key)
 

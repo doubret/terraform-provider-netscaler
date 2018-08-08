@@ -19,7 +19,8 @@ func NetscalerCmppolicy() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"resaction": &schema.Schema{
@@ -36,10 +37,6 @@ func NetscalerCmppolicy() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_cmppolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
 }
 
 func get_cmppolicy(d *schema.ResourceData) nitro.Cmppolicy {
@@ -72,7 +69,8 @@ func create_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmppolicy(d)
+	resource := get_cmppolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmppolicy(key)
 
@@ -120,7 +118,8 @@ func read_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmppolicy(d)
+	resource := get_cmppolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmppolicy(key)
 
@@ -150,13 +149,14 @@ func read_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cmppolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateCmppolicy(get_cmppolicy(d))
+	// err := client.UpdateCmppolicy(get_cmppolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -166,7 +166,8 @@ func delete_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmppolicy(d)
+	resource := get_cmppolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmppolicy(key)
 

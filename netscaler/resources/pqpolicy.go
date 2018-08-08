@@ -19,7 +19,8 @@ func NetscalerPqpolicy() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"policyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"polqdepth": &schema.Schema{
@@ -54,10 +55,6 @@ func NetscalerPqpolicy() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_pqpolicy(d *schema.ResourceData) string {
-	return d.Get("policyname").(string)
 }
 
 func get_pqpolicy(d *schema.ResourceData) nitro.Pqpolicy {
@@ -96,7 +93,8 @@ func create_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_pqpolicy(d)
+	resource := get_pqpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPqpolicy(key)
 
@@ -144,7 +142,8 @@ func read_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_pqpolicy(d)
+	resource := get_pqpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPqpolicy(key)
 
@@ -174,13 +173,14 @@ func read_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_pqpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdatePqpolicy(get_pqpolicy(d))
+	// err := client.UpdatePqpolicy(get_pqpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -190,7 +190,8 @@ func delete_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_pqpolicy(d)
+	resource := get_pqpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsPqpolicy(key)
 

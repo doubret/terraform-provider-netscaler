@@ -17,16 +17,17 @@ func NetscalerTmsessionpolicy() *schema.Resource {
 		Update:        update_tmsessionpolicy,
 		Delete:        delete_tmsessionpolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
@@ -38,16 +39,12 @@ func NetscalerTmsessionpolicy() *schema.Resource {
 	}
 }
 
-func key_tmsessionpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_tmsessionpolicy(d *schema.ResourceData) nitro.Tmsessionpolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Tmsessionpolicy{
-		Name:   d.Get("name").(string),
 		Action: d.Get("action").(string),
+		Name:   d.Get("name").(string),
 		Rule:   d.Get("rule").(string),
 	}
 
@@ -57,8 +54,8 @@ func get_tmsessionpolicy(d *schema.ResourceData) nitro.Tmsessionpolicy {
 func set_tmsessionpolicy(d *schema.ResourceData, resource *nitro.Tmsessionpolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 
 	var key []string
@@ -72,7 +69,8 @@ func create_tmsessionpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmsessionpolicy(d)
+	resource := get_tmsessionpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmsessionpolicy(key)
 
@@ -120,7 +118,8 @@ func read_tmsessionpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmsessionpolicy(d)
+	resource := get_tmsessionpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmsessionpolicy(key)
 
@@ -150,13 +149,14 @@ func read_tmsessionpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_tmsessionpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmsessionpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateTmsessionpolicy(get_tmsessionpolicy(d))
+	// err := client.UpdateTmsessionpolicy(get_tmsessionpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -166,7 +166,8 @@ func delete_tmsessionpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_tmsessionpolicy(d)
+	resource := get_tmsessionpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsTmsessionpolicy(key)
 

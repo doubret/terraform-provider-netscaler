@@ -17,16 +17,17 @@ func NetscalerAuditsyslogpolicy() *schema.Resource {
 		Update:        update_auditsyslogpolicy,
 		Delete:        delete_auditsyslogpolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
@@ -38,16 +39,12 @@ func NetscalerAuditsyslogpolicy() *schema.Resource {
 	}
 }
 
-func key_auditsyslogpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_auditsyslogpolicy(d *schema.ResourceData) nitro.Auditsyslogpolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Auditsyslogpolicy{
-		Name:   d.Get("name").(string),
 		Action: d.Get("action").(string),
+		Name:   d.Get("name").(string),
 		Rule:   d.Get("rule").(string),
 	}
 
@@ -57,8 +54,8 @@ func get_auditsyslogpolicy(d *schema.ResourceData) nitro.Auditsyslogpolicy {
 func set_auditsyslogpolicy(d *schema.ResourceData, resource *nitro.Auditsyslogpolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 
 	var key []string
@@ -72,7 +69,8 @@ func create_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditsyslogpolicy(d)
+	resource := get_auditsyslogpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditsyslogpolicy(key)
 
@@ -120,7 +118,8 @@ func read_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditsyslogpolicy(d)
+	resource := get_auditsyslogpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditsyslogpolicy(key)
 
@@ -150,13 +149,14 @@ func read_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_auditsyslogpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAuditsyslogpolicy(get_auditsyslogpolicy(d))
+	// err := client.UpdateAuditsyslogpolicy(get_auditsyslogpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -166,7 +166,8 @@ func delete_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditsyslogpolicy(d)
+	resource := get_auditsyslogpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditsyslogpolicy(key)
 

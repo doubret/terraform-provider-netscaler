@@ -17,11 +17,6 @@ func NetscalerDnsprofile() *schema.Resource {
 		Update:        update_dnsprofile,
 		Delete:        delete_dnsprofile,
 		Schema: map[string]*schema.Schema{
-			"dnsprofilename": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"cacheecsresponses": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -58,6 +53,12 @@ func NetscalerDnsprofile() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"dnsprofilename": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"dnsquerylogging": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -74,21 +75,17 @@ func NetscalerDnsprofile() *schema.Resource {
 	}
 }
 
-func key_dnsprofile(d *schema.ResourceData) string {
-	return d.Get("dnsprofilename").(string)
-}
-
 func get_dnsprofile(d *schema.ResourceData) nitro.Dnsprofile {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Dnsprofile{
-		Dnsprofilename:         d.Get("dnsprofilename").(string),
 		Cacheecsresponses:      d.Get("cacheecsresponses").(string),
 		Cachenegativeresponses: d.Get("cachenegativeresponses").(string),
 		Cacherecords:           d.Get("cacherecords").(string),
 		Dnsanswerseclogging:    d.Get("dnsanswerseclogging").(string),
 		Dnserrorlogging:        d.Get("dnserrorlogging").(string),
 		Dnsextendedlogging:     d.Get("dnsextendedlogging").(string),
+		Dnsprofilename:         d.Get("dnsprofilename").(string),
 		Dnsquerylogging:        d.Get("dnsquerylogging").(string),
 		Dropmultiqueryrequest:  d.Get("dropmultiqueryrequest").(string),
 	}
@@ -99,13 +96,13 @@ func get_dnsprofile(d *schema.ResourceData) nitro.Dnsprofile {
 func set_dnsprofile(d *schema.ResourceData, resource *nitro.Dnsprofile) {
 	var _ = strconv.Itoa
 
-	d.Set("dnsprofilename", resource.Dnsprofilename)
 	d.Set("cacheecsresponses", resource.Cacheecsresponses)
 	d.Set("cachenegativeresponses", resource.Cachenegativeresponses)
 	d.Set("cacherecords", resource.Cacherecords)
 	d.Set("dnsanswerseclogging", resource.Dnsanswerseclogging)
 	d.Set("dnserrorlogging", resource.Dnserrorlogging)
 	d.Set("dnsextendedlogging", resource.Dnsextendedlogging)
+	d.Set("dnsprofilename", resource.Dnsprofilename)
 	d.Set("dnsquerylogging", resource.Dnsquerylogging)
 	d.Set("dropmultiqueryrequest", resource.Dropmultiqueryrequest)
 
@@ -120,7 +117,8 @@ func create_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dnsprofile(d)
+	resource := get_dnsprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDnsprofile(key)
 
@@ -168,7 +166,8 @@ func read_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dnsprofile(d)
+	resource := get_dnsprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDnsprofile(key)
 
@@ -198,13 +197,14 @@ func read_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 func update_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dnsprofile")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateDnsprofile(get_dnsprofile(d))
+	// err := client.UpdateDnsprofile(get_dnsprofile(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -214,7 +214,8 @@ func delete_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_dnsprofile(d)
+	resource := get_dnsprofile(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsDnsprofile(key)
 

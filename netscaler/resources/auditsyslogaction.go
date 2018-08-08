@@ -17,11 +17,6 @@ func NetscalerAuditsyslogaction() *schema.Resource {
 		Update:        update_auditsyslogaction,
 		Delete:        delete_auditsyslogaction,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"acl": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -90,6 +85,12 @@ func NetscalerAuditsyslogaction() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"netprofile": &schema.Schema{
 				Type:     schema.TypeString,
@@ -161,15 +162,10 @@ func NetscalerAuditsyslogaction() *schema.Resource {
 	}
 }
 
-func key_auditsyslogaction(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_auditsyslogaction(d *schema.ResourceData) nitro.Auditsyslogaction {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Auditsyslogaction{
-		Name:                 d.Get("name").(string),
 		Acl:                  d.Get("acl").(string),
 		Alg:                  d.Get("alg").(string),
 		Appflowexport:        d.Get("appflowexport").(string),
@@ -181,6 +177,7 @@ func get_auditsyslogaction(d *schema.ResourceData) nitro.Auditsyslogaction {
 		Loglevel:             utils.Convert_set_to_string_array(d.Get("loglevel").(*schema.Set)),
 		Lsn:                  d.Get("lsn").(string),
 		Maxlogdatasizetohold: d.Get("maxlogdatasizetohold").(int),
+		Name:                 d.Get("name").(string),
 		Netprofile:           d.Get("netprofile").(string),
 		Serverdomainname:     d.Get("serverdomainname").(string),
 		Serverip:             d.Get("serverip").(string),
@@ -200,7 +197,6 @@ func get_auditsyslogaction(d *schema.ResourceData) nitro.Auditsyslogaction {
 func set_auditsyslogaction(d *schema.ResourceData, resource *nitro.Auditsyslogaction) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("acl", resource.Acl)
 	d.Set("alg", resource.Alg)
 	d.Set("appflowexport", resource.Appflowexport)
@@ -212,6 +208,7 @@ func set_auditsyslogaction(d *schema.ResourceData, resource *nitro.Auditsyslogac
 	d.Set("loglevel", resource.Loglevel)
 	d.Set("lsn", resource.Lsn)
 	d.Set("maxlogdatasizetohold", resource.Maxlogdatasizetohold)
+	d.Set("name", resource.Name)
 	d.Set("netprofile", resource.Netprofile)
 	d.Set("serverdomainname", resource.Serverdomainname)
 	d.Set("serverip", resource.Serverip)
@@ -235,7 +232,8 @@ func create_auditsyslogaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditsyslogaction(d)
+	resource := get_auditsyslogaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditsyslogaction(key)
 
@@ -283,7 +281,8 @@ func read_auditsyslogaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditsyslogaction(d)
+	resource := get_auditsyslogaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditsyslogaction(key)
 
@@ -313,13 +312,14 @@ func read_auditsyslogaction(d *schema.ResourceData, meta interface{}) error {
 func update_auditsyslogaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_auditsyslogaction")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateAuditsyslogaction(get_auditsyslogaction(d))
+	// err := client.UpdateAuditsyslogaction(get_auditsyslogaction(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -329,7 +329,8 @@ func delete_auditsyslogaction(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_auditsyslogaction(d)
+	resource := get_auditsyslogaction(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsAuditsyslogaction(key)
 

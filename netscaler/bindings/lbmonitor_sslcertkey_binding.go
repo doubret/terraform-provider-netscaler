@@ -25,7 +25,8 @@ func NetscalerLbmonitorSslcertkeyBinding() *schema.Resource {
 			},
 			"certkeyname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"crlcheck": &schema.Schema{
@@ -36,7 +37,8 @@ func NetscalerLbmonitorSslcertkeyBinding() *schema.Resource {
 			},
 			"monitorname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"ocspcheck": &schema.Schema{
@@ -47,15 +49,6 @@ func NetscalerLbmonitorSslcertkeyBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_lbmonitor_sslcertkey_binding(d *schema.ResourceData) nitro.LbmonitorSslcertkeyBindingKey {
-	key := nitro.LbmonitorSslcertkeyBindingKey{
-		Monitorname: d.Get("monitorname").(string),
-		Certkeyname: d.Get("certkeyname").(string),
-	}
-
-	return key
 }
 
 func get_lbmonitor_sslcertkey_binding(d *schema.ResourceData) nitro.LbmonitorSslcertkeyBinding {
@@ -80,6 +73,7 @@ func set_lbmonitor_sslcertkey_binding(d *schema.ResourceData, resource *nitro.Lb
 	d.Set("crlcheck", resource.Crlcheck)
 	d.Set("monitorname", resource.Monitorname)
 	d.Set("ocspcheck", resource.Ocspcheck)
+
 	var key []string
 
 	key = append(key, resource.Monitorname)
@@ -92,7 +86,8 @@ func create_lbmonitor_sslcertkey_binding(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor_sslcertkey_binding(d)
+	resource := get_lbmonitor_sslcertkey_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitorSslcertkeyBinding(key)
 
@@ -140,7 +135,8 @@ func read_lbmonitor_sslcertkey_binding(d *schema.ResourceData, meta interface{})
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor_sslcertkey_binding(d)
+	resource := get_lbmonitor_sslcertkey_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitorSslcertkeyBinding(key)
 
@@ -172,7 +168,8 @@ func delete_lbmonitor_sslcertkey_binding(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor_sslcertkey_binding(d)
+	resource := get_lbmonitor_sslcertkey_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitorSslcertkeyBinding(key)
 

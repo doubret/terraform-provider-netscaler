@@ -17,17 +17,6 @@ func NetscalerLbmonitor() *schema.Resource {
 		Update:        update_lbmonitor,
 		Delete:        delete_lbmonitor,
 		Schema: map[string]*schema.Schema{
-			"monitorname": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
-			"state": &schema.Schema{
-				Type:     schema.TypeString,
-				Optional: true,
-				Computed: true,
-				ForceNew: false,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -225,6 +214,12 @@ func NetscalerLbmonitor() *schema.Resource {
 				Optional: true,
 				Computed: true,
 				ForceNew: false,
+			},
+			"monitorname": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
 			},
 			"mssqlprotocolversion": &schema.Schema{
 				Type:     schema.TypeString,
@@ -454,6 +449,12 @@ func NetscalerLbmonitor() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"state": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"storedb": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -572,21 +573,10 @@ func NetscalerLbmonitor() *schema.Resource {
 	}
 }
 
-func key_lbmonitor(d *schema.ResourceData) nitro.LbmonitorKey {
-	key := nitro.LbmonitorKey{
-		Monitorname: d.Get("monitorname").(string),
-		Type:        d.Get("type").(string),
-	}
-
-	return key
-}
-
 func get_lbmonitor(d *schema.ResourceData) nitro.Lbmonitor {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Lbmonitor{
-		Monitorname:                    d.Get("monitorname").(string),
-		State:                          d.Get("state").(string),
 		Action:                         d.Get("action").(string),
 		Alertretries:                   d.Get("alertretries").(int),
 		Application:                    d.Get("application").(string),
@@ -620,6 +610,7 @@ func get_lbmonitor(d *schema.ResourceData) nitro.Lbmonitor {
 		Lrtm:                           d.Get("lrtm").(string),
 		Maxforwards:                    d.Get("maxforwards").(int),
 		Metrictable:                    d.Get("metrictable").(string),
+		Monitorname:                    d.Get("monitorname").(string),
 		Mssqlprotocolversion:           d.Get("mssqlprotocolversion").(string),
 		Netprofile:                     d.Get("netprofile").(string),
 		Oraclesid:                      d.Get("oraclesid").(string),
@@ -658,6 +649,7 @@ func get_lbmonitor(d *schema.ResourceData) nitro.Lbmonitor {
 		Snmpversion:                    d.Get("snmpversion").(string),
 		Sqlquery:                       d.Get("sqlquery").(string),
 		Sslprofile:                     d.Get("sslprofile").(string),
+		State:                          d.Get("state").(string),
 		Storedb:                        d.Get("storedb").(string),
 		Storefrontacctservice:          d.Get("storefrontacctservice").(string),
 		Storefrontcheckbackendservices: d.Get("storefrontcheckbackendservices").(string),
@@ -685,8 +677,6 @@ func get_lbmonitor(d *schema.ResourceData) nitro.Lbmonitor {
 func set_lbmonitor(d *schema.ResourceData, resource *nitro.Lbmonitor) {
 	var _ = strconv.Itoa
 
-	d.Set("monitorname", resource.Monitorname)
-	d.Set("state", resource.State)
 	d.Set("action", resource.Action)
 	d.Set("alertretries", resource.Alertretries)
 	d.Set("application", resource.Application)
@@ -720,6 +710,7 @@ func set_lbmonitor(d *schema.ResourceData, resource *nitro.Lbmonitor) {
 	d.Set("lrtm", resource.Lrtm)
 	d.Set("maxforwards", resource.Maxforwards)
 	d.Set("metrictable", resource.Metrictable)
+	d.Set("monitorname", resource.Monitorname)
 	d.Set("mssqlprotocolversion", resource.Mssqlprotocolversion)
 	d.Set("netprofile", resource.Netprofile)
 	d.Set("oraclesid", resource.Oraclesid)
@@ -758,6 +749,7 @@ func set_lbmonitor(d *schema.ResourceData, resource *nitro.Lbmonitor) {
 	d.Set("snmpversion", resource.Snmpversion)
 	d.Set("sqlquery", resource.Sqlquery)
 	d.Set("sslprofile", resource.Sslprofile)
+	d.Set("state", resource.State)
 	d.Set("storedb", resource.Storedb)
 	d.Set("storefrontacctservice", resource.Storefrontacctservice)
 	d.Set("storefrontcheckbackendservices", resource.Storefrontcheckbackendservices)
@@ -790,7 +782,8 @@ func create_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor(d)
+	resource := get_lbmonitor(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitor(key)
 
@@ -838,7 +831,8 @@ func read_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor(d)
+	resource := get_lbmonitor(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitor(key)
 
@@ -868,13 +862,14 @@ func read_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 func update_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbmonitor")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateLbmonitor(get_lbmonitor(d))
+	// err := client.UpdateLbmonitor(get_lbmonitor(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -884,7 +879,8 @@ func delete_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbmonitor(d)
+	resource := get_lbmonitor(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbmonitor(key)
 

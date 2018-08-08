@@ -19,12 +19,14 @@ func NetscalerLbvserverServicegroupBinding() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"servicegroupname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"weight": &schema.Schema{
@@ -35,15 +37,6 @@ func NetscalerLbvserverServicegroupBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_lbvserver_servicegroup_binding(d *schema.ResourceData) nitro.LbvserverServicegroupBindingKey {
-	key := nitro.LbvserverServicegroupBindingKey{
-		Name:             d.Get("name").(string),
-		Servicegroupname: d.Get("servicegroupname").(string),
-	}
-
-	return key
 }
 
 func get_lbvserver_servicegroup_binding(d *schema.ResourceData) nitro.LbvserverServicegroupBinding {
@@ -64,6 +57,7 @@ func set_lbvserver_servicegroup_binding(d *schema.ResourceData, resource *nitro.
 	d.Set("name", resource.Name)
 	d.Set("servicegroupname", resource.Servicegroupname)
 	d.Set("weight", resource.Weight)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -76,7 +70,8 @@ func create_lbvserver_servicegroup_binding(d *schema.ResourceData, meta interfac
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_servicegroup_binding(d)
+	resource := get_lbvserver_servicegroup_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverServicegroupBinding(key)
 
@@ -124,7 +119,8 @@ func read_lbvserver_servicegroup_binding(d *schema.ResourceData, meta interface{
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_servicegroup_binding(d)
+	resource := get_lbvserver_servicegroup_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverServicegroupBinding(key)
 
@@ -156,7 +152,8 @@ func delete_lbvserver_servicegroup_binding(d *schema.ResourceData, meta interfac
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_lbvserver_servicegroup_binding(d)
+	resource := get_lbvserver_servicegroup_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsLbvserverServicegroupBinding(key)
 

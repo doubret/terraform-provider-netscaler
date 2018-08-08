@@ -19,7 +19,8 @@ func NetscalerCmppolicylabel() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"labelname": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"type": &schema.Schema{
@@ -30,10 +31,6 @@ func NetscalerCmppolicylabel() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_cmppolicylabel(d *schema.ResourceData) string {
-	return d.Get("labelname").(string)
 }
 
 func get_cmppolicylabel(d *schema.ResourceData) nitro.Cmppolicylabel {
@@ -64,7 +61,8 @@ func create_cmppolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmppolicylabel(d)
+	resource := get_cmppolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmppolicylabel(key)
 
@@ -112,7 +110,8 @@ func read_cmppolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmppolicylabel(d)
+	resource := get_cmppolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmppolicylabel(key)
 
@@ -144,7 +143,8 @@ func delete_cmppolicylabel(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_cmppolicylabel(d)
+	resource := get_cmppolicylabel(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsCmppolicylabel(key)
 

@@ -31,7 +31,8 @@ func NetscalerServiceLbmonitorBinding() *schema.Resource {
 			},
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: true,
+				Optional: true,
+				Computed: true,
 				ForceNew: true,
 			},
 			"passive": &schema.Schema{
@@ -48,14 +49,6 @@ func NetscalerServiceLbmonitorBinding() *schema.Resource {
 			},
 		},
 	}
-}
-
-func key_service_lbmonitor_binding(d *schema.ResourceData) nitro.ServiceLbmonitorBindingKey {
-	key := nitro.ServiceLbmonitorBindingKey{
-		Name: d.Get("name").(string),
-	}
-
-	return key
 }
 
 func get_service_lbmonitor_binding(d *schema.ResourceData) nitro.ServiceLbmonitorBinding {
@@ -80,6 +73,7 @@ func set_service_lbmonitor_binding(d *schema.ResourceData, resource *nitro.Servi
 	d.Set("name", resource.Name)
 	d.Set("passive", resource.Passive)
 	d.Set("weight", resource.Weight)
+
 	var key []string
 
 	key = append(key, resource.Name)
@@ -91,7 +85,8 @@ func create_service_lbmonitor_binding(d *schema.ResourceData, meta interface{}) 
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_service_lbmonitor_binding(d)
+	resource := get_service_lbmonitor_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServiceLbmonitorBinding(key)
 
@@ -139,7 +134,8 @@ func read_service_lbmonitor_binding(d *schema.ResourceData, meta interface{}) er
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_service_lbmonitor_binding(d)
+	resource := get_service_lbmonitor_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServiceLbmonitorBinding(key)
 
@@ -171,7 +167,8 @@ func delete_service_lbmonitor_binding(d *schema.ResourceData, meta interface{}) 
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_service_lbmonitor_binding(d)
+	resource := get_service_lbmonitor_binding(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServiceLbmonitorBinding(key)
 

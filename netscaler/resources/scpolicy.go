@@ -17,11 +17,6 @@ func NetscalerScpolicy() *schema.Resource {
 		Update:        update_scpolicy,
 		Delete:        delete_scpolicy,
 		Schema: map[string]*schema.Schema{
-			"name": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"action": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -52,6 +47,12 @@ func NetscalerScpolicy() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"name": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"rule": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -68,20 +69,16 @@ func NetscalerScpolicy() *schema.Resource {
 	}
 }
 
-func key_scpolicy(d *schema.ResourceData) string {
-	return d.Get("name").(string)
-}
-
 func get_scpolicy(d *schema.ResourceData) nitro.Scpolicy {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Scpolicy{
-		Name:              d.Get("name").(string),
 		Action:            d.Get("action").(string),
 		Altcontentpath:    d.Get("altcontentpath").(string),
 		Altcontentsvcname: d.Get("altcontentsvcname").(string),
 		Delay:             d.Get("delay").(int),
 		Maxconn:           d.Get("maxconn").(int),
+		Name:              d.Get("name").(string),
 		Rule:              d.Get("rule").(string),
 		Url:               d.Get("url").(string),
 	}
@@ -92,12 +89,12 @@ func get_scpolicy(d *schema.ResourceData) nitro.Scpolicy {
 func set_scpolicy(d *schema.ResourceData, resource *nitro.Scpolicy) {
 	var _ = strconv.Itoa
 
-	d.Set("name", resource.Name)
 	d.Set("action", resource.Action)
 	d.Set("altcontentpath", resource.Altcontentpath)
 	d.Set("altcontentsvcname", resource.Altcontentsvcname)
 	d.Set("delay", resource.Delay)
 	d.Set("maxconn", resource.Maxconn)
+	d.Set("name", resource.Name)
 	d.Set("rule", resource.Rule)
 	d.Set("url", resource.Url)
 
@@ -112,7 +109,8 @@ func create_scpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_scpolicy(d)
+	resource := get_scpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsScpolicy(key)
 
@@ -160,7 +158,8 @@ func read_scpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_scpolicy(d)
+	resource := get_scpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsScpolicy(key)
 
@@ -190,13 +189,14 @@ func read_scpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_scpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_scpolicy")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateScpolicy(get_scpolicy(d))
+	// err := client.UpdateScpolicy(get_scpolicy(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -206,7 +206,8 @@ func delete_scpolicy(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_scpolicy(d)
+	resource := get_scpolicy(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsScpolicy(key)
 

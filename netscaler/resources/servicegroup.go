@@ -17,11 +17,6 @@ func NetscalerServicegroup() *schema.Resource {
 		Update:        update_servicegroup,
 		Delete:        delete_servicegroup,
 		Schema: map[string]*schema.Schema{
-			"servicegroupname": &schema.Schema{
-				Type:     schema.TypeString,
-				Required: true,
-				ForceNew: true,
-			},
 			"appflowlog": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -166,6 +161,12 @@ func NetscalerServicegroup() *schema.Resource {
 				Computed: true,
 				ForceNew: false,
 			},
+			"servicegroupname": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+				Computed: true,
+				ForceNew: true,
+			},
 			"servicetype": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
@@ -224,15 +225,10 @@ func NetscalerServicegroup() *schema.Resource {
 	}
 }
 
-func key_servicegroup(d *schema.ResourceData) string {
-	return d.Get("servicegroupname").(string)
-}
-
 func get_servicegroup(d *schema.ResourceData) nitro.Servicegroup {
 	var _ = utils.Convert_set_to_string_array
 
 	resource := nitro.Servicegroup{
-		Servicegroupname:   d.Get("servicegroupname").(string),
 		Appflowlog:         d.Get("appflowlog").(string),
 		Autoscale:          d.Get("autoscale").(string),
 		Cacheable:          d.Get("cacheable").(string),
@@ -257,6 +253,7 @@ func get_servicegroup(d *schema.ResourceData) nitro.Servicegroup {
 		Pathmonitorindv:    d.Get("pathmonitorindv").(string),
 		Rtspsessionidremap: d.Get("rtspsessionidremap").(string),
 		Sc:                 d.Get("sc").(string),
+		Servicegroupname:   d.Get("servicegroupname").(string),
 		Servicetype:        d.Get("servicetype").(string),
 		Sp:                 d.Get("sp").(string),
 		State:              d.Get("state").(string),
@@ -274,7 +271,6 @@ func get_servicegroup(d *schema.ResourceData) nitro.Servicegroup {
 func set_servicegroup(d *schema.ResourceData, resource *nitro.Servicegroup) {
 	var _ = strconv.Itoa
 
-	d.Set("servicegroupname", resource.Servicegroupname)
 	d.Set("appflowlog", resource.Appflowlog)
 	d.Set("autoscale", resource.Autoscale)
 	d.Set("cacheable", resource.Cacheable)
@@ -299,6 +295,7 @@ func set_servicegroup(d *schema.ResourceData, resource *nitro.Servicegroup) {
 	d.Set("pathmonitorindv", resource.Pathmonitorindv)
 	d.Set("rtspsessionidremap", resource.Rtspsessionidremap)
 	d.Set("sc", resource.Sc)
+	d.Set("servicegroupname", resource.Servicegroupname)
 	d.Set("servicetype", resource.Servicetype)
 	d.Set("sp", resource.Sp)
 	d.Set("state", resource.State)
@@ -320,7 +317,8 @@ func create_servicegroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup(d)
+	resource := get_servicegroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroup(key)
 
@@ -368,7 +366,8 @@ func read_servicegroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup(d)
+	resource := get_servicegroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroup(key)
 
@@ -398,13 +397,14 @@ func read_servicegroup(d *schema.ResourceData, meta interface{}) error {
 func update_servicegroup(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_servicegroup")
 
-	client := meta.(*nitro.NitroClient)
+	// TODO
+	// client := meta.(*nitro.NitroClient)
 
-	err := client.UpdateServicegroup(get_servicegroup(d))
+	// err := client.UpdateServicegroup(get_servicegroup(d))
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	//       return err
+	// }
 
 	return nil
 }
@@ -414,7 +414,8 @@ func delete_servicegroup(d *schema.ResourceData, meta interface{}) error {
 
 	client := meta.(*nitro.NitroClient)
 
-	key := key_servicegroup(d)
+	resource := get_servicegroup(d)
+	key := resource.ToKey()
 
 	exists, err := client.ExistsServicegroup(key)
 
