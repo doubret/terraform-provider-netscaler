@@ -72,6 +72,14 @@ func set_filterpolicy(d *schema.ResourceData, resource *nitro.Filterpolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_filterpolicy_key(d *schema.ResourceData) nitro.FilterpolicyKey {
+
+	key := nitro.FilterpolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_filterpolicy")
 
@@ -157,14 +165,81 @@ func read_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_filterpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_filterpolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateFilterpolicy(get_filterpolicy(d))
+	update := nitro.FilterpolicyUpdate{}
+	unset := nitro.FilterpolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("reqaction") {
+		updateFlag = true
+
+		value := d.Get("reqaction").(string)
+		update.Reqaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Reqaction = true
+		}
+
+	}
+	if d.HasChange("resaction") {
+		updateFlag = true
+
+		value := d.Get("resaction").(string)
+		update.Resaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Resaction = true
+		}
+
+	}
+	key := get_filterpolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateFilterpolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetFilterpolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetFilterpolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_filterpolicy(d, resource)
+	}
 
 	return nil
 }

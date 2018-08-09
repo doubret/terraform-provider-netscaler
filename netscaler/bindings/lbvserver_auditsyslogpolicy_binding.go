@@ -97,6 +97,15 @@ func set_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData, resource *n
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbvserver_auditsyslogpolicy_binding_key(d *schema.ResourceData) nitro.LbvserverAuditsyslogpolicyBindingKey {
+
+	key := nitro.LbvserverAuditsyslogpolicyBindingKey{
+		d.Get("name").(string),
+		d.Get("policyname").(string),
+	}
+	return key
+}
+
 func create_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbvserver_auditsyslogpolicy_binding")
 

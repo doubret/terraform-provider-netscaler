@@ -80,6 +80,14 @@ func set_appfwpolicy(d *schema.ResourceData, resource *nitro.Appfwpolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_appfwpolicy_key(d *schema.ResourceData) nitro.AppfwpolicyKey {
+
+	key := nitro.AppfwpolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_appfwpolicy")
 
@@ -165,14 +173,94 @@ func read_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_appfwpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appfwpolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateAppfwpolicy(get_appfwpolicy(d))
+	update := nitro.AppfwpolicyUpdate{}
+	unset := nitro.AppfwpolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("profilename") {
+		updateFlag = true
+
+		value := d.Get("profilename").(string)
+		update.Profilename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Profilename = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	if d.HasChange("logaction") {
+		updateFlag = true
+
+		value := d.Get("logaction").(string)
+		update.Logaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Logaction = true
+		}
+
+	}
+	key := get_appfwpolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateAppfwpolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetAppfwpolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetAppfwpolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_appfwpolicy(d, resource)
+	}
 
 	return nil
 }

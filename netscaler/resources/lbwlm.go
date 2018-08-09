@@ -80,6 +80,14 @@ func set_lbwlm(d *schema.ResourceData, resource *nitro.Lbwlm) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbwlm_key(d *schema.ResourceData) nitro.LbwlmKey {
+
+	key := nitro.LbwlmKey{
+		d.Get("wlmname").(string),
+	}
+	return key
+}
+
 func create_lbwlm(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbwlm")
 
@@ -165,14 +173,55 @@ func read_lbwlm(d *schema.ResourceData, meta interface{}) error {
 func update_lbwlm(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbwlm")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateLbwlm(get_lbwlm(d))
+	update := nitro.LbwlmUpdate{}
+	unset := nitro.LbwlmUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Wlmname = d.Get("wlmname").(string)
+	unset.Wlmname = d.Get("wlmname").(string)
+
+	if d.HasChange("katimeout") {
+		updateFlag = true
+
+		value := d.Get("katimeout").(int)
+		update.Katimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Katimeout = true
+		}
+
+	}
+	key := get_lbwlm_key(d)
+
+	if updateFlag {
+		if err := client.UpdateLbwlm(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetLbwlm(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetLbwlm(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_lbwlm(d, resource)
+	}
 
 	return nil
 }

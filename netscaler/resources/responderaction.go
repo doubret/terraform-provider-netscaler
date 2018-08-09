@@ -104,6 +104,14 @@ func set_responderaction(d *schema.ResourceData, resource *nitro.Responderaction
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_responderaction_key(d *schema.ResourceData) nitro.ResponderactionKey {
+
+	key := nitro.ResponderactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_responderaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_responderaction")
 
@@ -189,14 +197,120 @@ func read_responderaction(d *schema.ResourceData, meta interface{}) error {
 func update_responderaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_responderaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateResponderaction(get_responderaction(d))
+	update := nitro.ResponderactionUpdate{}
+	unset := nitro.ResponderactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("target") {
+		updateFlag = true
+
+		value := d.Get("target").(string)
+		update.Target = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Target = true
+		}
+
+	}
+	if d.HasChange("bypasssafetycheck") {
+		updateFlag = true
+
+		value := d.Get("bypasssafetycheck").(string)
+		update.Bypasssafetycheck = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Bypasssafetycheck = true
+		}
+
+	}
+	if d.HasChange("htmlpage") {
+		updateFlag = true
+
+		value := d.Get("htmlpage").(string)
+		update.Htmlpage = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Htmlpage = true
+		}
+
+	}
+	if d.HasChange("responsestatuscode") {
+		updateFlag = true
+
+		value := d.Get("responsestatuscode").(int)
+		update.Responsestatuscode = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Responsestatuscode = true
+		}
+
+	}
+	if d.HasChange("reasonphrase") {
+		updateFlag = true
+
+		value := d.Get("reasonphrase").(string)
+		update.Reasonphrase = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Reasonphrase = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	key := get_responderaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateResponderaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetResponderaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetResponderaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_responderaction(d, resource)
+	}
 
 	return nil
 }

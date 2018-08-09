@@ -65,6 +65,15 @@ func set_servicegroup_lbmonitor_binding(d *schema.ResourceData, resource *nitro.
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_servicegroup_lbmonitor_binding_key(d *schema.ResourceData) nitro.ServicegroupLbmonitorBindingKey {
+
+	key := nitro.ServicegroupLbmonitorBindingKey{
+		d.Get("servicegroupname").(string),
+		d.Get("monitor_name").(string),
+	}
+	return key
+}
+
 func create_servicegroup_lbmonitor_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_servicegroup_lbmonitor_binding")
 

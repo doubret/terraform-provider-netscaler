@@ -72,6 +72,14 @@ func set_dnsaction64(d *schema.ResourceData, resource *nitro.Dnsaction64) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_dnsaction64_key(d *schema.ResourceData) nitro.Dnsaction64Key {
+
+	key := nitro.Dnsaction64Key{
+		d.Get("actionname").(string),
+	}
+	return key
+}
+
 func create_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_dnsaction64")
 
@@ -157,14 +165,81 @@ func read_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 func update_dnsaction64(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dnsaction64")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateDnsaction64(get_dnsaction64(d))
+	update := nitro.Dnsaction64Update{}
+	unset := nitro.Dnsaction64Unset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Actionname = d.Get("actionname").(string)
+	unset.Actionname = d.Get("actionname").(string)
+
+	if d.HasChange("prefix") {
+		updateFlag = true
+
+		value := d.Get("prefix").(string)
+		update.Prefix = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Prefix = true
+		}
+
+	}
+	if d.HasChange("mappedrule") {
+		updateFlag = true
+
+		value := d.Get("mappedrule").(string)
+		update.Mappedrule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Mappedrule = true
+		}
+
+	}
+	if d.HasChange("excluderule") {
+		updateFlag = true
+
+		value := d.Get("excluderule").(string)
+		update.Excluderule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Excluderule = true
+		}
+
+	}
+	key := get_dnsaction64_key(d)
+
+	if updateFlag {
+		if err := client.UpdateDnsaction64(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetDnsaction64(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetDnsaction64(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_dnsaction64(d, resource)
+	}
 
 	return nil
 }

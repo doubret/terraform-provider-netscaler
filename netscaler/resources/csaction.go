@@ -80,6 +80,14 @@ func set_csaction(d *schema.ResourceData, resource *nitro.Csaction) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_csaction_key(d *schema.ResourceData) nitro.CsactionKey {
+
+	key := nitro.CsactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_csaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_csaction")
 
@@ -165,14 +173,94 @@ func read_csaction(d *schema.ResourceData, meta interface{}) error {
 func update_csaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_csaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateCsaction(get_csaction(d))
+	update := nitro.CsactionUpdate{}
+	unset := nitro.CsactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("targetlbvserver") {
+		updateFlag = true
+
+		value := d.Get("targetlbvserver").(string)
+		update.Targetlbvserver = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Targetlbvserver = true
+		}
+
+	}
+	if d.HasChange("targetvserver") {
+		updateFlag = true
+
+		value := d.Get("targetvserver").(string)
+		update.Targetvserver = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Targetvserver = true
+		}
+
+	}
+	if d.HasChange("targetvserverexpr") {
+		updateFlag = true
+
+		value := d.Get("targetvserverexpr").(string)
+		update.Targetvserverexpr = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Targetvserverexpr = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	key := get_csaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateCsaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetCsaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetCsaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_csaction(d, resource)
+	}
 
 	return nil
 }

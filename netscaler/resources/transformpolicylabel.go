@@ -56,6 +56,14 @@ func set_transformpolicylabel(d *schema.ResourceData, resource *nitro.Transformp
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_transformpolicylabel_key(d *schema.ResourceData) nitro.TransformpolicylabelKey {
+
+	key := nitro.TransformpolicylabelKey{
+		d.Get("labelname").(string),
+	}
+	return key
+}
+
 func create_transformpolicylabel(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_transformpolicylabel")
 

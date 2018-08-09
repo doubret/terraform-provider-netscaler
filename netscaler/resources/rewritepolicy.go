@@ -88,6 +88,14 @@ func set_rewritepolicy(d *schema.ResourceData, resource *nitro.Rewritepolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_rewritepolicy_key(d *schema.ResourceData) nitro.RewritepolicyKey {
+
+	key := nitro.RewritepolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_rewritepolicy")
 
@@ -173,14 +181,107 @@ func read_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_rewritepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_rewritepolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateRewritepolicy(get_rewritepolicy(d))
+	update := nitro.RewritepolicyUpdate{}
+	unset := nitro.RewritepolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	if d.HasChange("undefaction") {
+		updateFlag = true
+
+		value := d.Get("undefaction").(string)
+		update.Undefaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Undefaction = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	if d.HasChange("logaction") {
+		updateFlag = true
+
+		value := d.Get("logaction").(string)
+		update.Logaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Logaction = true
+		}
+
+	}
+	key := get_rewritepolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateRewritepolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetRewritepolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetRewritepolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_rewritepolicy(d, resource)
+	}
 
 	return nil
 }

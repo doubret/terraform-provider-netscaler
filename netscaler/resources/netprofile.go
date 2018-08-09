@@ -80,6 +80,14 @@ func set_netprofile(d *schema.ResourceData, resource *nitro.Netprofile) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_netprofile_key(d *schema.ResourceData) nitro.NetprofileKey {
+
+	key := nitro.NetprofileKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_netprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_netprofile")
 
@@ -165,14 +173,81 @@ func read_netprofile(d *schema.ResourceData, meta interface{}) error {
 func update_netprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_netprofile")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateNetprofile(get_netprofile(d))
+	update := nitro.NetprofileUpdate{}
+	unset := nitro.NetprofileUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("srcip") {
+		updateFlag = true
+
+		value := d.Get("srcip").(string)
+		update.Srcip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Srcip = true
+		}
+
+	}
+	if d.HasChange("srcippersistency") {
+		updateFlag = true
+
+		value := d.Get("srcippersistency").(string)
+		update.Srcippersistency = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Srcippersistency = true
+		}
+
+	}
+	if d.HasChange("overridelsn") {
+		updateFlag = true
+
+		value := d.Get("overridelsn").(string)
+		update.Overridelsn = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Overridelsn = true
+		}
+
+	}
+	key := get_netprofile_key(d)
+
+	if updateFlag {
+		if err := client.UpdateNetprofile(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetNetprofile(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetNetprofile(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_netprofile(d, resource)
+	}
 
 	return nil
 }

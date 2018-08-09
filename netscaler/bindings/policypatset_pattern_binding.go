@@ -73,6 +73,15 @@ func set_policypatset_pattern_binding(d *schema.ResourceData, resource *nitro.Po
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_policypatset_pattern_binding_key(d *schema.ResourceData) nitro.PolicypatsetPatternBindingKey {
+
+	key := nitro.PolicypatsetPatternBindingKey{
+		d.Get("name").(string),
+		d.Get("string").(string),
+	}
+	return key
+}
+
 func create_policypatset_pattern_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_policypatset_pattern_binding")
 

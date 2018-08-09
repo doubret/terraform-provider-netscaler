@@ -65,6 +65,15 @@ func set_policydataset_value_binding(d *schema.ResourceData, resource *nitro.Pol
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_policydataset_value_binding_key(d *schema.ResourceData) nitro.PolicydatasetValueBindingKey {
+
+	key := nitro.PolicydatasetValueBindingKey{
+		d.Get("name").(string),
+		d.Get("value").(string),
+	}
+	return key
+}
+
 func create_policydataset_value_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_policydataset_value_binding")
 

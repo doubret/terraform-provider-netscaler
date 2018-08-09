@@ -99,6 +99,14 @@ func set_appflowaction(d *schema.ResourceData, resource *nitro.Appflowaction) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_appflowaction_key(d *schema.ResourceData) nitro.AppflowactionKey {
+
+	key := nitro.AppflowactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_appflowaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_appflowaction")
 
@@ -184,14 +192,114 @@ func read_appflowaction(d *schema.ResourceData, meta interface{}) error {
 func update_appflowaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appflowaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateAppflowaction(get_appflowaction(d))
+	update := nitro.AppflowactionUpdate{}
+	unset := nitro.AppflowactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("collectors") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("collectors").(*schema.Set))
+		update.Collectors = value
+
+	}
+	if d.HasChange("clientsidemeasurements") {
+		updateFlag = true
+
+		value := d.Get("clientsidemeasurements").(string)
+		update.Clientsidemeasurements = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Clientsidemeasurements = true
+		}
+
+	}
+	if d.HasChange("pagetracking") {
+		updateFlag = true
+
+		value := d.Get("pagetracking").(string)
+		update.Pagetracking = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Pagetracking = true
+		}
+
+	}
+	if d.HasChange("webinsight") {
+		updateFlag = true
+
+		value := d.Get("webinsight").(string)
+		update.Webinsight = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Webinsight = true
+		}
+
+	}
+	if d.HasChange("securityinsight") {
+		updateFlag = true
+
+		value := d.Get("securityinsight").(string)
+		update.Securityinsight = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Securityinsight = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	key := get_appflowaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateAppflowaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetAppflowaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetAppflowaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_appflowaction(d, resource)
+	}
 
 	return nil
 }

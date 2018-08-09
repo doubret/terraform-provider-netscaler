@@ -65,6 +65,15 @@ func set_lbvserver_service_binding(d *schema.ResourceData, resource *nitro.Lbvse
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbvserver_service_binding_key(d *schema.ResourceData) nitro.LbvserverServiceBindingKey {
+
+	key := nitro.LbvserverServiceBindingKey{
+		d.Get("name").(string),
+		d.Get("servicename").(string),
+	}
+	return key
+}
+
 func create_lbvserver_service_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbvserver_service_binding")
 

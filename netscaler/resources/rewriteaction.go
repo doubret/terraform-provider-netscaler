@@ -112,6 +112,14 @@ func set_rewriteaction(d *schema.ResourceData, resource *nitro.Rewriteaction) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_rewriteaction_key(d *schema.ResourceData) nitro.RewriteactionKey {
+
+	key := nitro.RewriteactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_rewriteaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_rewriteaction")
 
@@ -197,14 +205,133 @@ func read_rewriteaction(d *schema.ResourceData, meta interface{}) error {
 func update_rewriteaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_rewriteaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateRewriteaction(get_rewriteaction(d))
+	update := nitro.RewriteactionUpdate{}
+	unset := nitro.RewriteactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("target") {
+		updateFlag = true
+
+		value := d.Get("target").(string)
+		update.Target = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Target = true
+		}
+
+	}
+	if d.HasChange("stringbuilderexpr") {
+		updateFlag = true
+
+		value := d.Get("stringbuilderexpr").(string)
+		update.Stringbuilderexpr = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Stringbuilderexpr = true
+		}
+
+	}
+	if d.HasChange("pattern") {
+		updateFlag = true
+
+		value := d.Get("pattern").(string)
+		update.Pattern = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Pattern = true
+		}
+
+	}
+	if d.HasChange("search") {
+		updateFlag = true
+
+		value := d.Get("search").(string)
+		update.Search = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Search = true
+		}
+
+	}
+	if d.HasChange("bypasssafetycheck") {
+		updateFlag = true
+
+		value := d.Get("bypasssafetycheck").(string)
+		update.Bypasssafetycheck = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Bypasssafetycheck = true
+		}
+
+	}
+	if d.HasChange("refinesearch") {
+		updateFlag = true
+
+		value := d.Get("refinesearch").(string)
+		update.Refinesearch = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Refinesearch = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	key := get_rewriteaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateRewriteaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetRewriteaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetRewriteaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_rewriteaction(d, resource)
+	}
 
 	return nil
 }

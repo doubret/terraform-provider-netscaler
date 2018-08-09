@@ -80,6 +80,14 @@ func set_caaction(d *schema.ResourceData, resource *nitro.Caaction) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_caaction_key(d *schema.ResourceData) nitro.CaactionKey {
+
+	key := nitro.CaactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_caaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_caaction")
 
@@ -165,14 +173,94 @@ func read_caaction(d *schema.ResourceData, meta interface{}) error {
 func update_caaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_caaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateCaaction(get_caaction(d))
+	update := nitro.CaactionUpdate{}
+	unset := nitro.CaactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("accumressize") {
+		updateFlag = true
+
+		value := d.Get("accumressize").(int)
+		update.Accumressize = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Accumressize = true
+		}
+
+	}
+	if d.HasChange("lbvserver") {
+		updateFlag = true
+
+		value := d.Get("lbvserver").(string)
+		update.Lbvserver = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Lbvserver = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	if d.HasChange("type") {
+		updateFlag = true
+
+		value := d.Get("type").(string)
+		update.Type = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Type = true
+		}
+
+	}
+	key := get_caaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateCaaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetCaaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetCaaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_caaction(d, resource)
+	}
 
 	return nil
 }

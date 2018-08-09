@@ -64,6 +64,14 @@ func set_rewritepolicylabel(d *schema.ResourceData, resource *nitro.Rewritepolic
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_rewritepolicylabel_key(d *schema.ResourceData) nitro.RewritepolicylabelKey {
+
+	key := nitro.RewritepolicylabelKey{
+		d.Get("labelname").(string),
+	}
+	return key
+}
+
 func create_rewritepolicylabel(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_rewritepolicylabel")
 

@@ -56,6 +56,14 @@ func set_appflowpolicylabel(d *schema.ResourceData, resource *nitro.Appflowpolic
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_appflowpolicylabel_key(d *schema.ResourceData) nitro.AppflowpolicylabelKey {
+
+	key := nitro.AppflowpolicylabelKey{
+		d.Get("labelname").(string),
+	}
+	return key
+}
+
 func create_appflowpolicylabel(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_appflowpolicylabel")
 

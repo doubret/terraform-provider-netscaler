@@ -88,6 +88,14 @@ func set_cspolicy(d *schema.ResourceData, resource *nitro.Cspolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_cspolicy_key(d *schema.ResourceData) nitro.CspolicyKey {
+
+	key := nitro.CspolicyKey{
+		d.Get("policyname").(string),
+	}
+	return key
+}
+
 func create_cspolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_cspolicy")
 
@@ -173,14 +181,107 @@ func read_cspolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cspolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cspolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateCspolicy(get_cspolicy(d))
+	update := nitro.CspolicyUpdate{}
+	unset := nitro.CspolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Policyname = d.Get("policyname").(string)
+	unset.Policyname = d.Get("policyname").(string)
+
+	if d.HasChange("url") {
+		updateFlag = true
+
+		value := d.Get("url").(string)
+		update.Url = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Url = true
+		}
+
+	}
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("domain") {
+		updateFlag = true
+
+		value := d.Get("domain").(string)
+		update.Domain = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Domain = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	if d.HasChange("logaction") {
+		updateFlag = true
+
+		value := d.Get("logaction").(string)
+		update.Logaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Logaction = true
+		}
+
+	}
+	key := get_cspolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateCspolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetCspolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetCspolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_cspolicy(d, resource)
+	}
 
 	return nil
 }

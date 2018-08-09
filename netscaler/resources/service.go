@@ -368,6 +368,14 @@ func set_service(d *schema.ResourceData, resource *nitro.Service) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_service_key(d *schema.ResourceData) nitro.ServiceKey {
+
+	key := nitro.ServiceKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_service(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_service")
 
@@ -453,14 +461,471 @@ func read_service(d *schema.ResourceData, meta interface{}) error {
 func update_service(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_service")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateService(get_service(d))
+	update := nitro.ServiceUpdate{}
+	unset := nitro.ServiceUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("maxclient") {
+		updateFlag = true
+
+		value := d.Get("maxclient").(int)
+		update.Maxclient = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxclient = true
+		}
+
+	}
+	if d.HasChange("maxreq") {
+		updateFlag = true
+
+		value := d.Get("maxreq").(int)
+		update.Maxreq = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxreq = true
+		}
+
+	}
+	if d.HasChange("cacheable") {
+		updateFlag = true
+
+		value := d.Get("cacheable").(string)
+		update.Cacheable = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cacheable = true
+		}
+
+	}
+	if d.HasChange("cip") {
+		updateFlag = true
+
+		value := d.Get("cip").(string)
+		update.Cip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cip = true
+		}
+
+	}
+	if d.HasChange("cipheader") {
+		updateFlag = true
+
+		value := d.Get("cipheader").(string)
+		update.Cipheader = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cipheader = true
+		}
+
+	}
+	if d.HasChange("usip") {
+		updateFlag = true
+
+		value := d.Get("usip").(string)
+		update.Usip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Usip = true
+		}
+
+	}
+	if d.HasChange("pathmonitor") {
+		updateFlag = true
+
+		value := d.Get("pathmonitor").(string)
+		update.Pathmonitor = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Pathmonitor = true
+		}
+
+	}
+	if d.HasChange("pathmonitorindv") {
+		updateFlag = true
+
+		value := d.Get("pathmonitorindv").(string)
+		update.Pathmonitorindv = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Pathmonitorindv = true
+		}
+
+	}
+	if d.HasChange("useproxyport") {
+		updateFlag = true
+
+		value := d.Get("useproxyport").(string)
+		update.Useproxyport = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Useproxyport = true
+		}
+
+	}
+	if d.HasChange("sc") {
+		updateFlag = true
+
+		value := d.Get("sc").(string)
+		update.Sc = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sc = true
+		}
+
+	}
+	if d.HasChange("sp") {
+		updateFlag = true
+
+		value := d.Get("sp").(string)
+		update.Sp = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sp = true
+		}
+
+	}
+	if d.HasChange("rtspsessionidremap") {
+		updateFlag = true
+
+		value := d.Get("rtspsessionidremap").(string)
+		update.Rtspsessionidremap = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rtspsessionidremap = true
+		}
+
+	}
+	if d.HasChange("healthmonitor") {
+		updateFlag = true
+
+		value := d.Get("healthmonitor").(string)
+		update.Healthmonitor = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Healthmonitor = true
+		}
+
+	}
+	if d.HasChange("clttimeout") {
+		updateFlag = true
+
+		value := d.Get("clttimeout").(int)
+		update.Clttimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Clttimeout = true
+		}
+
+	}
+	if d.HasChange("svrtimeout") {
+		updateFlag = true
+
+		value := d.Get("svrtimeout").(int)
+		update.Svrtimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Svrtimeout = true
+		}
+
+	}
+	if d.HasChange("customserverid") {
+		updateFlag = true
+
+		value := d.Get("customserverid").(string)
+		update.Customserverid = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Customserverid = true
+		}
+
+	}
+	if d.HasChange("serverid") {
+		updateFlag = true
+
+		value := d.Get("serverid").(int)
+		update.Serverid = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Serverid = true
+		}
+
+	}
+	if d.HasChange("cka") {
+		updateFlag = true
+
+		value := d.Get("cka").(string)
+		update.Cka = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cka = true
+		}
+
+	}
+	if d.HasChange("tcpb") {
+		updateFlag = true
+
+		value := d.Get("tcpb").(string)
+		update.Tcpb = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Tcpb = true
+		}
+
+	}
+	if d.HasChange("cmp") {
+		updateFlag = true
+
+		value := d.Get("cmp").(string)
+		update.Cmp = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cmp = true
+		}
+
+	}
+	if d.HasChange("maxbandwidth") {
+		updateFlag = true
+
+		value := d.Get("maxbandwidth").(int)
+		update.Maxbandwidth = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxbandwidth = true
+		}
+
+	}
+	if d.HasChange("accessdown") {
+		updateFlag = true
+
+		value := d.Get("accessdown").(string)
+		update.Accessdown = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Accessdown = true
+		}
+
+	}
+	if d.HasChange("monthreshold") {
+		updateFlag = true
+
+		value := d.Get("monthreshold").(int)
+		update.Monthreshold = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Monthreshold = true
+		}
+
+	}
+	if d.HasChange("downstateflush") {
+		updateFlag = true
+
+		value := d.Get("downstateflush").(string)
+		update.Downstateflush = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Downstateflush = true
+		}
+
+	}
+	if d.HasChange("tcpprofilename") {
+		updateFlag = true
+
+		value := d.Get("tcpprofilename").(string)
+		update.Tcpprofilename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Tcpprofilename = true
+		}
+
+	}
+	if d.HasChange("httpprofilename") {
+		updateFlag = true
+
+		value := d.Get("httpprofilename").(string)
+		update.Httpprofilename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Httpprofilename = true
+		}
+
+	}
+	if d.HasChange("hashid") {
+		updateFlag = true
+
+		value := d.Get("hashid").(int)
+		update.Hashid = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Hashid = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	if d.HasChange("appflowlog") {
+		updateFlag = true
+
+		value := d.Get("appflowlog").(string)
+		update.Appflowlog = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Appflowlog = true
+		}
+
+	}
+	if d.HasChange("netprofile") {
+		updateFlag = true
+
+		value := d.Get("netprofile").(string)
+		update.Netprofile = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Netprofile = true
+		}
+
+	}
+	if d.HasChange("processlocal") {
+		updateFlag = true
+
+		value := d.Get("processlocal").(string)
+		update.Processlocal = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Processlocal = true
+		}
+
+	}
+	if d.HasChange("dnsprofilename") {
+		updateFlag = true
+
+		value := d.Get("dnsprofilename").(string)
+		update.Dnsprofilename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dnsprofilename = true
+		}
+
+	}
+	if d.HasChange("monconnectionclose") {
+		updateFlag = true
+
+		value := d.Get("monconnectionclose").(string)
+		update.Monconnectionclose = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Monconnectionclose = true
+		}
+
+	}
+	key := get_service_key(d)
+
+	if updateFlag {
+		if err := client.UpdateService(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetService(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetService(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_service(d, resource)
+	}
 
 	return nil
 }

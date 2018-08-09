@@ -81,6 +81,15 @@ func set_lbmonitor_sslcertkey_binding(d *schema.ResourceData, resource *nitro.Lb
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbmonitor_sslcertkey_binding_key(d *schema.ResourceData) nitro.LbmonitorSslcertkeyBindingKey {
+
+	key := nitro.LbmonitorSslcertkeyBindingKey{
+		d.Get("monitorname").(string),
+		d.Get("certkeyname").(string),
+	}
+	return key
+}
+
 func create_lbmonitor_sslcertkey_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbmonitor_sslcertkey_binding")
 

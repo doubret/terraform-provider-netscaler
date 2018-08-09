@@ -120,6 +120,14 @@ func set_server(d *schema.ResourceData, resource *nitro.Server) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_server_key(d *schema.ResourceData) nitro.ServerKey {
+
+	key := nitro.ServerKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_server(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_server")
 
@@ -205,14 +213,107 @@ func read_server(d *schema.ResourceData, meta interface{}) error {
 func update_server(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_server")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateServer(get_server(d))
+	update := nitro.ServerUpdate{}
+	unset := nitro.ServerUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	if d.HasChange("domainresolveretry") {
+		updateFlag = true
+
+		value := d.Get("domainresolveretry").(int)
+		update.Domainresolveretry = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Domainresolveretry = true
+		}
+
+	}
+	if d.HasChange("ipaddress") {
+		updateFlag = true
+
+		value := d.Get("ipaddress").(string)
+		update.Ipaddress = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Ipaddress = true
+		}
+
+	}
+	if d.HasChange("translationip") {
+		updateFlag = true
+
+		value := d.Get("translationip").(string)
+		update.Translationip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Translationip = true
+		}
+
+	}
+	if d.HasChange("translationmask") {
+		updateFlag = true
+
+		value := d.Get("translationmask").(string)
+		update.Translationmask = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Translationmask = true
+		}
+
+	}
+	key := get_server_key(d)
+
+	if updateFlag {
+		if err := client.UpdateServer(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetServer(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetServer(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_server(d, resource)
+	}
 
 	return nil
 }

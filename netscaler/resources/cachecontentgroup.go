@@ -364,6 +364,14 @@ func set_cachecontentgroup(d *schema.ResourceData, resource *nitro.Cachecontentg
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_cachecontentgroup_key(d *schema.ResourceData) nitro.CachecontentgroupKey {
+
+	key := nitro.CachecontentgroupKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_cachecontentgroup")
 
@@ -449,14 +457,499 @@ func read_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
 func update_cachecontentgroup(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cachecontentgroup")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateCachecontentgroup(get_cachecontentgroup(d))
+	update := nitro.CachecontentgroupUpdate{}
+	unset := nitro.CachecontentgroupUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("weakposrelexpiry") {
+		updateFlag = true
+
+		value := d.Get("weakposrelexpiry").(int)
+		update.Weakposrelexpiry = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Weakposrelexpiry = true
+		}
+
+	}
+	if d.HasChange("heurexpiryparam") {
+		updateFlag = true
+
+		value := d.Get("heurexpiryparam").(int)
+		update.Heurexpiryparam = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Heurexpiryparam = true
+		}
+
+	}
+	if d.HasChange("relexpiry") {
+		updateFlag = true
+
+		value := d.Get("relexpiry").(int)
+		update.Relexpiry = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Relexpiry = true
+		}
+
+	}
+	if d.HasChange("relexpirymillisec") {
+		updateFlag = true
+
+		value := d.Get("relexpirymillisec").(int)
+		update.Relexpirymillisec = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Relexpirymillisec = true
+		}
+
+	}
+	if d.HasChange("absexpiry") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("absexpiry").(*schema.Set))
+		update.Absexpiry = value
+
+	}
+	if d.HasChange("absexpirygmt") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("absexpirygmt").(*schema.Set))
+		update.Absexpirygmt = value
+
+	}
+	if d.HasChange("weaknegrelexpiry") {
+		updateFlag = true
+
+		value := d.Get("weaknegrelexpiry").(int)
+		update.Weaknegrelexpiry = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Weaknegrelexpiry = true
+		}
+
+	}
+	if d.HasChange("hitparams") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("hitparams").(*schema.Set))
+		update.Hitparams = value
+
+	}
+	if d.HasChange("invalparams") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("invalparams").(*schema.Set))
+		update.Invalparams = value
+
+	}
+	if d.HasChange("ignoreparamvaluecase") {
+		updateFlag = true
+
+		value := d.Get("ignoreparamvaluecase").(string)
+		update.Ignoreparamvaluecase = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Ignoreparamvaluecase = true
+		}
+
+	}
+	if d.HasChange("matchcookies") {
+		updateFlag = true
+
+		value := d.Get("matchcookies").(string)
+		update.Matchcookies = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Matchcookies = true
+		}
+
+	}
+	if d.HasChange("invalrestrictedtohost") {
+		updateFlag = true
+
+		value := d.Get("invalrestrictedtohost").(string)
+		update.Invalrestrictedtohost = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Invalrestrictedtohost = true
+		}
+
+	}
+	if d.HasChange("polleverytime") {
+		updateFlag = true
+
+		value := d.Get("polleverytime").(string)
+		update.Polleverytime = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Polleverytime = true
+		}
+
+	}
+	if d.HasChange("ignorereloadreq") {
+		updateFlag = true
+
+		value := d.Get("ignorereloadreq").(string)
+		update.Ignorereloadreq = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Ignorereloadreq = true
+		}
+
+	}
+	if d.HasChange("removecookies") {
+		updateFlag = true
+
+		value := d.Get("removecookies").(string)
+		update.Removecookies = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Removecookies = true
+		}
+
+	}
+	if d.HasChange("prefetch") {
+		updateFlag = true
+
+		value := d.Get("prefetch").(string)
+		update.Prefetch = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Prefetch = true
+		}
+
+	}
+	if d.HasChange("prefetchperiod") {
+		updateFlag = true
+
+		value := d.Get("prefetchperiod").(int)
+		update.Prefetchperiod = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Prefetchperiod = true
+		}
+
+	}
+	if d.HasChange("prefetchperiodmillisec") {
+		updateFlag = true
+
+		value := d.Get("prefetchperiodmillisec").(int)
+		update.Prefetchperiodmillisec = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Prefetchperiodmillisec = true
+		}
+
+	}
+	if d.HasChange("prefetchmaxpending") {
+		updateFlag = true
+
+		value := d.Get("prefetchmaxpending").(int)
+		update.Prefetchmaxpending = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Prefetchmaxpending = true
+		}
+
+	}
+	if d.HasChange("flashcache") {
+		updateFlag = true
+
+		value := d.Get("flashcache").(string)
+		update.Flashcache = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Flashcache = true
+		}
+
+	}
+	if d.HasChange("expireatlastbyte") {
+		updateFlag = true
+
+		value := d.Get("expireatlastbyte").(string)
+		update.Expireatlastbyte = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Expireatlastbyte = true
+		}
+
+	}
+	if d.HasChange("insertvia") {
+		updateFlag = true
+
+		value := d.Get("insertvia").(string)
+		update.Insertvia = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Insertvia = true
+		}
+
+	}
+	if d.HasChange("insertage") {
+		updateFlag = true
+
+		value := d.Get("insertage").(string)
+		update.Insertage = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Insertage = true
+		}
+
+	}
+	if d.HasChange("insertetag") {
+		updateFlag = true
+
+		value := d.Get("insertetag").(string)
+		update.Insertetag = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Insertetag = true
+		}
+
+	}
+	if d.HasChange("cachecontrol") {
+		updateFlag = true
+
+		value := d.Get("cachecontrol").(string)
+		update.Cachecontrol = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cachecontrol = true
+		}
+
+	}
+	if d.HasChange("quickabortsize") {
+		updateFlag = true
+
+		value := d.Get("quickabortsize").(int)
+		update.Quickabortsize = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Quickabortsize = true
+		}
+
+	}
+	if d.HasChange("minressize") {
+		updateFlag = true
+
+		value := d.Get("minressize").(int)
+		update.Minressize = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Minressize = true
+		}
+
+	}
+	if d.HasChange("maxressize") {
+		updateFlag = true
+
+		value := d.Get("maxressize").(int)
+		update.Maxressize = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxressize = true
+		}
+
+	}
+	if d.HasChange("memlimit") {
+		updateFlag = true
+
+		value := d.Get("memlimit").(int)
+		update.Memlimit = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Memlimit = true
+		}
+
+	}
+	if d.HasChange("ignorereqcachinghdrs") {
+		updateFlag = true
+
+		value := d.Get("ignorereqcachinghdrs").(string)
+		update.Ignorereqcachinghdrs = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Ignorereqcachinghdrs = true
+		}
+
+	}
+	if d.HasChange("minhits") {
+		updateFlag = true
+
+		value := d.Get("minhits").(int)
+		update.Minhits = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Minhits = true
+		}
+
+	}
+	if d.HasChange("alwaysevalpolicies") {
+		updateFlag = true
+
+		value := d.Get("alwaysevalpolicies").(string)
+		update.Alwaysevalpolicies = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Alwaysevalpolicies = true
+		}
+
+	}
+	if d.HasChange("persistha") {
+		updateFlag = true
+
+		value := d.Get("persistha").(string)
+		update.Persistha = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Persistha = true
+		}
+
+	}
+	if d.HasChange("pinned") {
+		updateFlag = true
+
+		value := d.Get("pinned").(string)
+		update.Pinned = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Pinned = true
+		}
+
+	}
+	if d.HasChange("lazydnsresolve") {
+		updateFlag = true
+
+		value := d.Get("lazydnsresolve").(string)
+		update.Lazydnsresolve = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Lazydnsresolve = true
+		}
+
+	}
+	if d.HasChange("hitselector") {
+		updateFlag = true
+
+		value := d.Get("hitselector").(string)
+		update.Hitselector = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Hitselector = true
+		}
+
+	}
+	if d.HasChange("invalselector") {
+		updateFlag = true
+
+		value := d.Get("invalselector").(string)
+		update.Invalselector = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Invalselector = true
+		}
+
+	}
+	key := get_cachecontentgroup_key(d)
+
+	if updateFlag {
+		if err := client.UpdateCachecontentgroup(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetCachecontentgroup(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetCachecontentgroup(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_cachecontentgroup(d, resource)
+	}
 
 	return nil
 }

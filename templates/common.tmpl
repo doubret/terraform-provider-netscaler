@@ -12,19 +12,19 @@ func Netscaler{{$.Name|name}}() *schema.Resource {
             Delete:        delete_{{$.Name}},
 		Schema: map[string]*schema.Schema{
             {{range $key, $value := $.Schema.Fields -}}
-            "{{$key}}": &schema.Schema{
-                {{if ($value|is_array) -}}
-                Type:     schema.TypeSet,
-                Elem:     &schema.Schema{
+                  "{{$key}}": &schema.Schema{
+                        {{if ($value|is_array) -}}
+                        Type:     schema.TypeSet,
+                        Elem:     &schema.Schema{
+                              Type:     schema.{{$value|tf_schema_type}},
+                        },
+                        {{else -}}
                         Type:     schema.{{$value|tf_schema_type}},
-                },
-                {{else -}}
-                Type:     schema.{{$value|tf_schema_type}},
-                {{end -}}
-                Optional: true,
-                Computed: true,
-                ForceNew: {{not (is_in $key $.Schema.Update)}},
-			},
+                        {{end -}}
+                        Optional: true,
+                        Computed: true,
+                        ForceNew: {{not (is_in $key $.Schema.Update)}},
+                  },
             {{end -}}
 		},
 	}
@@ -46,6 +46,18 @@ func get_{{$.Name}}(d *schema.ResourceData) nitro.{{$.Name|name}} {
       }
 
       return resource
+}
+{{end}}
+
+{{define "key_get"}}
+func get_{{$.Name}}_key(d *schema.ResourceData) nitro.{{$.Name|name}}Key {
+
+      key := nitro.{{$.Name|name}}Key{
+            {{range $key := $.Schema.Key -}}
+            d.Get("{{$key}}").({{(index $.Schema.Fields $key)|go_type}}),
+            {{end}}
+      }
+      return key
 }
 {{end}}
 
@@ -158,14 +170,80 @@ func read_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
 func update_{{$.Name}}(d *schema.ResourceData, meta interface{}) error {
       log.Println("[DEBUG] netscaler-provider:  In update_{{$.Name}}")
 
-      // TODO
-      // client := meta.(*nitro.NitroClient)
+      client := meta.(*nitro.NitroClient)
 
-      // err := client.Update{{$.Name|name}}(get_{{$.Name}}(d))
+      update := nitro.{{$.Name|name}}Update{}
+      unset := nitro.{{$.Name|name}}Unset{}
 
-      // if err != nil {
-      //       return err
-      // }
+      updateFlag := false
+      unsetFlag := false
+      
+      {{range $key := $.Schema.Key -}}
+      update.{{$key|title}} = d.Get("{{$key}}").({{(index $.Schema.Fields $key)|go_type}})
+      unset.{{$key|title}} = d.Get("{{$key}}").({{(index $.Schema.Fields $key)|go_type}})
+      {{end}}
+
+      {{range $key := $.Schema.Update -}}
+      if d.HasChange("{{$key}}") {
+            updateFlag = true
+
+            {{if ((index $.Schema.Fields $key)|is_array) -}}
+            value := utils.Convert_set_to_{{(index $.Schema.Fields $key)|go_base_type}}_array(d.Get("{{$key}}").(*schema.Set))
+            {{else -}}
+            value := d.Get("{{$key}}").({{(index $.Schema.Fields $key)|go_type}})
+            {{end -}}
+
+            update.{{$key|title}} = value
+
+            {{if (eq ((index $.Schema.Fields $key)|go_type) "string") -}}
+            if value == "" {
+                  unsetFlag = true
+
+                  unset.{{$key|title}} = true
+            }
+            {{end}}
+            {{if (eq ((index $.Schema.Fields $key)|go_type) "int") -}}
+            if value == 0 {
+                  unsetFlag = true
+
+                  unset.{{$key|title}} = true
+            }
+            {{end}}
+            {{if (eq ((index $.Schema.Fields $key)|go_type) "double") -}}
+            if value == 0 {
+                  unsetFlag = true
+
+                  unset.{{$key|title}} = true
+            }
+            {{end}}
+      }
+      {{end -}}
+
+      key := get_{{$.Name}}_key(d)
+
+      if updateFlag {
+            if err := client.Update{{$.Name|name}}(update); err != nil {
+                  log.Print("Failed to update resource : ", err)
+
+                  return err
+            }
+      }
+
+      if unsetFlag {
+            if err := client.Unset{{$.Name|name}}(unset); err != nil {
+                  log.Print("Failed to unset resource : ", err)
+
+                  return err
+            }
+      }
+
+      if resource, err := client.Get{{$.Name|name}}(key); err != nil {
+            log.Print("Failed to get resource : ", err)
+
+            return err
+      } else {
+            set_{{$.Name}}(d, resource)
+      }
 
       return nil
 }

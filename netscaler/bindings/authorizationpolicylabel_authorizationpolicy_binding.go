@@ -97,6 +97,15 @@ func set_authorizationpolicylabel_authorizationpolicy_binding(d *schema.Resource
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_authorizationpolicylabel_authorizationpolicy_binding_key(d *schema.ResourceData) nitro.AuthorizationpolicylabelAuthorizationpolicyBindingKey {
+
+	key := nitro.AuthorizationpolicylabelAuthorizationpolicyBindingKey{
+		d.Get("labelname").(string),
+		d.Get("policyname").(string),
+	}
+	return key
+}
+
 func create_authorizationpolicylabel_authorizationpolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_authorizationpolicylabel_authorizationpolicy_binding")
 

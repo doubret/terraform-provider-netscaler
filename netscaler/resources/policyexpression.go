@@ -80,6 +80,14 @@ func set_policyexpression(d *schema.ResourceData, resource *nitro.Policyexpressi
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_policyexpression_key(d *schema.ResourceData) nitro.PolicyexpressionKey {
+
+	key := nitro.PolicyexpressionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_policyexpression(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_policyexpression")
 
@@ -165,14 +173,94 @@ func read_policyexpression(d *schema.ResourceData, meta interface{}) error {
 func update_policyexpression(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_policyexpression")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdatePolicyexpression(get_policyexpression(d))
+	update := nitro.PolicyexpressionUpdate{}
+	unset := nitro.PolicyexpressionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("value") {
+		updateFlag = true
+
+		value := d.Get("value").(string)
+		update.Value = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Value = true
+		}
+
+	}
+	if d.HasChange("description") {
+		updateFlag = true
+
+		value := d.Get("description").(string)
+		update.Description = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Description = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	if d.HasChange("clientsecuritymessage") {
+		updateFlag = true
+
+		value := d.Get("clientsecuritymessage").(string)
+		update.Clientsecuritymessage = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Clientsecuritymessage = true
+		}
+
+	}
+	key := get_policyexpression_key(d)
+
+	if updateFlag {
+		if err := client.UpdatePolicyexpression(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetPolicyexpression(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetPolicyexpression(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_policyexpression(d, resource)
+	}
 
 	return nil
 }

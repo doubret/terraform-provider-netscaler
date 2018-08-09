@@ -97,6 +97,15 @@ func set_lbvserver_appflowpolicy_binding(d *schema.ResourceData, resource *nitro
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbvserver_appflowpolicy_binding_key(d *schema.ResourceData) nitro.LbvserverAppflowpolicyBindingKey {
+
+	key := nitro.LbvserverAppflowpolicyBindingKey{
+		d.Get("name").(string),
+		d.Get("policyname").(string),
+	}
+	return key
+}
+
 func create_lbvserver_appflowpolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbvserver_appflowpolicy_binding")
 

@@ -80,6 +80,14 @@ func set_cmpaction(d *schema.ResourceData, resource *nitro.Cmpaction) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_cmpaction_key(d *schema.ResourceData) nitro.CmpactionKey {
+
+	key := nitro.CmpactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_cmpaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_cmpaction")
 
@@ -165,14 +173,81 @@ func read_cmpaction(d *schema.ResourceData, meta interface{}) error {
 func update_cmpaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cmpaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateCmpaction(get_cmpaction(d))
+	update := nitro.CmpactionUpdate{}
+	unset := nitro.CmpactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("cmptype") {
+		updateFlag = true
+
+		value := d.Get("cmptype").(string)
+		update.Cmptype = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cmptype = true
+		}
+
+	}
+	if d.HasChange("addvaryheader") {
+		updateFlag = true
+
+		value := d.Get("addvaryheader").(string)
+		update.Addvaryheader = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Addvaryheader = true
+		}
+
+	}
+	if d.HasChange("varyheadervalue") {
+		updateFlag = true
+
+		value := d.Get("varyheadervalue").(string)
+		update.Varyheadervalue = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Varyheadervalue = true
+		}
+
+	}
+	key := get_cmpaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateCmpaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetCmpaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetCmpaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_cmpaction(d, resource)
+	}
 
 	return nil
 }

@@ -128,6 +128,14 @@ func set_lbgroup(d *schema.ResourceData, resource *nitro.Lbgroup) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbgroup_key(d *schema.ResourceData) nitro.LbgroupKey {
+
+	key := nitro.LbgroupKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_lbgroup(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbgroup")
 
@@ -213,14 +221,172 @@ func read_lbgroup(d *schema.ResourceData, meta interface{}) error {
 func update_lbgroup(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbgroup")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateLbgroup(get_lbgroup(d))
+	update := nitro.LbgroupUpdate{}
+	unset := nitro.LbgroupUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("persistencetype") {
+		updateFlag = true
+
+		value := d.Get("persistencetype").(string)
+		update.Persistencetype = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Persistencetype = true
+		}
+
+	}
+	if d.HasChange("persistencebackup") {
+		updateFlag = true
+
+		value := d.Get("persistencebackup").(string)
+		update.Persistencebackup = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Persistencebackup = true
+		}
+
+	}
+	if d.HasChange("backuppersistencetimeout") {
+		updateFlag = true
+
+		value := d.Get("backuppersistencetimeout").(int)
+		update.Backuppersistencetimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Backuppersistencetimeout = true
+		}
+
+	}
+	if d.HasChange("persistmask") {
+		updateFlag = true
+
+		value := d.Get("persistmask").(string)
+		update.Persistmask = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Persistmask = true
+		}
+
+	}
+	if d.HasChange("cookiename") {
+		updateFlag = true
+
+		value := d.Get("cookiename").(string)
+		update.Cookiename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cookiename = true
+		}
+
+	}
+	if d.HasChange("v6persistmasklen") {
+		updateFlag = true
+
+		value := d.Get("v6persistmasklen").(int)
+		update.V6persistmasklen = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.V6persistmasklen = true
+		}
+
+	}
+	if d.HasChange("cookiedomain") {
+		updateFlag = true
+
+		value := d.Get("cookiedomain").(string)
+		update.Cookiedomain = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cookiedomain = true
+		}
+
+	}
+	if d.HasChange("timeout") {
+		updateFlag = true
+
+		value := d.Get("timeout").(int)
+		update.Timeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Timeout = true
+		}
+
+	}
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("usevserverpersistency") {
+		updateFlag = true
+
+		value := d.Get("usevserverpersistency").(string)
+		update.Usevserverpersistency = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Usevserverpersistency = true
+		}
+
+	}
+	key := get_lbgroup_key(d)
+
+	if updateFlag {
+		if err := client.UpdateLbgroup(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetLbgroup(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetLbgroup(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_lbgroup(d, resource)
+	}
 
 	return nil
 }

@@ -88,6 +88,14 @@ func set_dbdbprofile(d *schema.ResourceData, resource *nitro.Dbdbprofile) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_dbdbprofile_key(d *schema.ResourceData) nitro.DbdbprofileKey {
+
+	key := nitro.DbdbprofileKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_dbdbprofile")
 
@@ -173,14 +181,107 @@ func read_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 func update_dbdbprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dbdbprofile")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateDbdbprofile(get_dbdbprofile(d))
+	update := nitro.DbdbprofileUpdate{}
+	unset := nitro.DbdbprofileUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("interpretquery") {
+		updateFlag = true
+
+		value := d.Get("interpretquery").(string)
+		update.Interpretquery = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Interpretquery = true
+		}
+
+	}
+	if d.HasChange("stickiness") {
+		updateFlag = true
+
+		value := d.Get("stickiness").(string)
+		update.Stickiness = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Stickiness = true
+		}
+
+	}
+	if d.HasChange("kcdaccount") {
+		updateFlag = true
+
+		value := d.Get("kcdaccount").(string)
+		update.Kcdaccount = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Kcdaccount = true
+		}
+
+	}
+	if d.HasChange("conmultiplex") {
+		updateFlag = true
+
+		value := d.Get("conmultiplex").(string)
+		update.Conmultiplex = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Conmultiplex = true
+		}
+
+	}
+	if d.HasChange("enablecachingconmuxoff") {
+		updateFlag = true
+
+		value := d.Get("enablecachingconmuxoff").(string)
+		update.Enablecachingconmuxoff = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Enablecachingconmuxoff = true
+		}
+
+	}
+	key := get_dbdbprofile_key(d)
+
+	if updateFlag {
+		if err := client.UpdateDbdbprofile(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetDbdbprofile(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetDbdbprofile(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_dbdbprofile(d, resource)
+	}
 
 	return nil
 }

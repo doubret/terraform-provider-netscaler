@@ -64,6 +64,14 @@ func set_auditsyslogpolicy(d *schema.ResourceData, resource *nitro.Auditsyslogpo
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_auditsyslogpolicy_key(d *schema.ResourceData) nitro.AuditsyslogpolicyKey {
+
+	key := nitro.AuditsyslogpolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_auditsyslogpolicy")
 
@@ -149,14 +157,68 @@ func read_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_auditsyslogpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_auditsyslogpolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateAuditsyslogpolicy(get_auditsyslogpolicy(d))
+	update := nitro.AuditsyslogpolicyUpdate{}
+	unset := nitro.AuditsyslogpolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	key := get_auditsyslogpolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateAuditsyslogpolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetAuditsyslogpolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetAuditsyslogpolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_auditsyslogpolicy(d, resource)
+	}
 
 	return nil
 }

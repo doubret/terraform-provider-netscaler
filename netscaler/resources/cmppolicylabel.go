@@ -56,6 +56,14 @@ func set_cmppolicylabel(d *schema.ResourceData, resource *nitro.Cmppolicylabel) 
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_cmppolicylabel_key(d *schema.ResourceData) nitro.CmppolicylabelKey {
+
+	key := nitro.CmppolicylabelKey{
+		d.Get("labelname").(string),
+	}
+	return key
+}
+
 func create_cmppolicylabel(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_cmppolicylabel")
 

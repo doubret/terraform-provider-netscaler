@@ -136,6 +136,14 @@ func set_tmtrafficaction(d *schema.ResourceData, resource *nitro.Tmtrafficaction
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_tmtrafficaction_key(d *schema.ResourceData) nitro.TmtrafficactionKey {
+
+	key := nitro.TmtrafficactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_tmtrafficaction")
 
@@ -221,14 +229,185 @@ func read_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 func update_tmtrafficaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmtrafficaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateTmtrafficaction(get_tmtrafficaction(d))
+	update := nitro.TmtrafficactionUpdate{}
+	unset := nitro.TmtrafficactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("apptimeout") {
+		updateFlag = true
+
+		value := d.Get("apptimeout").(int)
+		update.Apptimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Apptimeout = true
+		}
+
+	}
+	if d.HasChange("sso") {
+		updateFlag = true
+
+		value := d.Get("sso").(string)
+		update.Sso = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sso = true
+		}
+
+	}
+	if d.HasChange("formssoaction") {
+		updateFlag = true
+
+		value := d.Get("formssoaction").(string)
+		update.Formssoaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Formssoaction = true
+		}
+
+	}
+	if d.HasChange("persistentcookie") {
+		updateFlag = true
+
+		value := d.Get("persistentcookie").(string)
+		update.Persistentcookie = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Persistentcookie = true
+		}
+
+	}
+	if d.HasChange("initiatelogout") {
+		updateFlag = true
+
+		value := d.Get("initiatelogout").(string)
+		update.Initiatelogout = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Initiatelogout = true
+		}
+
+	}
+	if d.HasChange("kcdaccount") {
+		updateFlag = true
+
+		value := d.Get("kcdaccount").(string)
+		update.Kcdaccount = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Kcdaccount = true
+		}
+
+	}
+	if d.HasChange("samlssoprofile") {
+		updateFlag = true
+
+		value := d.Get("samlssoprofile").(string)
+		update.Samlssoprofile = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Samlssoprofile = true
+		}
+
+	}
+	if d.HasChange("forcedtimeout") {
+		updateFlag = true
+
+		value := d.Get("forcedtimeout").(string)
+		update.Forcedtimeout = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Forcedtimeout = true
+		}
+
+	}
+	if d.HasChange("forcedtimeoutval") {
+		updateFlag = true
+
+		value := d.Get("forcedtimeoutval").(int)
+		update.Forcedtimeoutval = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Forcedtimeoutval = true
+		}
+
+	}
+	if d.HasChange("userexpression") {
+		updateFlag = true
+
+		value := d.Get("userexpression").(string)
+		update.Userexpression = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Userexpression = true
+		}
+
+	}
+	if d.HasChange("passwdexpression") {
+		updateFlag = true
+
+		value := d.Get("passwdexpression").(string)
+		update.Passwdexpression = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Passwdexpression = true
+		}
+
+	}
+	key := get_tmtrafficaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateTmtrafficaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetTmtrafficaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetTmtrafficaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_tmtrafficaction(d, resource)
+	}
 
 	return nil
 }

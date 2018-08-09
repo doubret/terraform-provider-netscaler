@@ -128,6 +128,14 @@ func set_transformaction(d *schema.ResourceData, resource *nitro.Transformaction
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_transformaction_key(d *schema.ResourceData) nitro.TransformactionKey {
+
+	key := nitro.TransformactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_transformaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_transformaction")
 
@@ -213,14 +221,159 @@ func read_transformaction(d *schema.ResourceData, meta interface{}) error {
 func update_transformaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_transformaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateTransformaction(get_transformaction(d))
+	update := nitro.TransformactionUpdate{}
+	unset := nitro.TransformactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("priority") {
+		updateFlag = true
+
+		value := d.Get("priority").(int)
+		update.Priority = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Priority = true
+		}
+
+	}
+	if d.HasChange("requrlfrom") {
+		updateFlag = true
+
+		value := d.Get("requrlfrom").(string)
+		update.Requrlfrom = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Requrlfrom = true
+		}
+
+	}
+	if d.HasChange("requrlinto") {
+		updateFlag = true
+
+		value := d.Get("requrlinto").(string)
+		update.Requrlinto = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Requrlinto = true
+		}
+
+	}
+	if d.HasChange("resurlfrom") {
+		updateFlag = true
+
+		value := d.Get("resurlfrom").(string)
+		update.Resurlfrom = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Resurlfrom = true
+		}
+
+	}
+	if d.HasChange("resurlinto") {
+		updateFlag = true
+
+		value := d.Get("resurlinto").(string)
+		update.Resurlinto = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Resurlinto = true
+		}
+
+	}
+	if d.HasChange("cookiedomainfrom") {
+		updateFlag = true
+
+		value := d.Get("cookiedomainfrom").(string)
+		update.Cookiedomainfrom = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cookiedomainfrom = true
+		}
+
+	}
+	if d.HasChange("cookiedomaininto") {
+		updateFlag = true
+
+		value := d.Get("cookiedomaininto").(string)
+		update.Cookiedomaininto = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cookiedomaininto = true
+		}
+
+	}
+	if d.HasChange("state") {
+		updateFlag = true
+
+		value := d.Get("state").(string)
+		update.State = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.State = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	key := get_transformaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateTransformaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetTransformaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetTransformaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_transformaction(d, resource)
+	}
 
 	return nil
 }

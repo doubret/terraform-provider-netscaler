@@ -56,6 +56,14 @@ func set_cspolicylabel(d *schema.ResourceData, resource *nitro.Cspolicylabel) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_cspolicylabel_key(d *schema.ResourceData) nitro.CspolicylabelKey {
+
+	key := nitro.CspolicylabelKey{
+		d.Get("labelname").(string),
+	}
+	return key
+}
+
 func create_cspolicylabel(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_cspolicylabel")
 

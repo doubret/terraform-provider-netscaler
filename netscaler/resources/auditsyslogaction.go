@@ -227,6 +227,14 @@ func set_auditsyslogaction(d *schema.ResourceData, resource *nitro.Auditsyslogac
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_auditsyslogaction_key(d *schema.ResourceData) nitro.AuditsyslogactionKey {
+
+	key := nitro.AuditsyslogactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_auditsyslogaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_auditsyslogaction")
 
@@ -312,14 +320,309 @@ func read_auditsyslogaction(d *schema.ResourceData, meta interface{}) error {
 func update_auditsyslogaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_auditsyslogaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateAuditsyslogaction(get_auditsyslogaction(d))
+	update := nitro.AuditsyslogactionUpdate{}
+	unset := nitro.AuditsyslogactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("serverip") {
+		updateFlag = true
+
+		value := d.Get("serverip").(string)
+		update.Serverip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Serverip = true
+		}
+
+	}
+	if d.HasChange("serverdomainname") {
+		updateFlag = true
+
+		value := d.Get("serverdomainname").(string)
+		update.Serverdomainname = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Serverdomainname = true
+		}
+
+	}
+	if d.HasChange("domainresolveretry") {
+		updateFlag = true
+
+		value := d.Get("domainresolveretry").(int)
+		update.Domainresolveretry = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Domainresolveretry = true
+		}
+
+	}
+	if d.HasChange("serverport") {
+		updateFlag = true
+
+		value := d.Get("serverport").(int)
+		update.Serverport = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Serverport = true
+		}
+
+	}
+	if d.HasChange("loglevel") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("loglevel").(*schema.Set))
+		update.Loglevel = value
+
+	}
+	if d.HasChange("dateformat") {
+		updateFlag = true
+
+		value := d.Get("dateformat").(string)
+		update.Dateformat = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dateformat = true
+		}
+
+	}
+	if d.HasChange("logfacility") {
+		updateFlag = true
+
+		value := d.Get("logfacility").(string)
+		update.Logfacility = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Logfacility = true
+		}
+
+	}
+	if d.HasChange("tcp") {
+		updateFlag = true
+
+		value := d.Get("tcp").(string)
+		update.Tcp = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Tcp = true
+		}
+
+	}
+	if d.HasChange("acl") {
+		updateFlag = true
+
+		value := d.Get("acl").(string)
+		update.Acl = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Acl = true
+		}
+
+	}
+	if d.HasChange("timezone") {
+		updateFlag = true
+
+		value := d.Get("timezone").(string)
+		update.Timezone = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Timezone = true
+		}
+
+	}
+	if d.HasChange("userdefinedauditlog") {
+		updateFlag = true
+
+		value := d.Get("userdefinedauditlog").(string)
+		update.Userdefinedauditlog = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Userdefinedauditlog = true
+		}
+
+	}
+	if d.HasChange("appflowexport") {
+		updateFlag = true
+
+		value := d.Get("appflowexport").(string)
+		update.Appflowexport = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Appflowexport = true
+		}
+
+	}
+	if d.HasChange("lsn") {
+		updateFlag = true
+
+		value := d.Get("lsn").(string)
+		update.Lsn = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Lsn = true
+		}
+
+	}
+	if d.HasChange("alg") {
+		updateFlag = true
+
+		value := d.Get("alg").(string)
+		update.Alg = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Alg = true
+		}
+
+	}
+	if d.HasChange("subscriberlog") {
+		updateFlag = true
+
+		value := d.Get("subscriberlog").(string)
+		update.Subscriberlog = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Subscriberlog = true
+		}
+
+	}
+	if d.HasChange("sslinterception") {
+		updateFlag = true
+
+		value := d.Get("sslinterception").(string)
+		update.Sslinterception = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sslinterception = true
+		}
+
+	}
+	if d.HasChange("lbvservername") {
+		updateFlag = true
+
+		value := d.Get("lbvservername").(string)
+		update.Lbvservername = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Lbvservername = true
+		}
+
+	}
+	if d.HasChange("tcpprofilename") {
+		updateFlag = true
+
+		value := d.Get("tcpprofilename").(string)
+		update.Tcpprofilename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Tcpprofilename = true
+		}
+
+	}
+	if d.HasChange("maxlogdatasizetohold") {
+		updateFlag = true
+
+		value := d.Get("maxlogdatasizetohold").(int)
+		update.Maxlogdatasizetohold = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxlogdatasizetohold = true
+		}
+
+	}
+	if d.HasChange("dns") {
+		updateFlag = true
+
+		value := d.Get("dns").(string)
+		update.Dns = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dns = true
+		}
+
+	}
+	if d.HasChange("netprofile") {
+		updateFlag = true
+
+		value := d.Get("netprofile").(string)
+		update.Netprofile = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Netprofile = true
+		}
+
+	}
+	key := get_auditsyslogaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateAuditsyslogaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetAuditsyslogaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetAuditsyslogaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_auditsyslogaction(d, resource)
+	}
 
 	return nil
 }

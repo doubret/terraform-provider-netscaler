@@ -64,6 +64,14 @@ func set_auditnslogpolicy(d *schema.ResourceData, resource *nitro.Auditnslogpoli
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_auditnslogpolicy_key(d *schema.ResourceData) nitro.AuditnslogpolicyKey {
+
+	key := nitro.AuditnslogpolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_auditnslogpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_auditnslogpolicy")
 
@@ -149,14 +157,68 @@ func read_auditnslogpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_auditnslogpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_auditnslogpolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateAuditnslogpolicy(get_auditnslogpolicy(d))
+	update := nitro.AuditnslogpolicyUpdate{}
+	unset := nitro.AuditnslogpolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	key := get_auditnslogpolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateAuditnslogpolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetAuditnslogpolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetAuditnslogpolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_auditnslogpolicy(d, resource)
+	}
 
 	return nil
 }

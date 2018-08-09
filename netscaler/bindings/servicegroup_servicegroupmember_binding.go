@@ -74,6 +74,16 @@ func set_servicegroup_servicegroupmember_binding(d *schema.ResourceData, resourc
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_servicegroup_servicegroupmember_binding_key(d *schema.ResourceData) nitro.ServicegroupServicegroupmemberBindingKey {
+
+	key := nitro.ServicegroupServicegroupmemberBindingKey{
+		d.Get("servicegroupname").(string),
+		d.Get("servername").(string),
+		d.Get("port").(int),
+	}
+	return key
+}
+
 func create_servicegroup_servicegroupmember_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_servicegroup_servicegroupmember_binding")
 

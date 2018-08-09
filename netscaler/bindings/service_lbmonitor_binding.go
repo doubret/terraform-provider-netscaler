@@ -80,6 +80,14 @@ func set_service_lbmonitor_binding(d *schema.ResourceData, resource *nitro.Servi
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_service_lbmonitor_binding_key(d *schema.ResourceData) nitro.ServiceLbmonitorBindingKey {
+
+	key := nitro.ServiceLbmonitorBindingKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_service_lbmonitor_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_service_lbmonitor_binding")
 

@@ -72,6 +72,14 @@ func set_transformprofile(d *schema.ResourceData, resource *nitro.Transformprofi
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_transformprofile_key(d *schema.ResourceData) nitro.TransformprofileKey {
+
+	key := nitro.TransformprofileKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_transformprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_transformprofile")
 
@@ -157,14 +165,81 @@ func read_transformprofile(d *schema.ResourceData, meta interface{}) error {
 func update_transformprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_transformprofile")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateTransformprofile(get_transformprofile(d))
+	update := nitro.TransformprofileUpdate{}
+	unset := nitro.TransformprofileUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("type") {
+		updateFlag = true
+
+		value := d.Get("type").(string)
+		update.Type = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Type = true
+		}
+
+	}
+	if d.HasChange("onlytransformabsurlinbody") {
+		updateFlag = true
+
+		value := d.Get("onlytransformabsurlinbody").(string)
+		update.Onlytransformabsurlinbody = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Onlytransformabsurlinbody = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	key := get_transformprofile_key(d)
+
+	if updateFlag {
+		if err := client.UpdateTransformprofile(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetTransformprofile(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetTransformprofile(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_transformprofile(d, resource)
+	}
 
 	return nil
 }

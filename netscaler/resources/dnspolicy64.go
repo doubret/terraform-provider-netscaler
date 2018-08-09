@@ -64,6 +64,14 @@ func set_dnspolicy64(d *schema.ResourceData, resource *nitro.Dnspolicy64) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_dnspolicy64_key(d *schema.ResourceData) nitro.Dnspolicy64Key {
+
+	key := nitro.Dnspolicy64Key{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_dnspolicy64(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_dnspolicy64")
 
@@ -149,14 +157,68 @@ func read_dnspolicy64(d *schema.ResourceData, meta interface{}) error {
 func update_dnspolicy64(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dnspolicy64")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateDnspolicy64(get_dnspolicy64(d))
+	update := nitro.Dnspolicy64Update{}
+	unset := nitro.Dnspolicy64Unset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	key := get_dnspolicy64_key(d)
+
+	if updateFlag {
+		if err := client.UpdateDnspolicy64(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetDnspolicy64(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetDnspolicy64(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_dnspolicy64(d, resource)
+	}
 
 	return nil
 }

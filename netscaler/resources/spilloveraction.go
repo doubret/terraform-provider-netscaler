@@ -56,6 +56,14 @@ func set_spilloveraction(d *schema.ResourceData, resource *nitro.Spilloveraction
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_spilloveraction_key(d *schema.ResourceData) nitro.SpilloveractionKey {
+
+	key := nitro.SpilloveractionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_spilloveraction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_spilloveraction")
 

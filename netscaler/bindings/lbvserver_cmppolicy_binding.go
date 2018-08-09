@@ -106,6 +106,16 @@ func set_lbvserver_cmppolicy_binding(d *schema.ResourceData, resource *nitro.Lbv
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbvserver_cmppolicy_binding_key(d *schema.ResourceData) nitro.LbvserverCmppolicyBindingKey {
+
+	key := nitro.LbvserverCmppolicyBindingKey{
+		d.Get("name").(string),
+		d.Get("policyname").(string),
+		d.Get("bindpoint").(string),
+	}
+	return key
+}
+
 func create_lbvserver_cmppolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbvserver_cmppolicy_binding")
 

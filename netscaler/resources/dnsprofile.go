@@ -112,6 +112,14 @@ func set_dnsprofile(d *schema.ResourceData, resource *nitro.Dnsprofile) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_dnsprofile_key(d *schema.ResourceData) nitro.DnsprofileKey {
+
+	key := nitro.DnsprofileKey{
+		d.Get("dnsprofilename").(string),
+	}
+	return key
+}
+
 func create_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_dnsprofile")
 
@@ -197,14 +205,146 @@ func read_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 func update_dnsprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dnsprofile")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateDnsprofile(get_dnsprofile(d))
+	update := nitro.DnsprofileUpdate{}
+	unset := nitro.DnsprofileUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Dnsprofilename = d.Get("dnsprofilename").(string)
+	unset.Dnsprofilename = d.Get("dnsprofilename").(string)
+
+	if d.HasChange("dnsquerylogging") {
+		updateFlag = true
+
+		value := d.Get("dnsquerylogging").(string)
+		update.Dnsquerylogging = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dnsquerylogging = true
+		}
+
+	}
+	if d.HasChange("dnsanswerseclogging") {
+		updateFlag = true
+
+		value := d.Get("dnsanswerseclogging").(string)
+		update.Dnsanswerseclogging = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dnsanswerseclogging = true
+		}
+
+	}
+	if d.HasChange("dnsextendedlogging") {
+		updateFlag = true
+
+		value := d.Get("dnsextendedlogging").(string)
+		update.Dnsextendedlogging = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dnsextendedlogging = true
+		}
+
+	}
+	if d.HasChange("dnserrorlogging") {
+		updateFlag = true
+
+		value := d.Get("dnserrorlogging").(string)
+		update.Dnserrorlogging = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dnserrorlogging = true
+		}
+
+	}
+	if d.HasChange("cacherecords") {
+		updateFlag = true
+
+		value := d.Get("cacherecords").(string)
+		update.Cacherecords = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cacherecords = true
+		}
+
+	}
+	if d.HasChange("cachenegativeresponses") {
+		updateFlag = true
+
+		value := d.Get("cachenegativeresponses").(string)
+		update.Cachenegativeresponses = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cachenegativeresponses = true
+		}
+
+	}
+	if d.HasChange("dropmultiqueryrequest") {
+		updateFlag = true
+
+		value := d.Get("dropmultiqueryrequest").(string)
+		update.Dropmultiqueryrequest = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dropmultiqueryrequest = true
+		}
+
+	}
+	if d.HasChange("cacheecsresponses") {
+		updateFlag = true
+
+		value := d.Get("cacheecsresponses").(string)
+		update.Cacheecsresponses = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cacheecsresponses = true
+		}
+
+	}
+	key := get_dnsprofile_key(d)
+
+	if updateFlag {
+		if err := client.UpdateDnsprofile(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetDnsprofile(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetDnsprofile(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_dnsprofile(d, resource)
+	}
 
 	return nil
 }

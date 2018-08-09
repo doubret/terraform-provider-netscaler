@@ -64,6 +64,14 @@ func set_videooptimizationpolicylabel(d *schema.ResourceData, resource *nitro.Vi
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_videooptimizationpolicylabel_key(d *schema.ResourceData) nitro.VideooptimizationpolicylabelKey {
+
+	key := nitro.VideooptimizationpolicylabelKey{
+		d.Get("labelname").(string),
+	}
+	return key
+}
+
 func create_videooptimizationpolicylabel(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_videooptimizationpolicylabel")
 

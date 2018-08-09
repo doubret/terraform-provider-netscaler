@@ -64,6 +64,14 @@ func set_authorizationpolicy(d *schema.ResourceData, resource *nitro.Authorizati
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_authorizationpolicy_key(d *schema.ResourceData) nitro.AuthorizationpolicyKey {
+
+	key := nitro.AuthorizationpolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_authorizationpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_authorizationpolicy")
 
@@ -149,14 +157,68 @@ func read_authorizationpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_authorizationpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_authorizationpolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateAuthorizationpolicy(get_authorizationpolicy(d))
+	update := nitro.AuthorizationpolicyUpdate{}
+	unset := nitro.AuthorizationpolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	key := get_authorizationpolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateAuthorizationpolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetAuthorizationpolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetAuthorizationpolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_authorizationpolicy(d, resource)
+	}
 
 	return nil
 }

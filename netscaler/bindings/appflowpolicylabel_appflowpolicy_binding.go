@@ -97,6 +97,15 @@ func set_appflowpolicylabel_appflowpolicy_binding(d *schema.ResourceData, resour
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_appflowpolicylabel_appflowpolicy_binding_key(d *schema.ResourceData) nitro.AppflowpolicylabelAppflowpolicyBindingKey {
+
+	key := nitro.AppflowpolicylabelAppflowpolicyBindingKey{
+		d.Get("labelname").(string),
+		d.Get("policyname").(string),
+	}
+	return key
+}
+
 func create_appflowpolicylabel_appflowpolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_appflowpolicylabel_appflowpolicy_binding")
 

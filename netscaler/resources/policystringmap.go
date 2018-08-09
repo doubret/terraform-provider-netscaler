@@ -56,6 +56,14 @@ func set_policystringmap(d *schema.ResourceData, resource *nitro.Policystringmap
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_policystringmap_key(d *schema.ResourceData) nitro.PolicystringmapKey {
+
+	key := nitro.PolicystringmapKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_policystringmap(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_policystringmap")
 
@@ -141,14 +149,55 @@ func read_policystringmap(d *schema.ResourceData, meta interface{}) error {
 func update_policystringmap(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_policystringmap")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdatePolicystringmap(get_policystringmap(d))
+	update := nitro.PolicystringmapUpdate{}
+	unset := nitro.PolicystringmapUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	key := get_policystringmap_key(d)
+
+	if updateFlag {
+		if err := client.UpdatePolicystringmap(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetPolicystringmap(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetPolicystringmap(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_policystringmap(d, resource)
+	}
 
 	return nil
 }

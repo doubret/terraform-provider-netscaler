@@ -519,7 +519,7 @@ func NetscalerLbmonitor() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
-				ForceNew: false,
+				ForceNew: true,
 			},
 			"units1": &schema.Schema{
 				Type:     schema.TypeString,
@@ -777,6 +777,15 @@ func set_lbmonitor(d *schema.ResourceData, resource *nitro.Lbmonitor) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbmonitor_key(d *schema.ResourceData) nitro.LbmonitorKey {
+
+	key := nitro.LbmonitorKey{
+		d.Get("monitorname").(string),
+		d.Get("type").(string),
+	}
+	return key
+}
+
 func create_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbmonitor")
 
@@ -862,14 +871,1188 @@ func read_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 func update_lbmonitor(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbmonitor")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateLbmonitor(get_lbmonitor(d))
+	update := nitro.LbmonitorUpdate{}
+	unset := nitro.LbmonitorUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Monitorname = d.Get("monitorname").(string)
+	unset.Monitorname = d.Get("monitorname").(string)
+	update.Type = d.Get("type").(string)
+	unset.Type = d.Get("type").(string)
+
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	if d.HasChange("httprequest") {
+		updateFlag = true
+
+		value := d.Get("httprequest").(string)
+		update.Httprequest = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Httprequest = true
+		}
+
+	}
+	if d.HasChange("rtsprequest") {
+		updateFlag = true
+
+		value := d.Get("rtsprequest").(string)
+		update.Rtsprequest = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rtsprequest = true
+		}
+
+	}
+	if d.HasChange("customheaders") {
+		updateFlag = true
+
+		value := d.Get("customheaders").(string)
+		update.Customheaders = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Customheaders = true
+		}
+
+	}
+	if d.HasChange("maxforwards") {
+		updateFlag = true
+
+		value := d.Get("maxforwards").(int)
+		update.Maxforwards = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxforwards = true
+		}
+
+	}
+	if d.HasChange("sipmethod") {
+		updateFlag = true
+
+		value := d.Get("sipmethod").(string)
+		update.Sipmethod = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sipmethod = true
+		}
+
+	}
+	if d.HasChange("sipreguri") {
+		updateFlag = true
+
+		value := d.Get("sipreguri").(string)
+		update.Sipreguri = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sipreguri = true
+		}
+
+	}
+	if d.HasChange("sipuri") {
+		updateFlag = true
+
+		value := d.Get("sipuri").(string)
+		update.Sipuri = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sipuri = true
+		}
+
+	}
+	if d.HasChange("send") {
+		updateFlag = true
+
+		value := d.Get("send").(string)
+		update.Send = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Send = true
+		}
+
+	}
+	if d.HasChange("recv") {
+		updateFlag = true
+
+		value := d.Get("recv").(string)
+		update.Recv = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Recv = true
+		}
+
+	}
+	if d.HasChange("query") {
+		updateFlag = true
+
+		value := d.Get("query").(string)
+		update.Query = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Query = true
+		}
+
+	}
+	if d.HasChange("querytype") {
+		updateFlag = true
+
+		value := d.Get("querytype").(string)
+		update.Querytype = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Querytype = true
+		}
+
+	}
+	if d.HasChange("username") {
+		updateFlag = true
+
+		value := d.Get("username").(string)
+		update.Username = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Username = true
+		}
+
+	}
+	if d.HasChange("password") {
+		updateFlag = true
+
+		value := d.Get("password").(string)
+		update.Password = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Password = true
+		}
+
+	}
+	if d.HasChange("secondarypassword") {
+		updateFlag = true
+
+		value := d.Get("secondarypassword").(string)
+		update.Secondarypassword = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Secondarypassword = true
+		}
+
+	}
+	if d.HasChange("logonpointname") {
+		updateFlag = true
+
+		value := d.Get("logonpointname").(string)
+		update.Logonpointname = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Logonpointname = true
+		}
+
+	}
+	if d.HasChange("lasversion") {
+		updateFlag = true
+
+		value := d.Get("lasversion").(string)
+		update.Lasversion = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Lasversion = true
+		}
+
+	}
+	if d.HasChange("radkey") {
+		updateFlag = true
+
+		value := d.Get("radkey").(string)
+		update.Radkey = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Radkey = true
+		}
+
+	}
+	if d.HasChange("radnasid") {
+		updateFlag = true
+
+		value := d.Get("radnasid").(string)
+		update.Radnasid = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Radnasid = true
+		}
+
+	}
+	if d.HasChange("radnasip") {
+		updateFlag = true
+
+		value := d.Get("radnasip").(string)
+		update.Radnasip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Radnasip = true
+		}
+
+	}
+	if d.HasChange("radaccounttype") {
+		updateFlag = true
+
+		value := d.Get("radaccounttype").(int)
+		update.Radaccounttype = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Radaccounttype = true
+		}
+
+	}
+	if d.HasChange("radframedip") {
+		updateFlag = true
+
+		value := d.Get("radframedip").(string)
+		update.Radframedip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Radframedip = true
+		}
+
+	}
+	if d.HasChange("radapn") {
+		updateFlag = true
+
+		value := d.Get("radapn").(string)
+		update.Radapn = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Radapn = true
+		}
+
+	}
+	if d.HasChange("radmsisdn") {
+		updateFlag = true
+
+		value := d.Get("radmsisdn").(string)
+		update.Radmsisdn = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Radmsisdn = true
+		}
+
+	}
+	if d.HasChange("radaccountsession") {
+		updateFlag = true
+
+		value := d.Get("radaccountsession").(string)
+		update.Radaccountsession = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Radaccountsession = true
+		}
+
+	}
+	if d.HasChange("lrtm") {
+		updateFlag = true
+
+		value := d.Get("lrtm").(string)
+		update.Lrtm = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Lrtm = true
+		}
+
+	}
+	if d.HasChange("deviation") {
+		updateFlag = true
+
+		value := d.Get("deviation").(int)
+		update.Deviation = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Deviation = true
+		}
+
+	}
+	if d.HasChange("units1") {
+		updateFlag = true
+
+		value := d.Get("units1").(string)
+		update.Units1 = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Units1 = true
+		}
+
+	}
+	if d.HasChange("scriptname") {
+		updateFlag = true
+
+		value := d.Get("scriptname").(string)
+		update.Scriptname = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Scriptname = true
+		}
+
+	}
+	if d.HasChange("scriptargs") {
+		updateFlag = true
+
+		value := d.Get("scriptargs").(string)
+		update.Scriptargs = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Scriptargs = true
+		}
+
+	}
+	if d.HasChange("validatecred") {
+		updateFlag = true
+
+		value := d.Get("validatecred").(string)
+		update.Validatecred = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Validatecred = true
+		}
+
+	}
+	if d.HasChange("domain") {
+		updateFlag = true
+
+		value := d.Get("domain").(string)
+		update.Domain = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Domain = true
+		}
+
+	}
+	if d.HasChange("dispatcherip") {
+		updateFlag = true
+
+		value := d.Get("dispatcherip").(string)
+		update.Dispatcherip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dispatcherip = true
+		}
+
+	}
+	if d.HasChange("dispatcherport") {
+		updateFlag = true
+
+		value := d.Get("dispatcherport").(int)
+		update.Dispatcherport = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Dispatcherport = true
+		}
+
+	}
+	if d.HasChange("interval") {
+		updateFlag = true
+
+		value := d.Get("interval").(int)
+		update.Interval = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Interval = true
+		}
+
+	}
+	if d.HasChange("units3") {
+		updateFlag = true
+
+		value := d.Get("units3").(string)
+		update.Units3 = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Units3 = true
+		}
+
+	}
+	if d.HasChange("resptimeout") {
+		updateFlag = true
+
+		value := d.Get("resptimeout").(int)
+		update.Resptimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Resptimeout = true
+		}
+
+	}
+	if d.HasChange("units4") {
+		updateFlag = true
+
+		value := d.Get("units4").(string)
+		update.Units4 = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Units4 = true
+		}
+
+	}
+	if d.HasChange("resptimeoutthresh") {
+		updateFlag = true
+
+		value := d.Get("resptimeoutthresh").(int)
+		update.Resptimeoutthresh = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Resptimeoutthresh = true
+		}
+
+	}
+	if d.HasChange("retries") {
+		updateFlag = true
+
+		value := d.Get("retries").(int)
+		update.Retries = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Retries = true
+		}
+
+	}
+	if d.HasChange("failureretries") {
+		updateFlag = true
+
+		value := d.Get("failureretries").(int)
+		update.Failureretries = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Failureretries = true
+		}
+
+	}
+	if d.HasChange("alertretries") {
+		updateFlag = true
+
+		value := d.Get("alertretries").(int)
+		update.Alertretries = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Alertretries = true
+		}
+
+	}
+	if d.HasChange("successretries") {
+		updateFlag = true
+
+		value := d.Get("successretries").(int)
+		update.Successretries = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Successretries = true
+		}
+
+	}
+	if d.HasChange("downtime") {
+		updateFlag = true
+
+		value := d.Get("downtime").(int)
+		update.Downtime = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Downtime = true
+		}
+
+	}
+	if d.HasChange("units2") {
+		updateFlag = true
+
+		value := d.Get("units2").(string)
+		update.Units2 = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Units2 = true
+		}
+
+	}
+	if d.HasChange("destip") {
+		updateFlag = true
+
+		value := d.Get("destip").(string)
+		update.Destip = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Destip = true
+		}
+
+	}
+	if d.HasChange("destport") {
+		updateFlag = true
+
+		value := d.Get("destport").(int)
+		update.Destport = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Destport = true
+		}
+
+	}
+	if d.HasChange("reverse") {
+		updateFlag = true
+
+		value := d.Get("reverse").(string)
+		update.Reverse = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Reverse = true
+		}
+
+	}
+	if d.HasChange("transparent") {
+		updateFlag = true
+
+		value := d.Get("transparent").(string)
+		update.Transparent = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Transparent = true
+		}
+
+	}
+	if d.HasChange("iptunnel") {
+		updateFlag = true
+
+		value := d.Get("iptunnel").(string)
+		update.Iptunnel = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Iptunnel = true
+		}
+
+	}
+	if d.HasChange("tos") {
+		updateFlag = true
+
+		value := d.Get("tos").(string)
+		update.Tos = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Tos = true
+		}
+
+	}
+	if d.HasChange("tosid") {
+		updateFlag = true
+
+		value := d.Get("tosid").(int)
+		update.Tosid = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Tosid = true
+		}
+
+	}
+	if d.HasChange("secure") {
+		updateFlag = true
+
+		value := d.Get("secure").(string)
+		update.Secure = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Secure = true
+		}
+
+	}
+	if d.HasChange("group") {
+		updateFlag = true
+
+		value := d.Get("group").(string)
+		update.Group = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Group = true
+		}
+
+	}
+	if d.HasChange("filename") {
+		updateFlag = true
+
+		value := d.Get("filename").(string)
+		update.Filename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Filename = true
+		}
+
+	}
+	if d.HasChange("basedn") {
+		updateFlag = true
+
+		value := d.Get("basedn").(string)
+		update.Basedn = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Basedn = true
+		}
+
+	}
+	if d.HasChange("binddn") {
+		updateFlag = true
+
+		value := d.Get("binddn").(string)
+		update.Binddn = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Binddn = true
+		}
+
+	}
+	if d.HasChange("filter") {
+		updateFlag = true
+
+		value := d.Get("filter").(string)
+		update.Filter = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Filter = true
+		}
+
+	}
+	if d.HasChange("attribute") {
+		updateFlag = true
+
+		value := d.Get("attribute").(string)
+		update.Attribute = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Attribute = true
+		}
+
+	}
+	if d.HasChange("database") {
+		updateFlag = true
+
+		value := d.Get("database").(string)
+		update.Database = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Database = true
+		}
+
+	}
+	if d.HasChange("oraclesid") {
+		updateFlag = true
+
+		value := d.Get("oraclesid").(string)
+		update.Oraclesid = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Oraclesid = true
+		}
+
+	}
+	if d.HasChange("sqlquery") {
+		updateFlag = true
+
+		value := d.Get("sqlquery").(string)
+		update.Sqlquery = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sqlquery = true
+		}
+
+	}
+	if d.HasChange("evalrule") {
+		updateFlag = true
+
+		value := d.Get("evalrule").(string)
+		update.Evalrule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Evalrule = true
+		}
+
+	}
+	if d.HasChange("snmpoid") {
+		updateFlag = true
+
+		value := d.Get("snmpoid").(string)
+		update.Snmpoid = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Snmpoid = true
+		}
+
+	}
+	if d.HasChange("snmpcommunity") {
+		updateFlag = true
+
+		value := d.Get("snmpcommunity").(string)
+		update.Snmpcommunity = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Snmpcommunity = true
+		}
+
+	}
+	if d.HasChange("snmpthreshold") {
+		updateFlag = true
+
+		value := d.Get("snmpthreshold").(string)
+		update.Snmpthreshold = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Snmpthreshold = true
+		}
+
+	}
+	if d.HasChange("snmpversion") {
+		updateFlag = true
+
+		value := d.Get("snmpversion").(string)
+		update.Snmpversion = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Snmpversion = true
+		}
+
+	}
+	if d.HasChange("metrictable") {
+		updateFlag = true
+
+		value := d.Get("metrictable").(string)
+		update.Metrictable = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Metrictable = true
+		}
+
+	}
+	if d.HasChange("application") {
+		updateFlag = true
+
+		value := d.Get("application").(string)
+		update.Application = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Application = true
+		}
+
+	}
+	if d.HasChange("sitepath") {
+		updateFlag = true
+
+		value := d.Get("sitepath").(string)
+		update.Sitepath = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sitepath = true
+		}
+
+	}
+	if d.HasChange("storename") {
+		updateFlag = true
+
+		value := d.Get("storename").(string)
+		update.Storename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Storename = true
+		}
+
+	}
+	if d.HasChange("storefrontacctservice") {
+		updateFlag = true
+
+		value := d.Get("storefrontacctservice").(string)
+		update.Storefrontacctservice = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Storefrontacctservice = true
+		}
+
+	}
+	if d.HasChange("storefrontcheckbackendservices") {
+		updateFlag = true
+
+		value := d.Get("storefrontcheckbackendservices").(string)
+		update.Storefrontcheckbackendservices = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Storefrontcheckbackendservices = true
+		}
+
+	}
+	if d.HasChange("hostname") {
+		updateFlag = true
+
+		value := d.Get("hostname").(string)
+		update.Hostname = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Hostname = true
+		}
+
+	}
+	if d.HasChange("netprofile") {
+		updateFlag = true
+
+		value := d.Get("netprofile").(string)
+		update.Netprofile = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Netprofile = true
+		}
+
+	}
+	if d.HasChange("mssqlprotocolversion") {
+		updateFlag = true
+
+		value := d.Get("mssqlprotocolversion").(string)
+		update.Mssqlprotocolversion = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Mssqlprotocolversion = true
+		}
+
+	}
+	if d.HasChange("originhost") {
+		updateFlag = true
+
+		value := d.Get("originhost").(string)
+		update.Originhost = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Originhost = true
+		}
+
+	}
+	if d.HasChange("originrealm") {
+		updateFlag = true
+
+		value := d.Get("originrealm").(string)
+		update.Originrealm = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Originrealm = true
+		}
+
+	}
+	if d.HasChange("hostipaddress") {
+		updateFlag = true
+
+		value := d.Get("hostipaddress").(string)
+		update.Hostipaddress = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Hostipaddress = true
+		}
+
+	}
+	if d.HasChange("vendorid") {
+		updateFlag = true
+
+		value := d.Get("vendorid").(int)
+		update.Vendorid = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Vendorid = true
+		}
+
+	}
+	if d.HasChange("productname") {
+		updateFlag = true
+
+		value := d.Get("productname").(string)
+		update.Productname = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Productname = true
+		}
+
+	}
+	if d.HasChange("firmwarerevision") {
+		updateFlag = true
+
+		value := d.Get("firmwarerevision").(int)
+		update.Firmwarerevision = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Firmwarerevision = true
+		}
+
+	}
+	if d.HasChange("vendorspecificvendorid") {
+		updateFlag = true
+
+		value := d.Get("vendorspecificvendorid").(int)
+		update.Vendorspecificvendorid = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Vendorspecificvendorid = true
+		}
+
+	}
+	if d.HasChange("kcdaccount") {
+		updateFlag = true
+
+		value := d.Get("kcdaccount").(string)
+		update.Kcdaccount = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Kcdaccount = true
+		}
+
+	}
+	if d.HasChange("storedb") {
+		updateFlag = true
+
+		value := d.Get("storedb").(string)
+		update.Storedb = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Storedb = true
+		}
+
+	}
+	if d.HasChange("trofscode") {
+		updateFlag = true
+
+		value := d.Get("trofscode").(int)
+		update.Trofscode = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Trofscode = true
+		}
+
+	}
+	if d.HasChange("trofsstring") {
+		updateFlag = true
+
+		value := d.Get("trofsstring").(string)
+		update.Trofsstring = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Trofsstring = true
+		}
+
+	}
+	if d.HasChange("sslprofile") {
+		updateFlag = true
+
+		value := d.Get("sslprofile").(string)
+		update.Sslprofile = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sslprofile = true
+		}
+
+	}
+	key := get_lbmonitor_key(d)
+
+	if updateFlag {
+		if err := client.UpdateLbmonitor(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetLbmonitor(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetLbmonitor(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_lbmonitor(d, resource)
+	}
 
 	return nil
 }

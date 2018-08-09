@@ -73,6 +73,15 @@ func set_lbmonitor_metric_binding(d *schema.ResourceData, resource *nitro.Lbmoni
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbmonitor_metric_binding_key(d *schema.ResourceData) nitro.LbmonitorMetricBindingKey {
+
+	key := nitro.LbmonitorMetricBindingKey{
+		d.Get("monitorname").(string),
+		d.Get("metric").(string),
+	}
+	return key
+}
+
 func create_lbmonitor_metric_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbmonitor_metric_binding")
 

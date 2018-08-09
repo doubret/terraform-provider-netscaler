@@ -64,6 +64,14 @@ func set_tmsessionpolicy(d *schema.ResourceData, resource *nitro.Tmsessionpolicy
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_tmsessionpolicy_key(d *schema.ResourceData) nitro.TmsessionpolicyKey {
+
+	key := nitro.TmsessionpolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_tmsessionpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_tmsessionpolicy")
 
@@ -149,14 +157,68 @@ func read_tmsessionpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_tmsessionpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmsessionpolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateTmsessionpolicy(get_tmsessionpolicy(d))
+	update := nitro.TmsessionpolicyUpdate{}
+	unset := nitro.TmsessionpolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	key := get_tmsessionpolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateTmsessionpolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetTmsessionpolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetTmsessionpolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_tmsessionpolicy(d, resource)
+	}
 
 	return nil
 }

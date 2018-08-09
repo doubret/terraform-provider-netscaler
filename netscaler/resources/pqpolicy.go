@@ -88,6 +88,14 @@ func set_pqpolicy(d *schema.ResourceData, resource *nitro.Pqpolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_pqpolicy_key(d *schema.ResourceData) nitro.PqpolicyKey {
+
+	key := nitro.PqpolicyKey{
+		d.Get("policyname").(string),
+	}
+	return key
+}
+
 func create_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_pqpolicy")
 
@@ -173,14 +181,81 @@ func read_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 func update_pqpolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_pqpolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdatePqpolicy(get_pqpolicy(d))
+	update := nitro.PqpolicyUpdate{}
+	unset := nitro.PqpolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Policyname = d.Get("policyname").(string)
+	unset.Policyname = d.Get("policyname").(string)
+
+	if d.HasChange("weight") {
+		updateFlag = true
+
+		value := d.Get("weight").(int)
+		update.Weight = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Weight = true
+		}
+
+	}
+	if d.HasChange("qdepth") {
+		updateFlag = true
+
+		value := d.Get("qdepth").(int)
+		update.Qdepth = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Qdepth = true
+		}
+
+	}
+	if d.HasChange("polqdepth") {
+		updateFlag = true
+
+		value := d.Get("polqdepth").(int)
+		update.Polqdepth = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Polqdepth = true
+		}
+
+	}
+	key := get_pqpolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdatePqpolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetPqpolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetPqpolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_pqpolicy(d, resource)
+	}
 
 	return nil
 }

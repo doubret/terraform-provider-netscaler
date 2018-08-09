@@ -65,6 +65,15 @@ func set_policystringmap_pattern_binding(d *schema.ResourceData, resource *nitro
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_policystringmap_pattern_binding_key(d *schema.ResourceData) nitro.PolicystringmapPatternBindingKey {
+
+	key := nitro.PolicystringmapPatternBindingKey{
+		d.Get("name").(string),
+		d.Get("key").(string),
+	}
+	return key
+}
+
 func create_policystringmap_pattern_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_policystringmap_pattern_binding")
 

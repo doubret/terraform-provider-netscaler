@@ -72,6 +72,14 @@ func set_appflowcollector(d *schema.ResourceData, resource *nitro.Appflowcollect
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_appflowcollector_key(d *schema.ResourceData) nitro.AppflowcollectorKey {
+
+	key := nitro.AppflowcollectorKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_appflowcollector")
 
@@ -157,14 +165,81 @@ func read_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 func update_appflowcollector(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appflowcollector")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateAppflowcollector(get_appflowcollector(d))
+	update := nitro.AppflowcollectorUpdate{}
+	unset := nitro.AppflowcollectorUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("ipaddress") {
+		updateFlag = true
+
+		value := d.Get("ipaddress").(string)
+		update.Ipaddress = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Ipaddress = true
+		}
+
+	}
+	if d.HasChange("port") {
+		updateFlag = true
+
+		value := d.Get("port").(int)
+		update.Port = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Port = true
+		}
+
+	}
+	if d.HasChange("netprofile") {
+		updateFlag = true
+
+		value := d.Get("netprofile").(string)
+		update.Netprofile = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Netprofile = true
+		}
+
+	}
+	key := get_appflowcollector_key(d)
+
+	if updateFlag {
+		if err := client.UpdateAppflowcollector(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetAppflowcollector(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetAppflowcollector(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_appflowcollector(d, resource)
+	}
 
 	return nil
 }

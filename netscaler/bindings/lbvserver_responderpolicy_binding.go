@@ -97,6 +97,15 @@ func set_lbvserver_responderpolicy_binding(d *schema.ResourceData, resource *nit
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbvserver_responderpolicy_binding_key(d *schema.ResourceData) nitro.LbvserverResponderpolicyBindingKey {
+
+	key := nitro.LbvserverResponderpolicyBindingKey{
+		d.Get("name").(string),
+		d.Get("policyname").(string),
+	}
+	return key
+}
+
 func create_lbvserver_responderpolicy_binding(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbvserver_responderpolicy_binding")
 

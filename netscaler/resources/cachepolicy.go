@@ -102,6 +102,14 @@ func set_cachepolicy(d *schema.ResourceData, resource *nitro.Cachepolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_cachepolicy_key(d *schema.ResourceData) nitro.CachepolicyKey {
+
+	key := nitro.CachepolicyKey{
+		d.Get("policyname").(string),
+	}
+	return key
+}
+
 func create_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_cachepolicy")
 
@@ -187,14 +195,108 @@ func read_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cachepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cachepolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateCachepolicy(get_cachepolicy(d))
+	update := nitro.CachepolicyUpdate{}
+	unset := nitro.CachepolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Policyname = d.Get("policyname").(string)
+	unset.Policyname = d.Get("policyname").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	if d.HasChange("storeingroup") {
+		updateFlag = true
+
+		value := d.Get("storeingroup").(string)
+		update.Storeingroup = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Storeingroup = true
+		}
+
+	}
+	if d.HasChange("invalgroups") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("invalgroups").(*schema.Set))
+		update.Invalgroups = value
+
+	}
+	if d.HasChange("invalobjects") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("invalobjects").(*schema.Set))
+		update.Invalobjects = value
+
+	}
+	if d.HasChange("undefaction") {
+		updateFlag = true
+
+		value := d.Get("undefaction").(string)
+		update.Undefaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Undefaction = true
+		}
+
+	}
+	key := get_cachepolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateCachepolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetCachepolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetCachepolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_cachepolicy(d, resource)
+	}
 
 	return nil
 }

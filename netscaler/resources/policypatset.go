@@ -64,6 +64,14 @@ func set_policypatset(d *schema.ResourceData, resource *nitro.Policypatset) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_policypatset_key(d *schema.ResourceData) nitro.PolicypatsetKey {
+
+	key := nitro.PolicypatsetKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_policypatset(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_policypatset")
 

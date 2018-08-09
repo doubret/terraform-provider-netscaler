@@ -56,6 +56,14 @@ func set_cachepolicylabel(d *schema.ResourceData, resource *nitro.Cachepolicylab
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_cachepolicylabel_key(d *schema.ResourceData) nitro.CachepolicylabelKey {
+
+	key := nitro.CachepolicylabelKey{
+		d.Get("labelname").(string),
+	}
+	return key
+}
+
 func create_cachepolicylabel(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_cachepolicylabel")
 

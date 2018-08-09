@@ -64,6 +64,14 @@ func set_dospolicy(d *schema.ResourceData, resource *nitro.Dospolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_dospolicy_key(d *schema.ResourceData) nitro.DospolicyKey {
+
+	key := nitro.DospolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_dospolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_dospolicy")
 
@@ -149,14 +157,68 @@ func read_dospolicy(d *schema.ResourceData, meta interface{}) error {
 func update_dospolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_dospolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateDospolicy(get_dospolicy(d))
+	update := nitro.DospolicyUpdate{}
+	unset := nitro.DospolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("qdepth") {
+		updateFlag = true
+
+		value := d.Get("qdepth").(int)
+		update.Qdepth = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Qdepth = true
+		}
+
+	}
+	if d.HasChange("cltdetectrate") {
+		updateFlag = true
+
+		value := d.Get("cltdetectrate").(int)
+		update.Cltdetectrate = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Cltdetectrate = true
+		}
+
+	}
+	key := get_dospolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateDospolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetDospolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetDospolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_dospolicy(d, resource)
+	}
 
 	return nil
 }

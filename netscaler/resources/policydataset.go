@@ -72,6 +72,14 @@ func set_policydataset(d *schema.ResourceData, resource *nitro.Policydataset) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_policydataset_key(d *schema.ResourceData) nitro.PolicydatasetKey {
+
+	key := nitro.PolicydatasetKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_policydataset(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_policydataset")
 

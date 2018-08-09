@@ -64,6 +64,14 @@ func set_responderpolicylabel(d *schema.ResourceData, resource *nitro.Responderp
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_responderpolicylabel_key(d *schema.ResourceData) nitro.ResponderpolicylabelKey {
+
+	key := nitro.ResponderpolicylabelKey{
+		d.Get("labelname").(string),
+	}
+	return key
+}
+
 func create_responderpolicylabel(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_responderpolicylabel")
 

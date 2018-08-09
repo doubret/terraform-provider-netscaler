@@ -88,6 +88,14 @@ func set_filteraction(d *schema.ResourceData, resource *nitro.Filteraction) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_filteraction_key(d *schema.ResourceData) nitro.FilteractionKey {
+
+	key := nitro.FilteractionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_filteraction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_filteraction")
 
@@ -173,14 +181,94 @@ func read_filteraction(d *schema.ResourceData, meta interface{}) error {
 func update_filteraction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_filteraction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateFilteraction(get_filteraction(d))
+	update := nitro.FilteractionUpdate{}
+	unset := nitro.FilteractionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("servicename") {
+		updateFlag = true
+
+		value := d.Get("servicename").(string)
+		update.Servicename = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Servicename = true
+		}
+
+	}
+	if d.HasChange("value") {
+		updateFlag = true
+
+		value := d.Get("value").(string)
+		update.Value = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Value = true
+		}
+
+	}
+	if d.HasChange("respcode") {
+		updateFlag = true
+
+		value := d.Get("respcode").(int)
+		update.Respcode = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Respcode = true
+		}
+
+	}
+	if d.HasChange("page") {
+		updateFlag = true
+
+		value := d.Get("page").(string)
+		update.Page = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Page = true
+		}
+
+	}
+	key := get_filteraction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateFilteraction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetFilteraction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetFilteraction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_filteraction(d, resource)
+	}
 
 	return nil
 }

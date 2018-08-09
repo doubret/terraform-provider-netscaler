@@ -72,6 +72,14 @@ func set_videooptimizationaction(d *schema.ResourceData, resource *nitro.Videoop
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_videooptimizationaction_key(d *schema.ResourceData) nitro.VideooptimizationactionKey {
+
+	key := nitro.VideooptimizationactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_videooptimizationaction")
 
@@ -157,14 +165,81 @@ func read_videooptimizationaction(d *schema.ResourceData, meta interface{}) erro
 func update_videooptimizationaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_videooptimizationaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateVideooptimizationaction(get_videooptimizationaction(d))
+	update := nitro.VideooptimizationactionUpdate{}
+	unset := nitro.VideooptimizationactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("type") {
+		updateFlag = true
+
+		value := d.Get("type").(string)
+		update.Type = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Type = true
+		}
+
+	}
+	if d.HasChange("rate") {
+		updateFlag = true
+
+		value := d.Get("rate").(int)
+		update.Rate = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Rate = true
+		}
+
+	}
+	if d.HasChange("comment") {
+		updateFlag = true
+
+		value := d.Get("comment").(string)
+		update.Comment = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Comment = true
+		}
+
+	}
+	key := get_videooptimizationaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateVideooptimizationaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetVideooptimizationaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetVideooptimizationaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_videooptimizationaction(d, resource)
+	}
 
 	return nil
 }

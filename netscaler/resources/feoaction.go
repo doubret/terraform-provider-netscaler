@@ -227,6 +227,14 @@ func set_feoaction(d *schema.ResourceData, resource *nitro.Feoaction) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_feoaction_key(d *schema.ResourceData) nitro.FeoactionKey {
+
+	key := nitro.FeoactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_feoaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_feoaction")
 
@@ -312,14 +320,208 @@ func read_feoaction(d *schema.ResourceData, meta interface{}) error {
 func update_feoaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_feoaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateFeoaction(get_feoaction(d))
+	update := nitro.FeoactionUpdate{}
+	unset := nitro.FeoactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("pageextendcache") {
+		updateFlag = true
+
+		value := d.Get("pageextendcache").(bool)
+		update.Pageextendcache = value
+
+	}
+	if d.HasChange("cachemaxage") {
+		updateFlag = true
+
+		value := d.Get("cachemaxage").(int)
+		update.Cachemaxage = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Cachemaxage = true
+		}
+
+	}
+	if d.HasChange("imgshrinktoattrib") {
+		updateFlag = true
+
+		value := d.Get("imgshrinktoattrib").(bool)
+		update.Imgshrinktoattrib = value
+
+	}
+	if d.HasChange("imggiftopng") {
+		updateFlag = true
+
+		value := d.Get("imggiftopng").(bool)
+		update.Imggiftopng = value
+
+	}
+	if d.HasChange("imgtowebp") {
+		updateFlag = true
+
+		value := d.Get("imgtowebp").(bool)
+		update.Imgtowebp = value
+
+	}
+	if d.HasChange("imgtojpegxr") {
+		updateFlag = true
+
+		value := d.Get("imgtojpegxr").(bool)
+		update.Imgtojpegxr = value
+
+	}
+	if d.HasChange("imginline") {
+		updateFlag = true
+
+		value := d.Get("imginline").(bool)
+		update.Imginline = value
+
+	}
+	if d.HasChange("cssimginline") {
+		updateFlag = true
+
+		value := d.Get("cssimginline").(bool)
+		update.Cssimginline = value
+
+	}
+	if d.HasChange("jpgoptimize") {
+		updateFlag = true
+
+		value := d.Get("jpgoptimize").(bool)
+		update.Jpgoptimize = value
+
+	}
+	if d.HasChange("imglazyload") {
+		updateFlag = true
+
+		value := d.Get("imglazyload").(bool)
+		update.Imglazyload = value
+
+	}
+	if d.HasChange("cssminify") {
+		updateFlag = true
+
+		value := d.Get("cssminify").(bool)
+		update.Cssminify = value
+
+	}
+	if d.HasChange("cssinline") {
+		updateFlag = true
+
+		value := d.Get("cssinline").(bool)
+		update.Cssinline = value
+
+	}
+	if d.HasChange("csscombine") {
+		updateFlag = true
+
+		value := d.Get("csscombine").(bool)
+		update.Csscombine = value
+
+	}
+	if d.HasChange("convertimporttolink") {
+		updateFlag = true
+
+		value := d.Get("convertimporttolink").(bool)
+		update.Convertimporttolink = value
+
+	}
+	if d.HasChange("jsminify") {
+		updateFlag = true
+
+		value := d.Get("jsminify").(bool)
+		update.Jsminify = value
+
+	}
+	if d.HasChange("jsinline") {
+		updateFlag = true
+
+		value := d.Get("jsinline").(bool)
+		update.Jsinline = value
+
+	}
+	if d.HasChange("htmlminify") {
+		updateFlag = true
+
+		value := d.Get("htmlminify").(bool)
+		update.Htmlminify = value
+
+	}
+	if d.HasChange("cssmovetohead") {
+		updateFlag = true
+
+		value := d.Get("cssmovetohead").(bool)
+		update.Cssmovetohead = value
+
+	}
+	if d.HasChange("jsmovetoend") {
+		updateFlag = true
+
+		value := d.Get("jsmovetoend").(bool)
+		update.Jsmovetoend = value
+
+	}
+	if d.HasChange("domainsharding") {
+		updateFlag = true
+
+		value := d.Get("domainsharding").(string)
+		update.Domainsharding = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Domainsharding = true
+		}
+
+	}
+	if d.HasChange("dnsshards") {
+		updateFlag = true
+
+		value := utils.Convert_set_to_string_array(d.Get("dnsshards").(*schema.Set))
+		update.Dnsshards = value
+
+	}
+	if d.HasChange("clientsidemeasurements") {
+		updateFlag = true
+
+		value := d.Get("clientsidemeasurements").(bool)
+		update.Clientsidemeasurements = value
+
+	}
+	key := get_feoaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateFeoaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetFeoaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetFeoaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_feoaction(d, resource)
+	}
 
 	return nil
 }

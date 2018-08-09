@@ -304,6 +304,14 @@ func set_nshttpprofile(d *schema.ResourceData, resource *nitro.Nshttpprofile) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_nshttpprofile_key(d *schema.ResourceData) nitro.NshttpprofileKey {
+
+	key := nitro.NshttpprofileKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_nshttpprofile")
 
@@ -389,14 +397,458 @@ func read_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 func update_nshttpprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_nshttpprofile")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateNshttpprofile(get_nshttpprofile(d))
+	update := nitro.NshttpprofileUpdate{}
+	unset := nitro.NshttpprofileUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("dropinvalreqs") {
+		updateFlag = true
+
+		value := d.Get("dropinvalreqs").(string)
+		update.Dropinvalreqs = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dropinvalreqs = true
+		}
+
+	}
+	if d.HasChange("markhttp09inval") {
+		updateFlag = true
+
+		value := d.Get("markhttp09inval").(string)
+		update.Markhttp09inval = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Markhttp09inval = true
+		}
+
+	}
+	if d.HasChange("markconnreqinval") {
+		updateFlag = true
+
+		value := d.Get("markconnreqinval").(string)
+		update.Markconnreqinval = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Markconnreqinval = true
+		}
+
+	}
+	if d.HasChange("cmponpush") {
+		updateFlag = true
+
+		value := d.Get("cmponpush").(string)
+		update.Cmponpush = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cmponpush = true
+		}
+
+	}
+	if d.HasChange("conmultiplex") {
+		updateFlag = true
+
+		value := d.Get("conmultiplex").(string)
+		update.Conmultiplex = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Conmultiplex = true
+		}
+
+	}
+	if d.HasChange("maxreusepool") {
+		updateFlag = true
+
+		value := d.Get("maxreusepool").(int)
+		update.Maxreusepool = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxreusepool = true
+		}
+
+	}
+	if d.HasChange("dropextracrlf") {
+		updateFlag = true
+
+		value := d.Get("dropextracrlf").(string)
+		update.Dropextracrlf = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dropextracrlf = true
+		}
+
+	}
+	if d.HasChange("incomphdrdelay") {
+		updateFlag = true
+
+		value := d.Get("incomphdrdelay").(int)
+		update.Incomphdrdelay = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Incomphdrdelay = true
+		}
+
+	}
+	if d.HasChange("websocket") {
+		updateFlag = true
+
+		value := d.Get("websocket").(string)
+		update.Websocket = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Websocket = true
+		}
+
+	}
+	if d.HasChange("rtsptunnel") {
+		updateFlag = true
+
+		value := d.Get("rtsptunnel").(string)
+		update.Rtsptunnel = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rtsptunnel = true
+		}
+
+	}
+	if d.HasChange("reqtimeout") {
+		updateFlag = true
+
+		value := d.Get("reqtimeout").(int)
+		update.Reqtimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Reqtimeout = true
+		}
+
+	}
+	if d.HasChange("adpttimeout") {
+		updateFlag = true
+
+		value := d.Get("adpttimeout").(string)
+		update.Adpttimeout = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Adpttimeout = true
+		}
+
+	}
+	if d.HasChange("reqtimeoutaction") {
+		updateFlag = true
+
+		value := d.Get("reqtimeoutaction").(string)
+		update.Reqtimeoutaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Reqtimeoutaction = true
+		}
+
+	}
+	if d.HasChange("dropextradata") {
+		updateFlag = true
+
+		value := d.Get("dropextradata").(string)
+		update.Dropextradata = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dropextradata = true
+		}
+
+	}
+	if d.HasChange("weblog") {
+		updateFlag = true
+
+		value := d.Get("weblog").(string)
+		update.Weblog = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Weblog = true
+		}
+
+	}
+	if d.HasChange("clientiphdrexpr") {
+		updateFlag = true
+
+		value := d.Get("clientiphdrexpr").(string)
+		update.Clientiphdrexpr = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Clientiphdrexpr = true
+		}
+
+	}
+	if d.HasChange("maxreq") {
+		updateFlag = true
+
+		value := d.Get("maxreq").(int)
+		update.Maxreq = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxreq = true
+		}
+
+	}
+	if d.HasChange("persistentetag") {
+		updateFlag = true
+
+		value := d.Get("persistentetag").(string)
+		update.Persistentetag = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Persistentetag = true
+		}
+
+	}
+	if d.HasChange("spdy") {
+		updateFlag = true
+
+		value := d.Get("spdy").(string)
+		update.Spdy = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Spdy = true
+		}
+
+	}
+	if d.HasChange("http2") {
+		updateFlag = true
+
+		value := d.Get("http2").(string)
+		update.Http2 = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Http2 = true
+		}
+
+	}
+	if d.HasChange("http2direct") {
+		updateFlag = true
+
+		value := d.Get("http2direct").(string)
+		update.Http2direct = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Http2direct = true
+		}
+
+	}
+	if d.HasChange("altsvc") {
+		updateFlag = true
+
+		value := d.Get("altsvc").(string)
+		update.Altsvc = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Altsvc = true
+		}
+
+	}
+	if d.HasChange("http2maxheaderlistsize") {
+		updateFlag = true
+
+		value := d.Get("http2maxheaderlistsize").(int)
+		update.Http2maxheaderlistsize = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Http2maxheaderlistsize = true
+		}
+
+	}
+	if d.HasChange("http2maxframesize") {
+		updateFlag = true
+
+		value := d.Get("http2maxframesize").(int)
+		update.Http2maxframesize = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Http2maxframesize = true
+		}
+
+	}
+	if d.HasChange("http2maxconcurrentstreams") {
+		updateFlag = true
+
+		value := d.Get("http2maxconcurrentstreams").(int)
+		update.Http2maxconcurrentstreams = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Http2maxconcurrentstreams = true
+		}
+
+	}
+	if d.HasChange("http2initialwindowsize") {
+		updateFlag = true
+
+		value := d.Get("http2initialwindowsize").(int)
+		update.Http2initialwindowsize = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Http2initialwindowsize = true
+		}
+
+	}
+	if d.HasChange("http2headertablesize") {
+		updateFlag = true
+
+		value := d.Get("http2headertablesize").(int)
+		update.Http2headertablesize = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Http2headertablesize = true
+		}
+
+	}
+	if d.HasChange("http2minseverconn") {
+		updateFlag = true
+
+		value := d.Get("http2minseverconn").(int)
+		update.Http2minseverconn = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Http2minseverconn = true
+		}
+
+	}
+	if d.HasChange("reusepooltimeout") {
+		updateFlag = true
+
+		value := d.Get("reusepooltimeout").(int)
+		update.Reusepooltimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Reusepooltimeout = true
+		}
+
+	}
+	if d.HasChange("maxheaderlen") {
+		updateFlag = true
+
+		value := d.Get("maxheaderlen").(int)
+		update.Maxheaderlen = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Maxheaderlen = true
+		}
+
+	}
+	if d.HasChange("minreusepool") {
+		updateFlag = true
+
+		value := d.Get("minreusepool").(int)
+		update.Minreusepool = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Minreusepool = true
+		}
+
+	}
+	if d.HasChange("apdexcltresptimethreshold") {
+		updateFlag = true
+
+		value := d.Get("apdexcltresptimethreshold").(int)
+		update.Apdexcltresptimethreshold = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Apdexcltresptimethreshold = true
+		}
+
+	}
+	key := get_nshttpprofile_key(d)
+
+	if updateFlag {
+		if err := client.UpdateNshttpprofile(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetNshttpprofile(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetNshttpprofile(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_nshttpprofile(d, resource)
+	}
 
 	return nil
 }

@@ -96,6 +96,14 @@ func set_lbprofile(d *schema.ResourceData, resource *nitro.Lbprofile) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbprofile_key(d *schema.ResourceData) nitro.LbprofileKey {
+
+	key := nitro.LbprofileKey{
+		d.Get("lbprofilename").(string),
+	}
+	return key
+}
+
 func create_lbprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbprofile")
 
@@ -181,14 +189,120 @@ func read_lbprofile(d *schema.ResourceData, meta interface{}) error {
 func update_lbprofile(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_lbprofile")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateLbprofile(get_lbprofile(d))
+	update := nitro.LbprofileUpdate{}
+	unset := nitro.LbprofileUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Lbprofilename = d.Get("lbprofilename").(string)
+	unset.Lbprofilename = d.Get("lbprofilename").(string)
+
+	if d.HasChange("cookiepassphrase") {
+		updateFlag = true
+
+		value := d.Get("cookiepassphrase").(string)
+		update.Cookiepassphrase = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Cookiepassphrase = true
+		}
+
+	}
+	if d.HasChange("dbslb") {
+		updateFlag = true
+
+		value := d.Get("dbslb").(string)
+		update.Dbslb = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Dbslb = true
+		}
+
+	}
+	if d.HasChange("processlocal") {
+		updateFlag = true
+
+		value := d.Get("processlocal").(string)
+		update.Processlocal = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Processlocal = true
+		}
+
+	}
+	if d.HasChange("httponlycookieflag") {
+		updateFlag = true
+
+		value := d.Get("httponlycookieflag").(string)
+		update.Httponlycookieflag = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Httponlycookieflag = true
+		}
+
+	}
+	if d.HasChange("usesecuredpersistencecookie") {
+		updateFlag = true
+
+		value := d.Get("usesecuredpersistencecookie").(string)
+		update.Usesecuredpersistencecookie = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Usesecuredpersistencecookie = true
+		}
+
+	}
+	if d.HasChange("useencryptedpersistencecookie") {
+		updateFlag = true
+
+		value := d.Get("useencryptedpersistencecookie").(string)
+		update.Useencryptedpersistencecookie = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Useencryptedpersistencecookie = true
+		}
+
+	}
+	key := get_lbprofile_key(d)
+
+	if updateFlag {
+		if err := client.UpdateLbprofile(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetLbprofile(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetLbprofile(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_lbprofile(d, resource)
+	}
 
 	return nil
 }

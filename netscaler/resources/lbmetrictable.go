@@ -48,6 +48,14 @@ func set_lbmetrictable(d *schema.ResourceData, resource *nitro.Lbmetrictable) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_lbmetrictable_key(d *schema.ResourceData) nitro.LbmetrictableKey {
+
+	key := nitro.LbmetrictableKey{
+		d.Get("metrictable").(string),
+	}
+	return key
+}
+
 func create_lbmetrictable(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_lbmetrictable")
 

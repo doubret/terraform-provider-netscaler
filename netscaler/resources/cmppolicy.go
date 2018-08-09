@@ -64,6 +64,14 @@ func set_cmppolicy(d *schema.ResourceData, resource *nitro.Cmppolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_cmppolicy_key(d *schema.ResourceData) nitro.CmppolicyKey {
+
+	key := nitro.CmppolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_cmppolicy")
 
@@ -149,14 +157,68 @@ func read_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 func update_cmppolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_cmppolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateCmppolicy(get_cmppolicy(d))
+	update := nitro.CmppolicyUpdate{}
+	unset := nitro.CmppolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("resaction") {
+		updateFlag = true
+
+		value := d.Get("resaction").(string)
+		update.Resaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Resaction = true
+		}
+
+	}
+	key := get_cmppolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateCmppolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetCmppolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetCmppolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_cmppolicy(d, resource)
+	}
 
 	return nil
 }

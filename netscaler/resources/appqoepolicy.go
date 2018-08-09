@@ -64,6 +64,14 @@ func set_appqoepolicy(d *schema.ResourceData, resource *nitro.Appqoepolicy) {
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_appqoepolicy_key(d *schema.ResourceData) nitro.AppqoepolicyKey {
+
+	key := nitro.AppqoepolicyKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_appqoepolicy")
 
@@ -149,14 +157,68 @@ func read_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 func update_appqoepolicy(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_appqoepolicy")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateAppqoepolicy(get_appqoepolicy(d))
+	update := nitro.AppqoepolicyUpdate{}
+	unset := nitro.AppqoepolicyUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("rule") {
+		updateFlag = true
+
+		value := d.Get("rule").(string)
+		update.Rule = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Rule = true
+		}
+
+	}
+	if d.HasChange("action") {
+		updateFlag = true
+
+		value := d.Get("action").(string)
+		update.Action = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Action = true
+		}
+
+	}
+	key := get_appqoepolicy_key(d)
+
+	if updateFlag {
+		if err := client.UpdateAppqoepolicy(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetAppqoepolicy(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetAppqoepolicy(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_appqoepolicy(d, resource)
+	}
 
 	return nil
 }

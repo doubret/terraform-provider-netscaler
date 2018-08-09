@@ -128,6 +128,14 @@ func set_tmsessionaction(d *schema.ResourceData, resource *nitro.Tmsessionaction
 	d.SetId(strings.Join(key, "-"))
 }
 
+func get_tmsessionaction_key(d *schema.ResourceData) nitro.TmsessionactionKey {
+
+	key := nitro.TmsessionactionKey{
+		d.Get("name").(string),
+	}
+	return key
+}
+
 func create_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]  netscaler-provider: In create_tmsessionaction")
 
@@ -213,14 +221,172 @@ func read_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 func update_tmsessionaction(d *schema.ResourceData, meta interface{}) error {
 	log.Println("[DEBUG] netscaler-provider:  In update_tmsessionaction")
 
-	// TODO
-	// client := meta.(*nitro.NitroClient)
+	client := meta.(*nitro.NitroClient)
 
-	// err := client.UpdateTmsessionaction(get_tmsessionaction(d))
+	update := nitro.TmsessionactionUpdate{}
+	unset := nitro.TmsessionactionUnset{}
 
-	// if err != nil {
-	//       return err
-	// }
+	updateFlag := false
+	unsetFlag := false
+
+	update.Name = d.Get("name").(string)
+	unset.Name = d.Get("name").(string)
+
+	if d.HasChange("sesstimeout") {
+		updateFlag = true
+
+		value := d.Get("sesstimeout").(int)
+		update.Sesstimeout = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Sesstimeout = true
+		}
+
+	}
+	if d.HasChange("defaultauthorizationaction") {
+		updateFlag = true
+
+		value := d.Get("defaultauthorizationaction").(string)
+		update.Defaultauthorizationaction = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Defaultauthorizationaction = true
+		}
+
+	}
+	if d.HasChange("sso") {
+		updateFlag = true
+
+		value := d.Get("sso").(string)
+		update.Sso = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Sso = true
+		}
+
+	}
+	if d.HasChange("ssocredential") {
+		updateFlag = true
+
+		value := d.Get("ssocredential").(string)
+		update.Ssocredential = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Ssocredential = true
+		}
+
+	}
+	if d.HasChange("ssodomain") {
+		updateFlag = true
+
+		value := d.Get("ssodomain").(string)
+		update.Ssodomain = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Ssodomain = true
+		}
+
+	}
+	if d.HasChange("kcdaccount") {
+		updateFlag = true
+
+		value := d.Get("kcdaccount").(string)
+		update.Kcdaccount = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Kcdaccount = true
+		}
+
+	}
+	if d.HasChange("httponlycookie") {
+		updateFlag = true
+
+		value := d.Get("httponlycookie").(string)
+		update.Httponlycookie = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Httponlycookie = true
+		}
+
+	}
+	if d.HasChange("persistentcookie") {
+		updateFlag = true
+
+		value := d.Get("persistentcookie").(string)
+		update.Persistentcookie = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Persistentcookie = true
+		}
+
+	}
+	if d.HasChange("persistentcookievalidity") {
+		updateFlag = true
+
+		value := d.Get("persistentcookievalidity").(int)
+		update.Persistentcookievalidity = value
+
+		if value == 0 {
+			unsetFlag = true
+
+			unset.Persistentcookievalidity = true
+		}
+
+	}
+	if d.HasChange("homepage") {
+		updateFlag = true
+
+		value := d.Get("homepage").(string)
+		update.Homepage = value
+
+		if value == "" {
+			unsetFlag = true
+
+			unset.Homepage = true
+		}
+
+	}
+	key := get_tmsessionaction_key(d)
+
+	if updateFlag {
+		if err := client.UpdateTmsessionaction(update); err != nil {
+			log.Print("Failed to update resource : ", err)
+
+			return err
+		}
+	}
+
+	if unsetFlag {
+		if err := client.UnsetTmsessionaction(unset); err != nil {
+			log.Print("Failed to unset resource : ", err)
+
+			return err
+		}
+	}
+
+	if resource, err := client.GetTmsessionaction(key); err != nil {
+		log.Print("Failed to get resource : ", err)
+
+		return err
+	} else {
+		set_tmsessionaction(d, resource)
+	}
 
 	return nil
 }
