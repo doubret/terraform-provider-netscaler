@@ -95,6 +95,7 @@ func get_csvserver_rewritepolicy_binding(d *schema.ResourceData) nitro.Csvserver
 
 func set_csvserver_rewritepolicy_binding(d *schema.ResourceData, resource *nitro.CsvserverRewritepolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)

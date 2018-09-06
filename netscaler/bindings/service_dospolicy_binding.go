@@ -46,6 +46,7 @@ func get_service_dospolicy_binding(d *schema.ResourceData) nitro.ServiceDospolic
 
 func set_service_dospolicy_binding(d *schema.ResourceData, resource *nitro.ServiceDospolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("name", resource.Name)
 	d.Set("policyname", resource.Policyname)

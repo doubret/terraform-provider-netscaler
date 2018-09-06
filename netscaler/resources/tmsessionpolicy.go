@@ -53,6 +53,7 @@ func get_tmsessionpolicy(d *schema.ResourceData) nitro.Tmsessionpolicy {
 
 func set_tmsessionpolicy(d *schema.ResourceData, resource *nitro.Tmsessionpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("name", resource.Name)

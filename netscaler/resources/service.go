@@ -319,6 +319,7 @@ func get_service(d *schema.ResourceData) nitro.Service {
 
 func set_service(d *schema.ResourceData, resource *nitro.Service) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("accessdown", resource.Accessdown)
 	d.Set("appflowlog", resource.Appflowlog)

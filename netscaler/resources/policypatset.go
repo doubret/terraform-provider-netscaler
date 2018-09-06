@@ -53,6 +53,7 @@ func get_policypatset(d *schema.ResourceData) nitro.Policypatset {
 
 func set_policypatset(d *schema.ResourceData, resource *nitro.Policypatset) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("indextype", resource.Indextype)

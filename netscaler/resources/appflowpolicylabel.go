@@ -46,6 +46,7 @@ func get_appflowpolicylabel(d *schema.ResourceData) nitro.Appflowpolicylabel {
 
 func set_appflowpolicylabel(d *schema.ResourceData, resource *nitro.Appflowpolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("labelname", resource.Labelname)
 	d.Set("policylabeltype", resource.Policylabeltype)

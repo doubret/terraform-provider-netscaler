@@ -60,6 +60,7 @@ func get_lbmonitor_metric_binding(d *schema.ResourceData) nitro.LbmonitorMetricB
 
 func set_lbmonitor_metric_binding(d *schema.ResourceData, resource *nitro.LbmonitorMetricBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("metric", resource.Metric)
 	d.Set("metricthreshold", resource.Metricthreshold)

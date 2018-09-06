@@ -60,6 +60,7 @@ func get_dnsaction64(d *schema.ResourceData) nitro.Dnsaction64 {
 
 func set_dnsaction64(d *schema.ResourceData, resource *nitro.Dnsaction64) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("actionname", resource.Actionname)
 	d.Set("excluderule", resource.Excluderule)

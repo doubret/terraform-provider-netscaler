@@ -60,6 +60,7 @@ func get_servicegroup_servicegroupmember_binding(d *schema.ResourceData) nitro.S
 
 func set_servicegroup_servicegroupmember_binding(d *schema.ResourceData, resource *nitro.ServicegroupServicegroupmemberBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("port", resource.Port)
 	d.Set("servername", resource.Servername)

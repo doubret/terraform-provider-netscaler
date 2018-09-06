@@ -53,6 +53,7 @@ func get_responderpolicylabel(d *schema.ResourceData) nitro.Responderpolicylabel
 
 func set_responderpolicylabel(d *schema.ResourceData, resource *nitro.Responderpolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("labelname", resource.Labelname)

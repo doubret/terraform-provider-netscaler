@@ -672,6 +672,7 @@ func get_lbvserver(d *schema.ResourceData) nitro.Lbvserver {
 
 func set_lbvserver(d *schema.ResourceData, resource *nitro.Lbvserver) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("appflowlog", resource.Appflowlog)
 	d.Set("authentication", resource.Authentication)

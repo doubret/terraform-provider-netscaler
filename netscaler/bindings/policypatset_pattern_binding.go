@@ -60,6 +60,7 @@ func get_policypatset_pattern_binding(d *schema.ResourceData) nitro.Policypatset
 
 func set_policypatset_pattern_binding(d *schema.ResourceData, resource *nitro.PolicypatsetPatternBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("charset", resource.Charset)
 	d.Set("index", resource.Index)

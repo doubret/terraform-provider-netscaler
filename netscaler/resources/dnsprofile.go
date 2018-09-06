@@ -95,6 +95,7 @@ func get_dnsprofile(d *schema.ResourceData) nitro.Dnsprofile {
 
 func set_dnsprofile(d *schema.ResourceData, resource *nitro.Dnsprofile) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("cacheecsresponses", resource.Cacheecsresponses)
 	d.Set("cachenegativeresponses", resource.Cachenegativeresponses)

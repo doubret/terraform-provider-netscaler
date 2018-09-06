@@ -53,6 +53,7 @@ func get_appqoepolicy(d *schema.ResourceData) nitro.Appqoepolicy {
 
 func set_appqoepolicy(d *schema.ResourceData, resource *nitro.Appqoepolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("name", resource.Name)

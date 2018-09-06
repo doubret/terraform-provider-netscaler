@@ -88,6 +88,7 @@ func get_csvserver_auditsyslogpolicy_binding(d *schema.ResourceData) nitro.Csvse
 
 func set_csvserver_auditsyslogpolicy_binding(d *schema.ResourceData, resource *nitro.CsvserverAuditsyslogpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

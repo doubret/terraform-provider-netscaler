@@ -53,6 +53,7 @@ func get_feopolicy(d *schema.ResourceData) nitro.Feopolicy {
 
 func set_feopolicy(d *schema.ResourceData, resource *nitro.Feopolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("name", resource.Name)

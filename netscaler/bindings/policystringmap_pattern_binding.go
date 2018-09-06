@@ -53,6 +53,7 @@ func get_policystringmap_pattern_binding(d *schema.ResourceData) nitro.Policystr
 
 func set_policystringmap_pattern_binding(d *schema.ResourceData, resource *nitro.PolicystringmapPatternBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("key", resource.Key)
 	d.Set("name", resource.Name)

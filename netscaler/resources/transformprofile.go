@@ -60,6 +60,7 @@ func get_transformprofile(d *schema.ResourceData) nitro.Transformprofile {
 
 func set_transformprofile(d *schema.ResourceData, resource *nitro.Transformprofile) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("name", resource.Name)

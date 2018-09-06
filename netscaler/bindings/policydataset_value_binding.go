@@ -53,6 +53,7 @@ func get_policydataset_value_binding(d *schema.ResourceData) nitro.Policydataset
 
 func set_policydataset_value_binding(d *schema.ResourceData, resource *nitro.PolicydatasetValueBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("index", resource.Index)
 	d.Set("name", resource.Name)

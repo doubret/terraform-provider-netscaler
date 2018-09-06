@@ -102,6 +102,7 @@ func get_server(d *schema.ResourceData) nitro.Server {
 
 func set_server(d *schema.ResourceData, resource *nitro.Server) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("domain", resource.Domain)

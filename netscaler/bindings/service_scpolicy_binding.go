@@ -46,6 +46,7 @@ func get_service_scpolicy_binding(d *schema.ResourceData) nitro.ServiceScpolicyB
 
 func set_service_scpolicy_binding(d *schema.ResourceData, resource *nitro.ServiceScpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("name", resource.Name)
 	d.Set("policyname", resource.Policyname)

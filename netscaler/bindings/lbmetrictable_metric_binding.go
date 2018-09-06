@@ -53,6 +53,7 @@ func get_lbmetrictable_metric_binding(d *schema.ResourceData) nitro.Lbmetrictabl
 
 func set_lbmetrictable_metric_binding(d *schema.ResourceData, resource *nitro.LbmetrictableMetricBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("metric", resource.Metric)
 	d.Set("metrictable", resource.Metrictable)

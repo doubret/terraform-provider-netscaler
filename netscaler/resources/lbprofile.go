@@ -81,6 +81,7 @@ func get_lbprofile(d *schema.ResourceData) nitro.Lbprofile {
 
 func set_lbprofile(d *schema.ResourceData, resource *nitro.Lbprofile) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("cookiepassphrase", resource.Cookiepassphrase)
 	d.Set("dbslb", resource.Dbslb)

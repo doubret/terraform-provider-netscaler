@@ -87,6 +87,7 @@ func get_cachepolicy(d *schema.ResourceData) nitro.Cachepolicy {
 
 func set_cachepolicy(d *schema.ResourceData, resource *nitro.Cachepolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("invalgroups", resource.Invalgroups)

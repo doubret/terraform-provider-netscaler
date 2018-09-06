@@ -67,6 +67,7 @@ func get_csaction(d *schema.ResourceData) nitro.Csaction {
 
 func set_csaction(d *schema.ResourceData, resource *nitro.Csaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("name", resource.Name)

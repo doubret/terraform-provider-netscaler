@@ -74,6 +74,7 @@ func get_pqpolicy(d *schema.ResourceData) nitro.Pqpolicy {
 
 func set_pqpolicy(d *schema.ResourceData, resource *nitro.Pqpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("policyname", resource.Policyname)
 	d.Set("polqdepth", resource.Polqdepth)

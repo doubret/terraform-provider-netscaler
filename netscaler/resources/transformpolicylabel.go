@@ -46,6 +46,7 @@ func get_transformpolicylabel(d *schema.ResourceData) nitro.Transformpolicylabel
 
 func set_transformpolicylabel(d *schema.ResourceData, resource *nitro.Transformpolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("labelname", resource.Labelname)
 	d.Set("policylabeltype", resource.Policylabeltype)

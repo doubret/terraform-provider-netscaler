@@ -67,6 +67,7 @@ func get_netprofile(d *schema.ResourceData) nitro.Netprofile {
 
 func set_netprofile(d *schema.ResourceData, resource *nitro.Netprofile) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("name", resource.Name)
 	d.Set("overridelsn", resource.Overridelsn)

@@ -60,6 +60,7 @@ func get_filterpolicy(d *schema.ResourceData) nitro.Filterpolicy {
 
 func set_filterpolicy(d *schema.ResourceData, resource *nitro.Filterpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("name", resource.Name)
 	d.Set("reqaction", resource.Reqaction)

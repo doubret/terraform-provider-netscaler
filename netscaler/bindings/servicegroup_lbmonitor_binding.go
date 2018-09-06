@@ -53,6 +53,7 @@ func get_servicegroup_lbmonitor_binding(d *schema.ResourceData) nitro.Servicegro
 
 func set_servicegroup_lbmonitor_binding(d *schema.ResourceData, resource *nitro.ServicegroupLbmonitorBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("monitor_name", resource.Monitor_name)
 	d.Set("servicegroupname", resource.Servicegroupname)

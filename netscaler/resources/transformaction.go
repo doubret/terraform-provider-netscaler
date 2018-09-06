@@ -109,6 +109,7 @@ func get_transformaction(d *schema.ResourceData) nitro.Transformaction {
 
 func set_transformaction(d *schema.ResourceData, resource *nitro.Transformaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("cookiedomainfrom", resource.Cookiedomainfrom)

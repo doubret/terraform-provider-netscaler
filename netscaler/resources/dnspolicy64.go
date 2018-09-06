@@ -53,6 +53,7 @@ func get_dnspolicy64(d *schema.ResourceData) nitro.Dnspolicy64 {
 
 func set_dnspolicy64(d *schema.ResourceData, resource *nitro.Dnspolicy64) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("name", resource.Name)

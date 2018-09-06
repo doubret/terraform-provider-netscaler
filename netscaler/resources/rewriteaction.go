@@ -95,6 +95,7 @@ func get_rewriteaction(d *schema.ResourceData) nitro.Rewriteaction {
 
 func set_rewriteaction(d *schema.ResourceData, resource *nitro.Rewriteaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bypasssafetycheck", resource.Bypasssafetycheck)
 	d.Set("comment", resource.Comment)

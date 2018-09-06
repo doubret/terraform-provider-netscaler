@@ -88,6 +88,7 @@ func get_lbvserver_transformpolicy_binding(d *schema.ResourceData) nitro.Lbvserv
 
 func set_lbvserver_transformpolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverTransformpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)

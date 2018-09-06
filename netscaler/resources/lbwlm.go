@@ -67,6 +67,7 @@ func get_lbwlm(d *schema.ResourceData) nitro.Lbwlm {
 
 func set_lbwlm(d *schema.ResourceData, resource *nitro.Lbwlm) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("ipaddress", resource.Ipaddress)
 	d.Set("katimeout", resource.Katimeout)

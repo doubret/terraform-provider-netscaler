@@ -88,6 +88,7 @@ func get_csvserver_cachepolicy_binding(d *schema.ResourceData) nitro.CsvserverCa
 
 func set_csvserver_cachepolicy_binding(d *schema.ResourceData, resource *nitro.CsvserverCachepolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

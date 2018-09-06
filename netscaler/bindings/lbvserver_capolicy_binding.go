@@ -88,6 +88,7 @@ func get_lbvserver_capolicy_binding(d *schema.ResourceData) nitro.LbvserverCapol
 
 func set_lbvserver_capolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverCapolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)

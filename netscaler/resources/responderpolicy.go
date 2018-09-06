@@ -81,6 +81,7 @@ func get_responderpolicy(d *schema.ResourceData) nitro.Responderpolicy {
 
 func set_responderpolicy(d *schema.ResourceData, resource *nitro.Responderpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("appflowaction", resource.Appflowaction)

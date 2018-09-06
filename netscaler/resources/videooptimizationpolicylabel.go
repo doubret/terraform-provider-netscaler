@@ -53,6 +53,7 @@ func get_videooptimizationpolicylabel(d *schema.ResourceData) nitro.Videooptimiz
 
 func set_videooptimizationpolicylabel(d *schema.ResourceData, resource *nitro.Videooptimizationpolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("labelname", resource.Labelname)

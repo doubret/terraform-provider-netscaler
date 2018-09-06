@@ -67,6 +67,7 @@ func get_transformpolicy(d *schema.ResourceData) nitro.Transformpolicy {
 
 func set_transformpolicy(d *schema.ResourceData, resource *nitro.Transformpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("logaction", resource.Logaction)

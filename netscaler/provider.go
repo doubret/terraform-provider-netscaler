@@ -165,6 +165,9 @@ func providerResources() map[string]*schema.Resource {
 		"netscaler_service_scpolicy_binding":                             bindings.NetscalerServiceScpolicyBinding(),
 		"netscaler_servicegroup_lbmonitor_binding":                       bindings.NetscalerServicegroupLbmonitorBinding(),
 		"netscaler_servicegroup_servicegroupmember_binding":              bindings.NetscalerServicegroupServicegroupmemberBinding(),
+		"netscaler_sslvserver_ecccurve_binding":                          bindings.NetscalerSslvserverEcccurveBinding(),
+		"netscaler_sslvserver_sslcertkey_binding":                        bindings.NetscalerSslvserverSslcertkeyBinding(),
+		"netscaler_sslvserver_sslciphersuite_binding":                    bindings.NetscalerSslvserverSslciphersuiteBinding(),
 	}
 }
 

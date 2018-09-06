@@ -88,6 +88,7 @@ func get_csvserver_tmtrafficpolicy_binding(d *schema.ResourceData) nitro.Csvserv
 
 func set_csvserver_tmtrafficpolicy_binding(d *schema.ResourceData, resource *nitro.CsvserverTmtrafficpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

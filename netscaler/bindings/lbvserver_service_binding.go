@@ -53,6 +53,7 @@ func get_lbvserver_service_binding(d *schema.ResourceData) nitro.LbvserverServic
 
 func set_lbvserver_service_binding(d *schema.ResourceData, resource *nitro.LbvserverServiceBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("name", resource.Name)
 	d.Set("servicename", resource.Servicename)

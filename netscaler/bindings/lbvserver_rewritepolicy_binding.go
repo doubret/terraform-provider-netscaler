@@ -88,6 +88,7 @@ func get_lbvserver_rewritepolicy_binding(d *schema.ResourceData) nitro.Lbvserver
 
 func set_lbvserver_rewritepolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverRewritepolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)

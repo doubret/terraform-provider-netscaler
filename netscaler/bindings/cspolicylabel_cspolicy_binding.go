@@ -88,6 +88,7 @@ func get_cspolicylabel_cspolicy_binding(d *schema.ResourceData) nitro.Cspolicyla
 
 func set_cspolicylabel_cspolicy_binding(d *schema.ResourceData, resource *nitro.CspolicylabelCspolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

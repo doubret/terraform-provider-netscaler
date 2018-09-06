@@ -81,6 +81,7 @@ func get_lbvserver_videooptimizationpolicy_binding(d *schema.ResourceData) nitro
 
 func set_lbvserver_videooptimizationpolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverVideooptimizationpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

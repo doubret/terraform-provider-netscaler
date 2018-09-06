@@ -84,6 +84,7 @@ func get_appflowaction(d *schema.ResourceData) nitro.Appflowaction {
 
 func set_appflowaction(d *schema.ResourceData, resource *nitro.Appflowaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("clientsidemeasurements", resource.Clientsidemeasurements)
 	d.Set("collectors", resource.Collectors)

@@ -88,6 +88,7 @@ func get_csvserver_authorizationpolicy_binding(d *schema.ResourceData) nitro.Csv
 
 func set_csvserver_authorizationpolicy_binding(d *schema.ResourceData, resource *nitro.CsvserverAuthorizationpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

@@ -67,6 +67,7 @@ func get_appflowpolicy(d *schema.ResourceData) nitro.Appflowpolicy {
 
 func set_appflowpolicy(d *schema.ResourceData, resource *nitro.Appflowpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("comment", resource.Comment)

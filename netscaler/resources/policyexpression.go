@@ -67,6 +67,7 @@ func get_policyexpression(d *schema.ResourceData) nitro.Policyexpression {
 
 func set_policyexpression(d *schema.ResourceData, resource *nitro.Policyexpression) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("clientsecuritymessage", resource.Clientsecuritymessage)
 	d.Set("comment", resource.Comment)

@@ -67,6 +67,7 @@ func get_lbmonitor_sslcertkey_binding(d *schema.ResourceData) nitro.LbmonitorSsl
 
 func set_lbmonitor_sslcertkey_binding(d *schema.ResourceData, resource *nitro.LbmonitorSslcertkeyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("ca", resource.Ca)
 	d.Set("certkeyname", resource.Certkeyname)

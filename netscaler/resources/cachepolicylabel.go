@@ -46,6 +46,7 @@ func get_cachepolicylabel(d *schema.ResourceData) nitro.Cachepolicylabel {
 
 func set_cachepolicylabel(d *schema.ResourceData, resource *nitro.Cachepolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("evaluates", resource.Evaluates)
 	d.Set("labelname", resource.Labelname)

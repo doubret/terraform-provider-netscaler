@@ -53,6 +53,7 @@ func get_cmppolicy(d *schema.ResourceData) nitro.Cmppolicy {
 
 func set_cmppolicy(d *schema.ResourceData, resource *nitro.Cmppolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("name", resource.Name)
 	d.Set("resaction", resource.Resaction)

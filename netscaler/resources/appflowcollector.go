@@ -60,6 +60,7 @@ func get_appflowcollector(d *schema.ResourceData) nitro.Appflowcollector {
 
 func set_appflowcollector(d *schema.ResourceData, resource *nitro.Appflowcollector) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("ipaddress", resource.Ipaddress)
 	d.Set("name", resource.Name)

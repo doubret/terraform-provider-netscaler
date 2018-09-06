@@ -60,6 +60,7 @@ func get_videooptimizationaction(d *schema.ResourceData) nitro.Videooptimization
 
 func set_videooptimizationaction(d *schema.ResourceData, resource *nitro.Videooptimizationaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("name", resource.Name)

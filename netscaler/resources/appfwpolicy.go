@@ -67,6 +67,7 @@ func get_appfwpolicy(d *schema.ResourceData) nitro.Appfwpolicy {
 
 func set_appfwpolicy(d *schema.ResourceData, resource *nitro.Appfwpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("logaction", resource.Logaction)

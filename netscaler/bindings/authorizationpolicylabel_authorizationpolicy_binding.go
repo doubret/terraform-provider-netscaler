@@ -81,6 +81,7 @@ func get_authorizationpolicylabel_authorizationpolicy_binding(d *schema.Resource
 
 func set_authorizationpolicylabel_authorizationpolicy_binding(d *schema.ResourceData, resource *nitro.AuthorizationpolicylabelAuthorizationpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

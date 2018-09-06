@@ -53,6 +53,7 @@ func get_auditnslogpolicy(d *schema.ResourceData) nitro.Auditnslogpolicy {
 
 func set_auditnslogpolicy(d *schema.ResourceData, resource *nitro.Auditnslogpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("name", resource.Name)

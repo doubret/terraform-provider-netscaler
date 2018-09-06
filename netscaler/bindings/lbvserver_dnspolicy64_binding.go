@@ -81,6 +81,7 @@ func get_lbvserver_dnspolicy64_binding(d *schema.ResourceData) nitro.LbvserverDn
 
 func set_lbvserver_dnspolicy64_binding(d *schema.ResourceData, resource *nitro.LbvserverDnspolicy64Binding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

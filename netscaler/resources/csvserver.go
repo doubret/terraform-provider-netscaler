@@ -410,6 +410,7 @@ func get_csvserver(d *schema.ResourceData) nitro.Csvserver {
 
 func set_csvserver(d *schema.ResourceData, resource *nitro.Csvserver) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("appflowlog", resource.Appflowlog)
 	d.Set("authentication", resource.Authentication)

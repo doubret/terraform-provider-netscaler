@@ -88,6 +88,7 @@ func get_scpolicy(d *schema.ResourceData) nitro.Scpolicy {
 
 func set_scpolicy(d *schema.ResourceData, resource *nitro.Scpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("altcontentpath", resource.Altcontentpath)

@@ -53,6 +53,7 @@ func get_rewritepolicylabel(d *schema.ResourceData) nitro.Rewritepolicylabel {
 
 func set_rewritepolicylabel(d *schema.ResourceData, resource *nitro.Rewritepolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("labelname", resource.Labelname)

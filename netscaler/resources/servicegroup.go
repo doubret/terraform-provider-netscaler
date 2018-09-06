@@ -270,6 +270,7 @@ func get_servicegroup(d *schema.ResourceData) nitro.Servicegroup {
 
 func set_servicegroup(d *schema.ResourceData, resource *nitro.Servicegroup) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("appflowlog", resource.Appflowlog)
 	d.Set("autoscale", resource.Autoscale)

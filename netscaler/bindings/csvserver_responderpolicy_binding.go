@@ -88,6 +88,7 @@ func get_csvserver_responderpolicy_binding(d *schema.ResourceData) nitro.Csvserv
 
 func set_csvserver_responderpolicy_binding(d *schema.ResourceData, resource *nitro.CsvserverResponderpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

@@ -64,6 +64,7 @@ func get_{{$.Name}}_key(d *schema.ResourceData) nitro.{{$.Name|name}}Key {
 {{define "resource_set"}}
 func set_{{$.Name}}(d *schema.ResourceData, resource *nitro.{{$.Name|name}}) {
       var _ = strconv.Itoa
+      var _ = strconv.FormatBool
 
       {{range $key, $value := $.Schema.Fields -}}
       d.Set("{{$key}}", resource.{{$key|title}})
@@ -74,6 +75,8 @@ func set_{{$.Name}}(d *schema.ResourceData, resource *nitro.{{$.Name|name}}) {
       {{range $key := $.Schema.Key -}}
       {{if eq (index $.Schema.Fields $key) "int" -}}
       key = append(key, strconv.Itoa(resource.{{$key|title}}))
+      {{else if eq (index $.Schema.Fields $key) "bool" -}}
+      key = append(key, strconv.FormatBool(resource.{{$key|title}}))
       {{else -}}
       key = append(key, resource.{{$key|title}})
       {{end -}}

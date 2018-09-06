@@ -382,6 +382,7 @@ func get_nstcpprofile(d *schema.ResourceData) nitro.Nstcpprofile {
 
 func set_nstcpprofile(d *schema.ResourceData, resource *nitro.Nstcpprofile) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("ackaggregation", resource.Ackaggregation)
 	d.Set("ackonpush", resource.Ackonpush)

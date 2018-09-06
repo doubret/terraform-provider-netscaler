@@ -88,6 +88,7 @@ func get_csvserver_appqoepolicy_binding(d *schema.ResourceData) nitro.CsvserverA
 
 func set_csvserver_appqoepolicy_binding(d *schema.ResourceData, resource *nitro.CsvserverAppqoepolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

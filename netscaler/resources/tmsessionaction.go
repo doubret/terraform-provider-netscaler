@@ -109,6 +109,7 @@ func get_tmsessionaction(d *schema.ResourceData) nitro.Tmsessionaction {
 
 func set_tmsessionaction(d *schema.ResourceData, resource *nitro.Tmsessionaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("defaultauthorizationaction", resource.Defaultauthorizationaction)
 	d.Set("homepage", resource.Homepage)

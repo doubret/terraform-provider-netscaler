@@ -88,6 +88,7 @@ func get_lbvserver_cachepolicy_binding(d *schema.ResourceData) nitro.LbvserverCa
 
 func set_lbvserver_cachepolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverCachepolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)

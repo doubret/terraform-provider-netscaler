@@ -74,6 +74,7 @@ func get_capolicy(d *schema.ResourceData) nitro.Capolicy {
 
 func set_capolicy(d *schema.ResourceData, resource *nitro.Capolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("comment", resource.Comment)

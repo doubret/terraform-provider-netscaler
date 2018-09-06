@@ -263,6 +263,7 @@ func get_nshttpprofile(d *schema.ResourceData) nitro.Nshttpprofile {
 
 func set_nshttpprofile(d *schema.ResourceData, resource *nitro.Nshttpprofile) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("adpttimeout", resource.Adpttimeout)
 	d.Set("altsvc", resource.Altsvc)

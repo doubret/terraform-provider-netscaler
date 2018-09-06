@@ -60,6 +60,7 @@ func get_policydataset(d *schema.ResourceData) nitro.Policydataset {
 
 func set_policydataset(d *schema.ResourceData, resource *nitro.Policydataset) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("indextype", resource.Indextype)

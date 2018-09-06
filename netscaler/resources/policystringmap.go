@@ -46,6 +46,7 @@ func get_policystringmap(d *schema.ResourceData) nitro.Policystringmap {
 
 func set_policystringmap(d *schema.ResourceData, resource *nitro.Policystringmap) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("comment", resource.Comment)
 	d.Set("name", resource.Name)

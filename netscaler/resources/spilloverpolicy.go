@@ -60,6 +60,7 @@ func get_spilloverpolicy(d *schema.ResourceData) nitro.Spilloverpolicy {
 
 func set_spilloverpolicy(d *schema.ResourceData, resource *nitro.Spilloverpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("comment", resource.Comment)

@@ -88,6 +88,7 @@ func get_lbvserver_spilloverpolicy_binding(d *schema.ResourceData) nitro.Lbvserv
 
 func set_lbvserver_spilloverpolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverSpilloverpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)

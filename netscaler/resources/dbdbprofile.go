@@ -74,6 +74,7 @@ func get_dbdbprofile(d *schema.ResourceData) nitro.Dbdbprofile {
 
 func set_dbdbprofile(d *schema.ResourceData, resource *nitro.Dbdbprofile) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("conmultiplex", resource.Conmultiplex)
 	d.Set("enablecachingconmuxoff", resource.Enablecachingconmuxoff)

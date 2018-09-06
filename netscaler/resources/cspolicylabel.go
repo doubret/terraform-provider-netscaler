@@ -46,6 +46,7 @@ func get_cspolicylabel(d *schema.ResourceData) nitro.Cspolicylabel {
 
 func set_cspolicylabel(d *schema.ResourceData, resource *nitro.Cspolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("cspolicylabeltype", resource.Cspolicylabeltype)
 	d.Set("labelname", resource.Labelname)

@@ -196,6 +196,7 @@ func get_auditsyslogaction(d *schema.ResourceData) nitro.Auditsyslogaction {
 
 func set_auditsyslogaction(d *schema.ResourceData, resource *nitro.Auditsyslogaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("acl", resource.Acl)
 	d.Set("alg", resource.Alg)

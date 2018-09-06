@@ -81,6 +81,7 @@ func get_lbvserver_authorizationpolicy_binding(d *schema.ResourceData) nitro.Lbv
 
 func set_lbvserver_authorizationpolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverAuthorizationpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

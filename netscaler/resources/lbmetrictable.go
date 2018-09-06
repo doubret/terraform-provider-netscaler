@@ -39,6 +39,7 @@ func get_lbmetrictable(d *schema.ResourceData) nitro.Lbmetrictable {
 
 func set_lbmetrictable(d *schema.ResourceData, resource *nitro.Lbmetrictable) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("metrictable", resource.Metrictable)
 

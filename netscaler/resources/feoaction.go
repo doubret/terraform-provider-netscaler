@@ -196,6 +196,7 @@ func get_feoaction(d *schema.ResourceData) nitro.Feoaction {
 
 func set_feoaction(d *schema.ResourceData, resource *nitro.Feoaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("cachemaxage", resource.Cachemaxage)
 	d.Set("clientsidemeasurements", resource.Clientsidemeasurements)

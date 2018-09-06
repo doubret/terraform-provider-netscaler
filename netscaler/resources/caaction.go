@@ -67,6 +67,7 @@ func get_caaction(d *schema.ResourceData) nitro.Caaction {
 
 func set_caaction(d *schema.ResourceData, resource *nitro.Caaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("accumressize", resource.Accumressize)
 	d.Set("comment", resource.Comment)

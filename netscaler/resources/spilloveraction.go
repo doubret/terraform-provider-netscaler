@@ -46,6 +46,7 @@ func get_spilloveraction(d *schema.ResourceData) nitro.Spilloveraction {
 
 func set_spilloveraction(d *schema.ResourceData, resource *nitro.Spilloveraction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("name", resource.Name)

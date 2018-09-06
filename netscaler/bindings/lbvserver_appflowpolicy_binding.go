@@ -81,6 +81,7 @@ func get_lbvserver_appflowpolicy_binding(d *schema.ResourceData) nitro.Lbvserver
 
 func set_lbvserver_appflowpolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverAppflowpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

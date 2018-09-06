@@ -74,6 +74,7 @@ func get_rewritepolicy(d *schema.ResourceData) nitro.Rewritepolicy {
 
 func set_rewritepolicy(d *schema.ResourceData, resource *nitro.Rewritepolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("comment", resource.Comment)

@@ -317,6 +317,7 @@ func get_cachecontentgroup(d *schema.ResourceData) nitro.Cachecontentgroup {
 
 func set_cachecontentgroup(d *schema.ResourceData, resource *nitro.Cachecontentgroup) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("absexpiry", resource.Absexpiry)
 	d.Set("absexpirygmt", resource.Absexpirygmt)

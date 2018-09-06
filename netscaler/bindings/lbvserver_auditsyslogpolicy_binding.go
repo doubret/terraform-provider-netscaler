@@ -81,6 +81,7 @@ func get_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData) nitro.Lbvse
 
 func set_lbvserver_auditsyslogpolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverAuditsyslogpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

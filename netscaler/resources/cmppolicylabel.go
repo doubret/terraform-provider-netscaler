@@ -46,6 +46,7 @@ func get_cmppolicylabel(d *schema.ResourceData) nitro.Cmppolicylabel {
 
 func set_cmppolicylabel(d *schema.ResourceData, resource *nitro.Cmppolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("labelname", resource.Labelname)
 	d.Set("type", resource.Type)

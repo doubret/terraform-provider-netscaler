@@ -67,6 +67,7 @@ func get_cmpaction(d *schema.ResourceData) nitro.Cmpaction {
 
 func set_cmpaction(d *schema.ResourceData, resource *nitro.Cmpaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("addvaryheader", resource.Addvaryheader)
 	d.Set("cmptype", resource.Cmptype)

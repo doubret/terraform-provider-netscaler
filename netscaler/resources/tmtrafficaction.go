@@ -116,6 +116,7 @@ func get_tmtrafficaction(d *schema.ResourceData) nitro.Tmtrafficaction {
 
 func set_tmtrafficaction(d *schema.ResourceData, resource *nitro.Tmtrafficaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("apptimeout", resource.Apptimeout)
 	d.Set("forcedtimeout", resource.Forcedtimeout)

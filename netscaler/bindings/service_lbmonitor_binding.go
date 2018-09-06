@@ -67,6 +67,7 @@ func get_service_lbmonitor_binding(d *schema.ResourceData) nitro.ServiceLbmonito
 
 func set_service_lbmonitor_binding(d *schema.ResourceData, resource *nitro.ServiceLbmonitorBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("monitor_name", resource.Monitor_name)
 	d.Set("monstate", resource.Monstate)

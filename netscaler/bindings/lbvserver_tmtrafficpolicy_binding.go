@@ -81,6 +81,7 @@ func get_lbvserver_tmtrafficpolicy_binding(d *schema.ResourceData) nitro.Lbvserv
 
 func set_lbvserver_tmtrafficpolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverTmtrafficpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

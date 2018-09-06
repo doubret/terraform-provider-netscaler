@@ -123,6 +123,7 @@ func get_appqoeaction(d *schema.ResourceData) nitro.Appqoeaction {
 
 func set_appqoeaction(d *schema.ResourceData, resource *nitro.Appqoeaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("altcontentpath", resource.Altcontentpath)
 	d.Set("altcontentsvcname", resource.Altcontentsvcname)

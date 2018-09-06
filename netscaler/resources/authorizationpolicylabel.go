@@ -39,6 +39,7 @@ func get_authorizationpolicylabel(d *schema.ResourceData) nitro.Authorizationpol
 
 func set_authorizationpolicylabel(d *schema.ResourceData, resource *nitro.Authorizationpolicylabel) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("labelname", resource.Labelname)
 

@@ -88,6 +88,7 @@ func get_responderaction(d *schema.ResourceData) nitro.Responderaction {
 
 func set_responderaction(d *schema.ResourceData, resource *nitro.Responderaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bypasssafetycheck", resource.Bypasssafetycheck)
 	d.Set("comment", resource.Comment)

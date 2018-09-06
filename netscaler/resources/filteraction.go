@@ -74,6 +74,7 @@ func get_filteraction(d *schema.ResourceData) nitro.Filteraction {
 
 func set_filteraction(d *schema.ResourceData, resource *nitro.Filteraction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("name", resource.Name)
 	d.Set("page", resource.Page)

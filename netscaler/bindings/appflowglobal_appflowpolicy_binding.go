@@ -81,6 +81,7 @@ func get_appflowglobal_appflowpolicy_binding(d *schema.ResourceData) nitro.Appfl
 
 func set_appflowglobal_appflowpolicy_binding(d *schema.ResourceData, resource *nitro.AppflowglobalAppflowpolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)
 	d.Set("invoke", resource.Invoke)

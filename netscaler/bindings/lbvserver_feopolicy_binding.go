@@ -88,6 +88,7 @@ func get_lbvserver_feopolicy_binding(d *schema.ResourceData) nitro.LbvserverFeop
 
 func set_lbvserver_feopolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverFeopolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)

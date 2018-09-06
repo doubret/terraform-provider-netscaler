@@ -154,6 +154,7 @@ func get_auditnslogaction(d *schema.ResourceData) nitro.Auditnslogaction {
 
 func set_auditnslogaction(d *schema.ResourceData, resource *nitro.Auditnslogaction) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("acl", resource.Acl)
 	d.Set("alg", resource.Alg)

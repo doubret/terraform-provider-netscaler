@@ -53,6 +53,7 @@ func get_tmtrafficpolicy(d *schema.ResourceData) nitro.Tmtrafficpolicy {
 
 func set_tmtrafficpolicy(d *schema.ResourceData, resource *nitro.Tmtrafficpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("name", resource.Name)

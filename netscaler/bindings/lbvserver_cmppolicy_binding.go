@@ -88,6 +88,7 @@ func get_lbvserver_cmppolicy_binding(d *schema.ResourceData) nitro.LbvserverCmpp
 
 func set_lbvserver_cmppolicy_binding(d *schema.ResourceData, resource *nitro.LbvserverCmppolicyBinding) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("bindpoint", resource.Bindpoint)
 	d.Set("gotopriorityexpression", resource.Gotopriorityexpression)

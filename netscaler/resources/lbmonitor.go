@@ -676,6 +676,7 @@ func get_lbmonitor(d *schema.ResourceData) nitro.Lbmonitor {
 
 func set_lbmonitor(d *schema.ResourceData, resource *nitro.Lbmonitor) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("alertretries", resource.Alertretries)

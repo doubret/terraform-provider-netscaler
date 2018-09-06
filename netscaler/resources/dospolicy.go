@@ -53,6 +53,7 @@ func get_dospolicy(d *schema.ResourceData) nitro.Dospolicy {
 
 func set_dospolicy(d *schema.ResourceData, resource *nitro.Dospolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("cltdetectrate", resource.Cltdetectrate)
 	d.Set("name", resource.Name)

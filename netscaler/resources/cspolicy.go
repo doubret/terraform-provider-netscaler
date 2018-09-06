@@ -74,6 +74,7 @@ func get_cspolicy(d *schema.ResourceData) nitro.Cspolicy {
 
 func set_cspolicy(d *schema.ResourceData, resource *nitro.Cspolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("domain", resource.Domain)

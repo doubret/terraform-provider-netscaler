@@ -109,6 +109,7 @@ func get_lbgroup(d *schema.ResourceData) nitro.Lbgroup {
 
 func set_lbgroup(d *schema.ResourceData, resource *nitro.Lbgroup) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("backuppersistencetimeout", resource.Backuppersistencetimeout)
 	d.Set("cookiedomain", resource.Cookiedomain)

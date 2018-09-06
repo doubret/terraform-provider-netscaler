@@ -53,6 +53,7 @@ func get_authorizationpolicy(d *schema.ResourceData) nitro.Authorizationpolicy {
 
 func set_authorizationpolicy(d *schema.ResourceData, resource *nitro.Authorizationpolicy) {
 	var _ = strconv.Itoa
+	var _ = strconv.FormatBool
 
 	d.Set("action", resource.Action)
 	d.Set("name", resource.Name)
