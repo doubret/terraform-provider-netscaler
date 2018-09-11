@@ -1,6 +1,13 @@
 # netscaler_<%= $name %>
 
+```
+resource "netscaler_<%= $name %>" "tf_name" {
+<% foreach($field in $resource.Fields.GetEnumerator() | Sort -Property Name) { -%>
+    <%= $field.Name -%> = ...
+<% } -%>
+}
+```
+
 ##### Argument Reference
 
-See https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/<%= $resource.Scope %>/<%= $name %>/<%= $name %>/ for possible values for these arguments and for an exhaustive list of arguments.
-
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/<%= $resource.Scope %>/<%= $name %>/<%= $name %>/) for possible values for these arguments and for an exhaustive list of arguments.

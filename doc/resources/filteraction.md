@@ -1,7 +1,17 @@
 # netscaler_filteraction
 
+```
+resource "netscaler_filteraction" "tf_name" {
+    name = ...
+    page = ...
+    qual = ...
+    respcode = ...
+    servicename = ...
+    value = ...
+}
+```
+
 ##### Argument Reference
 
-See https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/filter/filteraction/filteraction/ for possible values for these arguments and for an exhaustive list of arguments.
-
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/filter/filteraction/filteraction/) for possible values for these arguments and for an exhaustive list of arguments.
 

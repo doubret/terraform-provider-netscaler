@@ -1,7 +1,16 @@
 # netscaler_cmpaction
 
+```
+resource "netscaler_cmpaction" "tf_name" {
+    addvaryheader = ...
+    cmptype = ...
+    deltatype = ...
+    name = ...
+    varyheadervalue = ...
+}
+```
+
 ##### Argument Reference
 
-See https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/compression/cmpaction/cmpaction/ for possible values for these arguments and for an exhaustive list of arguments.
-
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/compression/cmpaction/cmpaction/) for possible values for these arguments and for an exhaustive list of arguments.
 
