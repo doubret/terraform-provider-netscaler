@@ -5,6 +5,8 @@
 ## Description
 
 This project is a terraform custom provider for Citrix NetScaler. It uses the [Nitro API](https://docs.citrix.com/en-us/netscaler/11/nitro-api.html) to create/configure NetScaler resources and bindings. 
+This project is largely inspired from @chiradeep's work [terraform-provider-netscaler](https://github.com/citrix/terraform-provider-netscaler).
+The implementation is completely different though.
 
 **Important note: The provider will not commit the config changes to NetScaler's persistent store.**
 
