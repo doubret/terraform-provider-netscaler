@@ -50,4 +50,4 @@ foreach($binding in Get-ChildItem $ymlBindings -File) {
   Invoke-EpsTemplate -Path "$eps\binding.eps" -Binding @{ name = $name; binding = $yaml } | Set-Content "$mdBindings\$name.md"
 }
 
-#Invoke-EpsTemplate -Path "$eps\README.eps" -Binding @{ resources = $resources; bindings = $bindings } | Set-Content "README.md"
+Invoke-EpsTemplate -Path "$eps\README.eps" -Binding @{ resources = $resources; bindings = $bindings } | Set-Content "README.md"
