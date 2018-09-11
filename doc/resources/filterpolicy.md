@@ -15,7 +15,7 @@ Terraform resource name : ```netscaler_filterpolicy```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/filter/filterpolicy/filterpolicy/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_filterpolicy" "<resource_name>" {

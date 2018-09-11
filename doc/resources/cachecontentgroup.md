@@ -50,7 +50,7 @@ Terraform resource name : ```netscaler_cachecontentgroup```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/integrated-caching/cachecontentgroup/cachecontentgroup/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_cachecontentgroup" "<resource_name>" {

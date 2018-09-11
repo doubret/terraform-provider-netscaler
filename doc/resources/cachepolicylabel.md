@@ -13,7 +13,7 @@ Terraform resource name : ```netscaler_cachepolicylabel```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/integrated-caching/cachepolicylabel/cachepolicylabel/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_cachepolicylabel" "<resource_name>" {

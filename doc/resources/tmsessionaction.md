@@ -22,7 +22,7 @@ Terraform resource name : ```netscaler_tmsessionaction```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/traffic-management/tmsessionaction/tmsessionaction/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_tmsessionaction" "<resource_name>" {

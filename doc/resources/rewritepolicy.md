@@ -17,7 +17,7 @@ Terraform resource name : ```netscaler_rewritepolicy```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/rewrite/rewritepolicy/rewritepolicy/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_rewritepolicy" "<resource_name>" {

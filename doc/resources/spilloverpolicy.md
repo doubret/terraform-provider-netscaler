@@ -15,7 +15,7 @@ Terraform resource name : ```netscaler_spilloverpolicy```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/spillover/spilloverpolicy/spilloverpolicy/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_spilloverpolicy" "<resource_name>" {

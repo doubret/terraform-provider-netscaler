@@ -14,7 +14,7 @@ Terraform resource name : ```netscaler_feopolicy```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/front-end-optimization/feopolicy/feopolicy/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_feopolicy" "<resource_name>" {

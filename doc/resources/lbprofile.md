@@ -18,7 +18,7 @@ Terraform resource name : ```netscaler_lbprofile```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbprofile/lbprofile/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_lbprofile" "<resource_name>" {

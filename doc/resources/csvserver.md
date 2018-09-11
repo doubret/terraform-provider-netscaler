@@ -65,7 +65,7 @@ Terraform resource name : ```netscaler_csvserver```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/content-switching/csvserver/csvserver/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_csvserver" "<resource_name>" {

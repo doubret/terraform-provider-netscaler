@@ -16,7 +16,7 @@ Terraform resource name : ```netscaler_appflowpolicy```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/appflow/appflowpolicy/appflowpolicy/) for possible values for these arguments and for an exhaustive list of arguments.
 
-##### Exemple
+##### Example
 
 ```
 resource "netscaler_appflowpolicy" "<resource_name>" {
