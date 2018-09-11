@@ -21,11 +21,11 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ```
 resource "netscaler_appflowpolicy" "tf_name" {
 
-    action = 
+    action = "${netscaler_appflowaction.<resource_name>.name}"
     comment = "abc"
     name = "abc"
     rule = "abc"
-    undefaction = 
+    undefaction = "${netscaler_appflowaction.<resource_name>.name}"
 }
 ```
 

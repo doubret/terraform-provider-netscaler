@@ -22,7 +22,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ```
 resource "netscaler_videooptimizationpolicy" "tf_name" {
 
-    action = 
+    action = "${netscaler_videooptimizationaction.<resource_name>.name}"
     comment = "abc"
     logaction = "abc"
     name = "abc"

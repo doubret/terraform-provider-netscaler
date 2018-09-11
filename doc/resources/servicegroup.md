@@ -62,14 +62,14 @@ resource "netscaler_servicegroup" "tf_name" {
     comment = "abc"
     downstateflush = "ENABLED"
     healthmonitor = "YES"
-    httpprofilename = 
+    httpprofilename = "${netscaler_nshttpprofile.<resource_name>.name}"
     maxbandwidth = 42
     maxclient = 42
     maxreq = 42
     memberport = 42
     monconnectionclose = "RESET"
     monthreshold = 42
-    netprofile = 
+    netprofile = "${netscaler_netprofile.<resource_name>.name}"
     pathmonitor = "YES"
     pathmonitorindv = "YES"
     rtspsessionidremap = "ON"
@@ -80,7 +80,7 @@ resource "netscaler_servicegroup" "tf_name" {
     state = "ENABLED"
     svrtimeout = 42
     tcpb = "YES"
-    tcpprofilename = 
+    tcpprofilename = "${netscaler_nstcpprofile.<resource_name>.name}"
     td = 42
     useproxyport = "YES"
     usip = "YES"

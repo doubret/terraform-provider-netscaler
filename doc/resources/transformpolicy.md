@@ -24,7 +24,7 @@ resource "netscaler_transformpolicy" "tf_name" {
     comment = "abc"
     logaction = "abc"
     name = "abc"
-    profilename = 
+    profilename = "${netscaler_transformprofile.<resource_name>.name}"
     rule = "abc"
 }
 ```

@@ -81,11 +81,11 @@ resource "netscaler_csvserver" "tf_name" {
     casesensitive = "ON"
     clttimeout = 42
     comment = "abc"
-    dbprofilename = 
+    dbprofilename = "${netscaler_dbdbprofile.<resource_name>.name}"
     disableprimaryondown = "ENABLED"
-    dnsprofilename = 
+    dnsprofilename = "${netscaler_dnsprofile.<resource_name>.dnsprofilename}"
     downstateflush = "ENABLED"
-    httpprofilename = 
+    httpprofilename = "${netscaler_nshttpprofile.<resource_name>.name}"
     icmpvsrresponse = "PASSIVE"
     insertvserveripport = "OFF"
     ipmask = "255.255.255.0"
@@ -121,7 +121,7 @@ resource "netscaler_csvserver" "tf_name" {
     sothreshold = 42
     state = "ENABLED"
     stateupdate = "ENABLED"
-    tcpprofilename = 
+    tcpprofilename = "${netscaler_nstcpprofile.<resource_name>.name}"
     td = 42
     vipheader = "abc"
 }

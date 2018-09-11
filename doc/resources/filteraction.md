@@ -26,7 +26,7 @@ resource "netscaler_filteraction" "tf_name" {
     page = "abc"
     qual = "reset"
     respcode = 42
-    servicename = 
+    servicename = "${netscaler_service.<resource_name>.name}"
     value = "abc"
 }
 ```

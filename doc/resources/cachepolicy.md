@@ -24,11 +24,11 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 resource "netscaler_cachepolicy" "tf_name" {
 
     action = "CACHE"
-    invalgroups = [ ... ]
-    invalobjects = [ ... ]
+    invalgroups = [ ... ]"${netscaler_cachecontentgroup.<resource_name>.name[]}"
+    invalobjects = [ ... ]"${netscaler_cachecontentgroup.<resource_name>.name[]}"
     policyname = "abc"
     rule = "abc"
-    storeingroup = 
+    storeingroup = "${netscaler_cachecontentgroup.<resource_name>.name}"
     undefaction = "NOCACHE"
 }
 ```

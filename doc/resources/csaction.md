@@ -23,7 +23,7 @@ resource "netscaler_csaction" "tf_name" {
 
     comment = "abc"
     name = "abc"
-    targetlbvserver = 
+    targetlbvserver = "${netscaler_lbvserver.<resource_name>.name}"
     targetvserver = "abc"
     targetvserverexpr = "abc"
 }

@@ -124,15 +124,15 @@ resource "netscaler_lbvserver" "tf_name" {
     cookiename = "abc"
     datalength = 42
     dataoffset = 42
-    dbprofilename = 
+    dbprofilename = "${netscaler_dbdbprofile.<resource_name>.name}"
     dbslb = "ENABLED"
     disableprimaryondown = "ENABLED"
     dns64 = "ENABLED"
-    dnsprofilename = 
+    dnsprofilename = "${netscaler_dnsprofile.<resource_name>.dnsprofilename}"
     downstateflush = "ENABLED"
     hashlength = 42
     healththreshold = 42
-    httpprofilename = 
+    httpprofilename = "${netscaler_nshttpprofile.<resource_name>.name}"
     httpsredirecturl = "abc"
     icmpvsrresponse = "PASSIVE"
     insertvserveripport = "OFF"
@@ -141,7 +141,7 @@ resource "netscaler_lbvserver" "tf_name" {
     ipv46 = "1.2.3.4"
     l2conn = "ON"
     lbmethod = "ROUNDROBIN"
-    lbprofilename = 
+    lbprofilename = "${netscaler_lbprofile.<resource_name>.lbprofilename}"
     listenpolicy = "abc"
     listenpriority = 42
     m = "IP"
@@ -155,7 +155,7 @@ resource "netscaler_lbvserver" "tf_name" {
     mysqlserverversion = "abc"
     name = "abc"
     netmask = "255.255.255.0"
-    netprofile = 
+    netprofile = "${netscaler_netprofile.<resource_name>.name}"
     newservicerequest = 42
     newservicerequestincrementinterval = 42
     newservicerequestunit = "PER_SECOND"
@@ -190,7 +190,7 @@ resource "netscaler_lbvserver" "tf_name" {
     sopersistence = "ENABLED"
     sopersistencetimeout = 42
     sothreshold = 42
-    tcpprofilename = 
+    tcpprofilename = "${netscaler_nstcpprofile.<resource_name>.name}"
     td = 42
     timeout = 42
     tosid = 42

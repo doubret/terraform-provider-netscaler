@@ -32,7 +32,7 @@ resource "netscaler_transformaction" "tf_name" {
     cookiedomaininto = "abc"
     name = "abc"
     priority = 42
-    profilename = 
+    profilename = "${netscaler_transformprofile.<resource_name>.name}"
     requrlfrom = "abc"
     requrlinto = "abc"
     resurlfrom = "abc"

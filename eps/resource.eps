@@ -37,7 +37,8 @@ resource "netscaler_<%= $name %>" "tf_name" {
 <%= if($field.Value -eq "double") { "42" } -%>
 <%= if($field.Value -eq "string") { '"abc"' } -%>
 <%= if($field.Value -eq "bool") { "true" } -%>
-<% if($field.Value.EndsWith(")")) { -%>"<%= ($field.Value -Replace '\(' -Replace '\)' -Split '\|')[0] %>"<% } -%>
+<%  if($field.Value.EndsWith(")")) { -%>"<%= ($field.Value -Replace '\(' -Replace '\)' -Split '\|')[0] %>"<% } -%>
+<%  if($field.Value.Contains(".")) { -%>"${netscaler_<%= ($field.Value -Split '\.')[0] %>.<resource_name>.<%= ($field.Value -Split '\.')[1] %>}"<% } -%>
 <% } %>
 }
 ```

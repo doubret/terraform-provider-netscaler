@@ -22,12 +22,12 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ```
 resource "netscaler_rewritepolicy" "tf_name" {
 
-    action = 
+    action = "${netscaler_rewriteaction.<resource_name>.name}"
     comment = "abc"
     logaction = "abc"
     name = "abc"
     rule = "abc"
-    undefaction = 
+    undefaction = "${netscaler_rewriteaction.<resource_name>.name}"
 }
 ```
 

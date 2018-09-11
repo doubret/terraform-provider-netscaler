@@ -20,7 +20,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 resource "netscaler_cmppolicy" "tf_name" {
 
     name = "abc"
-    resaction = 
+    resaction = "${netscaler_cmpaction.<resource_name>.name}"
     rule = "abc"
 }
 ```

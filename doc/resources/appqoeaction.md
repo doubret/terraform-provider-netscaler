@@ -30,7 +30,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 resource "netscaler_appqoeaction" "tf_name" {
 
     altcontentpath = "abc"
-    altcontentsvcname = 
+    altcontentsvcname = "${netscaler_service.<resource_name>.name}"
     customfile = "abc"
     delay = 42
     dosaction = "SimpleResponse"
@@ -41,7 +41,7 @@ resource "netscaler_appqoeaction" "tf_name" {
     priority = "HIGH"
     priqdepth = 42
     respondwith = "ACS"
-    tcpprofile = 
+    tcpprofile = "${netscaler_nstcpprofile.<resource_name>.name}"
 }
 ```
 

@@ -20,7 +20,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ```
 resource "netscaler_spilloverpolicy" "tf_name" {
 
-    action = 
+    action = "${netscaler_spilloveraction.<resource_name>.name}"
     comment = "abc"
     name = "abc"
     rule = "abc"

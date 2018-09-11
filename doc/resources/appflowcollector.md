@@ -22,7 +22,7 @@ resource "netscaler_appflowcollector" "tf_name" {
 
     ipaddress = "1.2.3.4"
     name = "abc"
-    netprofile = 
+    netprofile = "${netscaler_netprofile.<resource_name>.name}"
     port = 42
 }
 ```

@@ -21,8 +21,8 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 resource "netscaler_filterpolicy" "tf_name" {
 
     name = "abc"
-    reqaction = 
-    resaction = 
+    reqaction = "${netscaler_filteraction.<resource_name>.name}"
+    resaction = "${netscaler_filteraction.<resource_name>.name}"
     rule = "abc"
 }
 ```

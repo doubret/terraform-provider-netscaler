@@ -22,7 +22,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ```
 resource "netscaler_cspolicy" "tf_name" {
 
-    action = 
+    action = "${netscaler_csaction.<resource_name>.name}"
     domain = "abc"
     logaction = "abc"
     policyname = "abc"

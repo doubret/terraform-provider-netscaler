@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ```
 resource "netscaler_auditnslogpolicy" "tf_name" {
 
-    action = 
+    action = "${netscaler_auditnslogaction.<resource_name>.name}"
     name = "abc"
     rule = "abc"
 }

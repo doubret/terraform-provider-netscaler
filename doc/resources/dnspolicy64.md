@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ```
 resource "netscaler_dnspolicy64" "tf_name" {
 
-    action = 
+    action = "${netscaler_dnsaction64.<resource_name>.actionname}"
     name = "abc"
     rule = "abc"
 }

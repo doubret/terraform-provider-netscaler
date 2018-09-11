@@ -24,7 +24,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 resource "netscaler_appflowaction" "tf_name" {
 
     clientsidemeasurements = "ENABLED"
-    collectors = [ ... ]
+    collectors = [ ... ]"${netscaler_appflowcollector.<resource_name>.name[]}"
     comment = "abc"
     name = "abc"
     pagetracking = "ENABLED"

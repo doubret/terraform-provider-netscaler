@@ -23,8 +23,8 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ```
 resource "netscaler_responderpolicy" "tf_name" {
 
-    action = 
-    appflowaction = 
+    action = "${netscaler_responderaction.<resource_name>.name}"
+    appflowaction = "${netscaler_appflowaction.<resource_name>.name}"
     comment = "abc"
     logaction = "abc"
     name = "abc"
