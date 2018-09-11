@@ -15,6 +15,7 @@ Terraform resource name : ```netscaler_csvserver_appflowpolicy_binding```
 |priority|No|No|double|
 |targetlbvserver|No|No|[lbvserver.name](/doc/resources/lbvserver.md)|
 
+
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/content-switching/csvserver_appflowpolicy_binding/csvserver_appflowpolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.

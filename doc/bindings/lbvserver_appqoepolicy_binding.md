@@ -14,6 +14,7 @@ Terraform resource name : ```netscaler_lbvserver_appqoepolicy_binding```
 |policyname|No|No|[appqoepolicy.name](/doc/resources/appqoepolicy.md)|
 |priority|No|No|double|
 
+
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_appqoepolicy_binding/lbvserver_appqoepolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.

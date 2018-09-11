@@ -10,6 +10,7 @@ Terraform resource name : ```netscaler_lbvserver_service_binding```
 |servicename|No|No|[service.name](/doc/resources/service.md)|
 |weight|No|No|double|
 
+
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_service_binding/lbvserver_service_binding/) for possible values for these arguments and for an exhaustive list of arguments.

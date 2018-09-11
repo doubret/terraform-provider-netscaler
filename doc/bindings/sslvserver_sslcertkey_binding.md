@@ -14,6 +14,7 @@ Terraform resource name : ```netscaler_sslvserver_sslcertkey_binding```
 |snicert|No|No|bool|
 |vservername|No|No|string|
 
+
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/ssl/sslvserver_sslcertkey_binding/sslvserver_sslcertkey_binding/) for possible values for these arguments and for an exhaustive list of arguments.

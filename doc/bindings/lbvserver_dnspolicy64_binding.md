@@ -14,6 +14,7 @@ Terraform resource name : ```netscaler_lbvserver_dnspolicy64_binding```
 |policyname|No|No|[dnspolicy64.name](/doc/resources/dnspolicy64.md)|
 |priority|No|No|double|
 
+
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_dnspolicy64_binding/lbvserver_dnspolicy64_binding/) for possible values for these arguments and for an exhaustive list of arguments.

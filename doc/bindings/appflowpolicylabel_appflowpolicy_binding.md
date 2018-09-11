@@ -14,6 +14,7 @@ Terraform resource name : ```netscaler_appflowpolicylabel_appflowpolicy_binding`
 |policyname|No|No|[appflowpolicy.name](/doc/resources/appflowpolicy.md)|
 |priority|No|No|double|
 
+
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/appflow/appflowpolicylabel_appflowpolicy_binding/appflowpolicylabel_appflowpolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
