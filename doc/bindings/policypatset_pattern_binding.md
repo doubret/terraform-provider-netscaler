@@ -15,3 +15,15 @@ Terraform resource name : ```netscaler_policypatset_pattern_binding```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/policy/policypatset_pattern_binding/policypatset_pattern_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 
+##### Example
+
+```
+resource "netscaler_policypatset_pattern_binding" "<resource_name>" {
+
+    charset = "ASCII"
+    index = 42
+    name = "${netscaler_policypatset.<resource_name>.name}"
+    string = "abc"
+}
+```
+

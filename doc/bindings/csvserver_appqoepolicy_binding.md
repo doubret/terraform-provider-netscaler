@@ -19,3 +19,19 @@ Terraform resource name : ```netscaler_csvserver_appqoepolicy_binding```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/content-switching/csvserver_appqoepolicy_binding/csvserver_appqoepolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 
+##### Example
+
+```
+resource "netscaler_csvserver_appqoepolicy_binding" "<resource_name>" {
+
+    gotopriorityexpression = "abc"
+    invoke = true
+    labelname = "abc"
+    labeltype = "reqvserver"
+    name = "${netscaler_csvserver.<resource_name>.name}"
+    policyname = "${netscaler_spilloverpolicy.<resource_name>.name}"
+    priority = 42
+    targetlbvserver = "${netscaler_lbvserver.<resource_name>.name}"
+}
+```
+

@@ -16,3 +16,16 @@ Terraform resource name : ```netscaler_service_lbmonitor_binding```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/basic/service_lbmonitor_binding/service_lbmonitor_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 
+##### Example
+
+```
+resource "netscaler_service_lbmonitor_binding" "<resource_name>" {
+
+    monitor_name = "${netscaler_lbmonitor.<resource_name>.monitorname}"
+    monstate = "abc"
+    name = "${netscaler_service.<resource_name>.name}"
+    passive = true
+    weight = 42
+}
+```
+

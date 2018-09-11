@@ -18,3 +18,18 @@ Terraform resource name : ```netscaler_appflowglobal_appflowpolicy_binding```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/appflow/appflowglobal_appflowpolicy_binding/appflowglobal_appflowpolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 
+##### Example
+
+```
+resource "netscaler_appflowglobal_appflowpolicy_binding" "<resource_name>" {
+
+    gotopriorityexpression = "abc"
+    invoke = true
+    labelname = "${netscaler_appflowpolicylabel.<resource_name>.labelname}"
+    labeltype = "vserver"
+    policyname = "${netscaler_appflowpolicy.<resource_name>.name}"
+    priority = 42
+    type = "REQ_OVERRIDE"
+}
+```
+

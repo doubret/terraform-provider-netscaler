@@ -19,3 +19,19 @@ Terraform resource name : ```netscaler_lbvserver_cmppolicy_binding```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_cmppolicy_binding/lbvserver_cmppolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 
+##### Example
+
+```
+resource "netscaler_lbvserver_cmppolicy_binding" "<resource_name>" {
+
+    bindpoint = "REQUEST"
+    gotopriorityexpression = "abc"
+    invoke = true
+    labelname = "abc"
+    labeltype = "reqvserver"
+    name = "${netscaler_lbvserver.<resource_name>.name}"
+    policyname = "${netscaler_cmppolicy.<resource_name>.name}"
+    priority = 42
+}
+```
+

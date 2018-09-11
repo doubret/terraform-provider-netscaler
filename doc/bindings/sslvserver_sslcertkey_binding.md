@@ -18,3 +18,18 @@ Terraform resource name : ```netscaler_sslvserver_sslcertkey_binding```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/ssl/sslvserver_sslcertkey_binding/sslvserver_sslcertkey_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 
+##### Example
+
+```
+resource "netscaler_sslvserver_sslcertkey_binding" "<resource_name>" {
+
+    ca = true
+    certkeyname = "abc"
+    crlcheck = "abc"
+    ocspcheck = "abc"
+    skipcaname = true
+    snicert = true
+    vservername = "abc"
+}
+```
+

@@ -24,3 +24,21 @@ Terraform resource name : ```netscaler_<%= $name %>```
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/<%= $binding.Scope %>/<%= $name %>/<%= $name %>/) for possible values for these arguments and for an exhaustive list of arguments.
+
+##### Example
+
+```
+resource "netscaler_<%= $name %>" "<resource_name>" {
+<% foreach($field in $binding.Fields.GetEnumerator() | Sort -Property Name) { %>
+    <%= $field.Name -%> = <%= if($field.Value.EndsWith("[]")) { "[ ... ]" } -%>
+<%= if($field.Value -eq "ip") { '"1.2.3.4"' } -%>
+<%= if($field.Value -eq "ip_mask") { '"255.255.255.0"' } -%>
+<%= if($field.Value -eq "int") { "42" } -%>
+<%= if($field.Value -eq "double") { "42" } -%>
+<%= if($field.Value -eq "string") { '"abc"' } -%>
+<%= if($field.Value -eq "bool") { "true" } -%>
+<%  if($field.Value.EndsWith(")")) { -%>"<%= ($field.Value -Replace '\(' -Replace '\)' -Split '\|')[0] %>"<% } -%>
+<%  if($field.Value.Contains(".")) { -%>"${netscaler_<%= ($field.Value -Split '\.')[0] %>.<resource_name>.<%= ($field.Value -Split '\.')[1] %>}"<% } -%>
+<% } %>
+}
+```

@@ -14,3 +14,14 @@ Terraform resource name : ```netscaler_policystringmap_pattern_binding```
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/policy/policystringmap_pattern_binding/policystringmap_pattern_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 
+##### Example
+
+```
+resource "netscaler_policystringmap_pattern_binding" "<resource_name>" {
+
+    key = "abc"
+    name = "${netscaler_policystringmap.<resource_name>.name}"
+    value = "abc"
+}
+```
+
