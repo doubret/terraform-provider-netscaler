@@ -1,31 +1,15 @@
-# Binding sslvserver_ecccurve_binding
+# netscaler_sslvserver_ecccurve_binding
 
-Spec for **sslvserver_ecccurve_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/ssl/sslvserver_ecccurve_binding/sslvserver_ecccurve_binding/)
+Terraform resource name : ```netscaler_sslvserver_ecccurve_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|ecccurvename|No|No|ALL, P_224, P_256, P_384, P_521|
+|vservername|No|No|string|
 
-| Name | Array | Type |
-|----|----|
-|ecccurvename|No|ALL, P_224, P_256, P_384, P_521|
-|vservername|No|string|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| vservername | string |
-| ecccurvename | ALL, P_224, P_256, P_384, P_521 |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_ecccurve_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_ecccurve_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_ecccurve_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_ecccurve_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/ssl/sslvserver_ecccurve_binding/sslvserver_ecccurve_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

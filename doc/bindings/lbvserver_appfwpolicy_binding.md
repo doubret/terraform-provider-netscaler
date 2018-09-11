@@ -1,36 +1,20 @@
-# Binding lbvserver_appfwpolicy_binding
+# netscaler_lbvserver_appfwpolicy_binding
 
-Spec for **lbvserver_appfwpolicy_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_appfwpolicy_binding/lbvserver_appfwpolicy_binding/)
+Terraform resource name : ```netscaler_lbvserver_appfwpolicy_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|gotopriorityexpression|No|No|string|
+|invoke|No|No|bool|
+|labelname|No|No|string|
+|labeltype|No|No|reqvserver, resvserver, policylabel|
+|name|No|No|[lbvserver.name](/doc/resources/lbvserver.md)|
+|policyname|No|No|[appfwpolicy.name](/doc/resources/appfwpolicy.md)|
+|priority|No|No|double|
 
-| Name | Array | Type |
-|----|----|
-|gotopriorityexpression|No|string|
-|invoke|No|bool|
-|labelname|No|string|
-|labeltype|No|reqvserver, resvserver, policylabel|
-|name|No|[lbvserver.name](/doc/resources/lbvserver.md)|
-|policyname|No|[appfwpolicy.name](/doc/resources/appfwpolicy.md)|
-|priority|No|double|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | lbvserver.name |
-| policyname | appfwpolicy.name |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_appfwpolicy_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_appfwpolicy_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_appfwpolicy_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_appfwpolicy_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_appfwpolicy_binding/lbvserver_appfwpolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

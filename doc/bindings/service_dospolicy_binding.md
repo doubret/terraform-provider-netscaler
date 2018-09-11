@@ -1,31 +1,15 @@
-# Binding service_dospolicy_binding
+# netscaler_service_dospolicy_binding
 
-Spec for **service_dospolicy_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/basic/service_dospolicy_binding/service_dospolicy_binding/)
+Terraform resource name : ```netscaler_service_dospolicy_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|name|No|No|[service.name](/doc/resources/service.md)|
+|policyname|No|No|[dospolicy.name](/doc/resources/dospolicy.md)|
 
-| Name | Array | Type |
-|----|----|
-|name|No|[service.name](/doc/resources/service.md)|
-|policyname|No|[dospolicy.name](/doc/resources/dospolicy.md)|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | service.name |
-| policyname | dospolicy.name |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/service_dospolicy_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/service_dospolicy_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/service_dospolicy_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/service_dospolicy_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/basic/service_dospolicy_binding/service_dospolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

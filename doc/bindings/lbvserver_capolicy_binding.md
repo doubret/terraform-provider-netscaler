@@ -1,38 +1,21 @@
-# Binding lbvserver_capolicy_binding
+# netscaler_lbvserver_capolicy_binding
 
-Spec for **lbvserver_capolicy_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_capolicy_binding/lbvserver_capolicy_binding/)
+Terraform resource name : ```netscaler_lbvserver_capolicy_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|bindpoint|No|No|REQUEST, RESPONSE|
+|gotopriorityexpression|No|No|string|
+|invoke|No|No|bool|
+|labelname|No|No|string|
+|labeltype|No|No|reqvserver, resvserver, policylabel|
+|name|No|No|[lbvserver.name](/doc/resources/lbvserver.md)|
+|policyname|No|No|[capolicy.name](/doc/resources/capolicy.md)|
+|priority|No|No|double|
 
-| Name | Array | Type |
-|----|----|
-|bindpoint|No|REQUEST, RESPONSE|
-|gotopriorityexpression|No|string|
-|invoke|No|bool|
-|labelname|No|string|
-|labeltype|No|reqvserver, resvserver, policylabel|
-|name|No|[lbvserver.name](/doc/resources/lbvserver.md)|
-|policyname|No|[capolicy.name](/doc/resources/capolicy.md)|
-|priority|No|double|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | lbvserver.name |
-| policyname | capolicy.name |
-| bindpoint | REQUEST, RESPONSE |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_capolicy_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_capolicy_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_capolicy_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_capolicy_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_capolicy_binding/lbvserver_capolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

@@ -1,38 +1,21 @@
-# Binding lbvserver_rewritepolicy_binding
+# netscaler_lbvserver_rewritepolicy_binding
 
-Spec for **lbvserver_rewritepolicy_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_rewritepolicy_binding/lbvserver_rewritepolicy_binding/)
+Terraform resource name : ```netscaler_lbvserver_rewritepolicy_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|bindpoint|No|No|REQUEST, RESPONSE|
+|gotopriorityexpression|No|No|string|
+|invoke|No|No|bool|
+|labelname|No|No|string|
+|labeltype|No|No|reqvserver, resvserver, policylabel|
+|name|No|No|[lbvserver.name](/doc/resources/lbvserver.md)|
+|policyname|No|No|[rewritepolicy.name](/doc/resources/rewritepolicy.md)|
+|priority|No|No|double|
 
-| Name | Array | Type |
-|----|----|
-|bindpoint|No|REQUEST, RESPONSE|
-|gotopriorityexpression|No|string|
-|invoke|No|bool|
-|labelname|No|string|
-|labeltype|No|reqvserver, resvserver, policylabel|
-|name|No|[lbvserver.name](/doc/resources/lbvserver.md)|
-|policyname|No|[rewritepolicy.name](/doc/resources/rewritepolicy.md)|
-|priority|No|double|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | lbvserver.name |
-| policyname | rewritepolicy.name |
-| bindpoint | REQUEST, RESPONSE |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_rewritepolicy_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_rewritepolicy_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_rewritepolicy_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_rewritepolicy_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_rewritepolicy_binding/lbvserver_rewritepolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

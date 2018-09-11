@@ -1,32 +1,16 @@
-# Binding lbvserver_servicegroup_binding
+# netscaler_lbvserver_servicegroup_binding
 
-Spec for **lbvserver_servicegroup_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_servicegroup_binding/lbvserver_servicegroup_binding/)
+Terraform resource name : ```netscaler_lbvserver_servicegroup_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|name|No|No|[lbvserver.name](/doc/resources/lbvserver.md)|
+|servicegroupname|No|No|[servicegroup.servicegroupname](/doc/resources/servicegroup.md)|
+|weight|No|No|double|
 
-| Name | Array | Type |
-|----|----|
-|name|No|[lbvserver.name](/doc/resources/lbvserver.md)|
-|servicegroupname|No|[servicegroup.servicegroupname](/doc/resources/servicegroup.md)|
-|weight|No|double|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | lbvserver.name |
-| servicegroupname | servicegroup.servicegroupname |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_servicegroup_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_servicegroup_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_servicegroup_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_servicegroup_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_servicegroup_binding/lbvserver_servicegroup_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

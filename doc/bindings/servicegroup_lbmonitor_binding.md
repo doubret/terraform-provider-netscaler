@@ -1,32 +1,16 @@
-# Binding servicegroup_lbmonitor_binding
+# netscaler_servicegroup_lbmonitor_binding
 
-Spec for **servicegroup_lbmonitor_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/basic/servicegroup_lbmonitor_binding/servicegroup_lbmonitor_binding/)
+Terraform resource name : ```netscaler_servicegroup_lbmonitor_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|monitor_name|No|No|[lbmonitor.monitorname](/doc/resources/lbmonitor.md)|
+|servicegroupname|No|No|[servicegroup.servicegroupname](/doc/resources/servicegroup.md)|
+|weight|No|No|double|
 
-| Name | Array | Type |
-|----|----|
-|monitor_name|No|[lbmonitor.monitorname](/doc/resources/lbmonitor.md)|
-|servicegroupname|No|[servicegroup.servicegroupname](/doc/resources/servicegroup.md)|
-|weight|No|double|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| servicegroupname | servicegroup.servicegroupname |
-| monitor_name | lbmonitor.monitorname |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/servicegroup_lbmonitor_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/servicegroup_lbmonitor_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/servicegroup_lbmonitor_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/servicegroup_lbmonitor_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/basic/servicegroup_lbmonitor_binding/servicegroup_lbmonitor_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

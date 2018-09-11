@@ -1,33 +1,17 @@
-# Binding lbmonitor_metric_binding
+# netscaler_lbmonitor_metric_binding
 
-Spec for **lbmonitor_metric_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbmonitor_metric_binding/lbmonitor_metric_binding/)
+Terraform resource name : ```netscaler_lbmonitor_metric_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|metric|No|No|string|
+|metricthreshold|No|No|double|
+|metricweight|No|No|double|
+|monitorname|No|No|[lbmonitor.monitorname](/doc/resources/lbmonitor.md)|
 
-| Name | Array | Type |
-|----|----|
-|metric|No|string|
-|metricthreshold|No|double|
-|metricweight|No|double|
-|monitorname|No|[lbmonitor.monitorname](/doc/resources/lbmonitor.md)|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| monitorname | lbmonitor.monitorname |
-| metric | string |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbmonitor_metric_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbmonitor_metric_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/lbmonitor_metric_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/lbmonitor_metric_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbmonitor_metric_binding/lbmonitor_metric_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

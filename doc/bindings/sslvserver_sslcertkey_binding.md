@@ -1,37 +1,20 @@
-# Binding sslvserver_sslcertkey_binding
+# netscaler_sslvserver_sslcertkey_binding
 
-Spec for **sslvserver_sslcertkey_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/ssl/sslvserver_sslcertkey_binding/sslvserver_sslcertkey_binding/)
+Terraform resource name : ```netscaler_sslvserver_sslcertkey_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|ca|No|No|bool|
+|certkeyname|No|No|string|
+|crlcheck|No|No|string|
+|ocspcheck|No|No|string|
+|skipcaname|No|No|bool|
+|snicert|No|No|bool|
+|vservername|No|No|string|
 
-| Name | Array | Type |
-|----|----|
-|ca|No|bool|
-|certkeyname|No|string|
-|crlcheck|No|string|
-|ocspcheck|No|string|
-|skipcaname|No|bool|
-|snicert|No|bool|
-|vservername|No|string|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| vservername | string |
-| certkeyname | string |
-| ca | bool |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_sslcertkey_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_sslcertkey_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_sslcertkey_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_sslcertkey_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/ssl/sslvserver_sslcertkey_binding/sslvserver_sslcertkey_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

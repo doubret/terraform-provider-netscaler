@@ -1,37 +1,21 @@
-# Binding csvserver_cachepolicy_binding
+# netscaler_csvserver_cachepolicy_binding
 
-Spec for **csvserver_cachepolicy_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/content-switching/csvserver_cachepolicy_binding/csvserver_cachepolicy_binding/)
+Terraform resource name : ```netscaler_csvserver_cachepolicy_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|gotopriorityexpression|No|No|string|
+|invoke|No|No|bool|
+|labelname|No|No|string|
+|labeltype|No|No|reqvserver, resvserver, policylabel|
+|name|No|No|[csvserver.name](/doc/resources/csvserver.md)|
+|policyname|No|No|[spilloverpolicy.name](/doc/resources/spilloverpolicy.md)|
+|priority|No|No|double|
+|targetlbvserver|No|No|[lbvserver.name](/doc/resources/lbvserver.md)|
 
-| Name | Array | Type |
-|----|----|
-|gotopriorityexpression|No|string|
-|invoke|No|bool|
-|labelname|No|string|
-|labeltype|No|reqvserver, resvserver, policylabel|
-|name|No|[csvserver.name](/doc/resources/csvserver.md)|
-|policyname|No|[spilloverpolicy.name](/doc/resources/spilloverpolicy.md)|
-|priority|No|double|
-|targetlbvserver|No|[lbvserver.name](/doc/resources/lbvserver.md)|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | csvserver.name |
-| policyname | spilloverpolicy.name |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/csvserver_cachepolicy_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/csvserver_cachepolicy_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/csvserver_cachepolicy_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/csvserver_cachepolicy_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/content-switching/csvserver_cachepolicy_binding/csvserver_cachepolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

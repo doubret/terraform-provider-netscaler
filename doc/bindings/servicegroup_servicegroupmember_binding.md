@@ -1,34 +1,17 @@
-# Binding servicegroup_servicegroupmember_binding
+# netscaler_servicegroup_servicegroupmember_binding
 
-Spec for **servicegroup_servicegroupmember_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/basic/servicegroup_servicegroupmember_binding/servicegroup_servicegroupmember_binding/)
+Terraform resource name : ```netscaler_servicegroup_servicegroupmember_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|port|No|No|int|
+|servername|No|No|string|
+|servicegroupname|No|No|string|
+|weight|No|No|double|
 
-| Name | Array | Type |
-|----|----|
-|port|No|int|
-|servername|No|string|
-|servicegroupname|No|string|
-|weight|No|double|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| servicegroupname | string |
-| servername | string |
-| port | int |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/servicegroup_servicegroupmember_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/servicegroup_servicegroupmember_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/servicegroup_servicegroupmember_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/servicegroup_servicegroupmember_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/basic/servicegroup_servicegroupmember_binding/servicegroup_servicegroupmember_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

@@ -1,31 +1,15 @@
-# Binding sslvserver_sslciphersuite_binding
+# netscaler_sslvserver_sslciphersuite_binding
 
-Spec for **sslvserver_sslciphersuite_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/ssl/sslvserver_sslciphersuite_binding/sslvserver_sslciphersuite_binding/)
+Terraform resource name : ```netscaler_sslvserver_sslciphersuite_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|ciphername|No|No|string|
+|vservername|No|No|string|
 
-| Name | Array | Type |
-|----|----|
-|ciphername|No|string|
-|vservername|No|string|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| vservername | string |
-| ciphername | string |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_sslciphersuite_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_sslciphersuite_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_sslciphersuite_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/sslvserver_sslciphersuite_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/ssl/sslvserver_sslciphersuite_binding/sslvserver_sslciphersuite_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

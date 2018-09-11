@@ -1,32 +1,16 @@
-# Binding policystringmap_pattern_binding
+# netscaler_policystringmap_pattern_binding
 
-Spec for **policystringmap_pattern_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/policy/policystringmap_pattern_binding/policystringmap_pattern_binding/)
+Terraform resource name : ```netscaler_policystringmap_pattern_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|key|No|No|string|
+|name|No|No|[policystringmap.name](/doc/resources/policystringmap.md)|
+|value|No|No|string|
 
-| Name | Array | Type |
-|----|----|
-|key|No|string|
-|name|No|[policystringmap.name](/doc/resources/policystringmap.md)|
-|value|No|string|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | policystringmap.name |
-| key | string |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/policystringmap_pattern_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/policystringmap_pattern_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/policystringmap_pattern_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/policystringmap_pattern_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/policy/policystringmap_pattern_binding/policystringmap_pattern_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

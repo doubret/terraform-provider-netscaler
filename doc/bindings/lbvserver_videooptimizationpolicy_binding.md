@@ -1,36 +1,20 @@
-# Binding lbvserver_videooptimizationpolicy_binding
+# netscaler_lbvserver_videooptimizationpolicy_binding
 
-Spec for **lbvserver_videooptimizationpolicy_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_videooptimizationpolicy_binding/lbvserver_videooptimizationpolicy_binding/)
+Terraform resource name : ```netscaler_lbvserver_videooptimizationpolicy_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|gotopriorityexpression|No|No|string|
+|invoke|No|No|bool|
+|labelname|No|No|string|
+|labeltype|No|No|reqvserver, resvserver, policylabel|
+|name|No|No|[lbvserver.name](/doc/resources/lbvserver.md)|
+|policyname|No|No|[videooptimizationpolicy.name](/doc/resources/videooptimizationpolicy.md)|
+|priority|No|No|double|
 
-| Name | Array | Type |
-|----|----|
-|gotopriorityexpression|No|string|
-|invoke|No|bool|
-|labelname|No|string|
-|labeltype|No|reqvserver, resvserver, policylabel|
-|name|No|[lbvserver.name](/doc/resources/lbvserver.md)|
-|policyname|No|[videooptimizationpolicy.name](/doc/resources/videooptimizationpolicy.md)|
-|priority|No|double|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | lbvserver.name |
-| policyname | videooptimizationpolicy.name |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_videooptimizationpolicy_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_videooptimizationpolicy_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_videooptimizationpolicy_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/lbvserver_videooptimizationpolicy_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_videooptimizationpolicy_binding/lbvserver_videooptimizationpolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 

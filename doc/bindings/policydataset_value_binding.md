@@ -1,32 +1,16 @@
-# Binding policydataset_value_binding
+# netscaler_policydataset_value_binding
 
-Spec for **policydataset_value_binding** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/policy/policydataset_value_binding/policydataset_value_binding/)
+Terraform resource name : ```netscaler_policydataset_value_binding```
 
-- [Fields](#fields)
-- [Key](#key)
-- [Operations](#operations)
+##### Arguments
 
-## Fields
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|index|No|No|double|
+|name|No|No|[policydataset.name](/doc/resources/policydataset.md)|
+|value|No|No|string|
 
-| Name | Array | Type |
-|----|----|
-|index|No|double|
-|name|No|[policydataset.name](/doc/resources/policydataset.md)|
-|value|No|string|
+##### Argument Reference
 
-## Key
-
-| Name | Type |
-|----|----|
-| name | policydataset.name |
-| value | string |
-
-## Operations
-
-| Name | Method | Url |
-|----|----|----|
-| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/policydataset_value_binding` |
-| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/policydataset_value_binding/<name>` |
-| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/policydataset_value_binding/<name>` |
-| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/policydataset_value_binding` |
+See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/policy/policydataset_value_binding/policydataset_value_binding/) for possible values for these arguments and for an exhaustive list of arguments.
 
