@@ -1,0 +1,39 @@
+# Binding <%= $name %>
+
+Spec for **<%= $name %>** binding - [citrix documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/<%= $binding.Scope %>/<%= $name %>/<%= $name %>/)
+
+- [Fields](#fields)
+- [Key](#key)
+- [Operations](#operations)
+
+## Fields
+
+| Name | Array | Type |
+|----|----|
+<% foreach($field in $binding.Fields.GetEnumerator() | Sort -Property Name) { -%>
+|<%= $field.Name -%>
+|<%= if($field.Value.EndsWith("[]")) { "Yes" } else { "No" } -%>
+<% if ($field.Value.Contains('.')) { -%>
+|<%= "[$($field.Value -Replace '\[\]')](/doc/resources/$(($field.Value -Split '\.')[0]).md)" -%>
+<% } else { -%>
+|<%= ($field.Value -Replace '\[\]' -Replace '\(' -Replace '\)') -Replace '\|', ', ' -%>
+<% } -%>
+|
+<% } -%>
+
+## Key
+
+| Name | Type |
+|----|----|
+<% foreach($field in $binding.Key) { -%>
+| <%= $field %> | <%= ($binding.Fields[$field] -Replace '\(' -Replace '\)') -Replace '\|', ', ' %> |
+<% } -%>
+
+## Operations
+
+| Name | Method | Url |
+|----|----|----|
+| List | GET | `http://<netscaler-ip-address>/nitro/v1/config/<%= $name %>` |
+| Get | GET | `http://<netscaler-ip-address>/nitro/v1/config/<%= $name %>/<name>` |
+| Delete | DELETE | `http://<netscaler-ip-address>/nitro/v1/config/<%= $name %>/<name>` |
+| Add | POST | `http://<netscaler-ip-address>/nitro/v1/config/<%= $name %>` |
