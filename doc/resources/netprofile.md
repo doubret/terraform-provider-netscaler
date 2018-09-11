@@ -1,16 +1,31 @@
 # netscaler_netprofile
 
-```
-resource "netscaler_netprofile" "tf_name" {
-    name = ...
-    overridelsn = ...
-    srcip = ...
-    srcippersistency = ...
-    td = ...
-}
-```
+Terraform resource name : ```netscaler_netprofile```
+
+##### Arguments
+
+| Name | Force new | Array | Type |
+|----|----|----|----|
+|name|No|No|string|
+|overridelsn|No|No|ENABLED, DISABLED|
+|srcip|No|No|ip|
+|srcippersistency|No|No|ENABLED, DISABLED|
+|td|No|No|double|
 
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/network/netprofile/netprofile/) for possible values for these arguments and for an exhaustive list of arguments.
+
+##### Exemple
+
+```
+resource "netscaler_netprofile" "tf_name" {
+
+    name = "abc"
+    overridelsn = "ENABLED"
+    srcip = "1.2.3.4"
+    srcippersistency = "ENABLED"
+    td = 42
+}
+```
 

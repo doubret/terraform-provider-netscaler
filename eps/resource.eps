@@ -1,13 +1,43 @@
 # netscaler_<%= $name %>
 
-```
-resource "netscaler_<%= $name %>" "tf_name" {
-<% foreach($field in $resource.Fields.GetEnumerator() | Sort -Property Name) { -%>
-    <%= $field.Name -%> = ...
+Terraform resource name : ```netscaler_<%= $name %>```
+
+##### Arguments
+
+| Name | Force new | Array | Type |
+|----|----|----|----|
+<% if($resource.State) { -%>
+| <%= $resource.State %> | No | No | ENABLED, DISABLED |
 <% } -%>
-}
-```
+<% foreach($field in $resource.Fields.GetEnumerator() | Sort -Property Name) { -%>
+|<%= $field.Name -%>
+|<%= if($field.Value.EndsWith("[]")) { "Yes" } else { "No" } -%>
+|<%= if(($field -in $resource.Update) -or ($field -in $resource.Key)) { "Yes" } else { "No" } -%>
+<% if ($field.Value.Contains('.')) { -%>
+|<%= "[$($field.Value -Replace '\[\]')](/doc/resources/$(($field.Value -Split '\.')[0]).md)" -%>
+<% } else { -%>
+|<%= ($field.Value -Replace '\[\]' -Replace '\(' -Replace '\)') -Replace '\|', ', ' -%>
+<% } -%>
+|
+<% } -%>
 
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/<%= $resource.Scope %>/<%= $name %>/<%= $name %>/) for possible values for these arguments and for an exhaustive list of arguments.
+
+##### Exemple
+
+```
+resource "netscaler_<%= $name %>" "tf_name" {
+<% foreach($field in $resource.Fields.GetEnumerator() | Sort -Property Name) { %>
+    <%= $field.Name -%> = <%= if($field.Value.EndsWith("[]")) { "[ ... ]" } -%>
+<%= if($field.Value -eq "ip") { '"1.2.3.4"' } -%>
+<%= if($field.Value -eq "ip_mask") { '"255.255.255.0"' } -%>
+<%= if($field.Value -eq "int") { "42" } -%>
+<%= if($field.Value -eq "double") { "42" } -%>
+<%= if($field.Value -eq "string") { '"abc"' } -%>
+<%= if($field.Value -eq "bool") { "true" } -%>
+<% if($field.Value.EndsWith(")")) { -%>"<%= ($field.Value -Replace '\(' -Replace '\)' -Split '\|')[0] %>"<% } -%>
+<% } %>
+}
+```
