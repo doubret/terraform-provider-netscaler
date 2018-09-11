@@ -16,7 +16,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_cachepolicylabel" "tf_name" {
+resource "netscaler_cachepolicylabel" "<resource_name>" {
 
     evaluates = "REQ"
     labelname = "abc"

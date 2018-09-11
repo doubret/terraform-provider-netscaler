@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_cmppolicy" "tf_name" {
+resource "netscaler_cmppolicy" "<resource_name>" {
 
     name = "abc"
     resaction = "${netscaler_cmpaction.<resource_name>.name}"

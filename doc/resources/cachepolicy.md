@@ -21,7 +21,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_cachepolicy" "tf_name" {
+resource "netscaler_cachepolicy" "<resource_name>" {
 
     action = "CACHE"
     invalgroups = [ ... ]"${netscaler_cachecontentgroup.<resource_name>.name[]}"

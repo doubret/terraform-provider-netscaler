@@ -20,7 +20,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_filteraction" "tf_name" {
+resource "netscaler_filteraction" "<resource_name>" {
 
     name = "abc"
     page = "abc"

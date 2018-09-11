@@ -20,7 +20,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_cspolicy" "tf_name" {
+resource "netscaler_cspolicy" "<resource_name>" {
 
     action = "${netscaler_csaction.<resource_name>.name}"
     domain = "abc"

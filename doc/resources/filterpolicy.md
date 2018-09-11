@@ -18,7 +18,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_filterpolicy" "tf_name" {
+resource "netscaler_filterpolicy" "<resource_name>" {
 
     name = "abc"
     reqaction = "${netscaler_filteraction.<resource_name>.name}"

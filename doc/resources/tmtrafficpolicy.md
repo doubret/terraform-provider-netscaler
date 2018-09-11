@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_tmtrafficpolicy" "tf_name" {
+resource "netscaler_tmtrafficpolicy" "<resource_name>" {
 
     action = "${netscaler_tmtrafficaction.<resource_name>.name}"
     name = "abc"

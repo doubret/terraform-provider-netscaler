@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_authorizationpolicy" "tf_name" {
+resource "netscaler_authorizationpolicy" "<resource_name>" {
 
     action = "abc"
     name = "abc"

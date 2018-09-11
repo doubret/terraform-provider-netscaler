@@ -27,7 +27,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_appqoeaction" "tf_name" {
+resource "netscaler_appqoeaction" "<resource_name>" {
 
     altcontentpath = "abc"
     altcontentsvcname = "${netscaler_service.<resource_name>.name}"

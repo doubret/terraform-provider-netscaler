@@ -25,7 +25,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_tmsessionaction" "tf_name" {
+resource "netscaler_tmsessionaction" "<resource_name>" {
 
     defaultauthorizationaction = "ALLOW"
     homepage = "abc"

@@ -68,7 +68,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_csvserver" "tf_name" {
+resource "netscaler_csvserver" "<resource_name>" {
 
     appflowlog = "ENABLED"
     authentication = "ON"

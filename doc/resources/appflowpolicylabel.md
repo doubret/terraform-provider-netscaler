@@ -16,7 +16,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_appflowpolicylabel" "tf_name" {
+resource "netscaler_appflowpolicylabel" "<resource_name>" {
 
     labelname = "abc"
     policylabeltype = "HTTP"

@@ -105,7 +105,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_lbvserver" "tf_name" {
+resource "netscaler_lbvserver" "<resource_name>" {
 
     appflowlog = "ENABLED"
     authentication = "ON"

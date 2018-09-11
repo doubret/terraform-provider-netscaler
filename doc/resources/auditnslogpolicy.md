@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_auditnslogpolicy" "tf_name" {
+resource "netscaler_auditnslogpolicy" "<resource_name>" {
 
     action = "${netscaler_auditnslogaction.<resource_name>.name}"
     name = "abc"

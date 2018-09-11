@@ -25,7 +25,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_lbgroup" "tf_name" {
+resource "netscaler_lbgroup" "<resource_name>" {
 
     backuppersistencetimeout = 42
     cookiedomain = "abc"

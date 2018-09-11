@@ -24,7 +24,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_server" "tf_name" {
+resource "netscaler_server" "<resource_name>" {
 
     comment = "abc"
     domain = "abc"

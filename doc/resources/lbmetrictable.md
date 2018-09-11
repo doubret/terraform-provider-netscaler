@@ -15,7 +15,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_lbmetrictable" "tf_name" {
+resource "netscaler_lbmetrictable" "<resource_name>" {
 
     metrictable = "abc"
 }

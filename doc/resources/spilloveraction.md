@@ -16,7 +16,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_spilloveraction" "tf_name" {
+resource "netscaler_spilloveraction" "<resource_name>" {
 
     action = "SPILLOVER"
     name = "abc"

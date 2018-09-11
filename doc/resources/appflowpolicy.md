@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_appflowpolicy" "tf_name" {
+resource "netscaler_appflowpolicy" "<resource_name>" {
 
     action = "${netscaler_appflowaction.<resource_name>.name}"
     comment = "abc"

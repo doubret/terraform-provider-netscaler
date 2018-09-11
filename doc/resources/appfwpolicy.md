@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_appfwpolicy" "tf_name" {
+resource "netscaler_appfwpolicy" "<resource_name>" {
 
     comment = "abc"
     logaction = "abc"

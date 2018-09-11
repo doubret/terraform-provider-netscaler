@@ -18,7 +18,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_appflowcollector" "tf_name" {
+resource "netscaler_appflowcollector" "<resource_name>" {
 
     ipaddress = "1.2.3.4"
     name = "abc"

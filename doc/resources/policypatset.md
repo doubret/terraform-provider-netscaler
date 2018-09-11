@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_policypatset" "tf_name" {
+resource "netscaler_policypatset" "<resource_name>" {
 
     comment = "abc"
     indextype = "Auto-generated"

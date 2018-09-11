@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_csaction" "tf_name" {
+resource "netscaler_csaction" "<resource_name>" {
 
     comment = "abc"
     name = "abc"

@@ -18,7 +18,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_transformprofile" "tf_name" {
+resource "netscaler_transformprofile" "<resource_name>" {
 
     comment = "abc"
     name = "abc"

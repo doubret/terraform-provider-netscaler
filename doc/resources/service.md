@@ -55,7 +55,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_service" "tf_name" {
+resource "netscaler_service" "<resource_name>" {
 
     accessdown = "YES"
     appflowlog = "ENABLED"

@@ -48,7 +48,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_servicegroup" "tf_name" {
+resource "netscaler_servicegroup" "<resource_name>" {
 
     appflowlog = "ENABLED"
     autoscale = "DISABLED"

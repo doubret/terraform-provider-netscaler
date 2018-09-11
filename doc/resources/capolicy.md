@@ -20,7 +20,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_capolicy" "tf_name" {
+resource "netscaler_capolicy" "<resource_name>" {
 
     action = "${netscaler_caaction.<resource_name>.name}"
     comment = "abc"

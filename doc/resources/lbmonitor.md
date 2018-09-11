@@ -106,7 +106,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_lbmonitor" "tf_name" {
+resource "netscaler_lbmonitor" "<resource_name>" {
 
     action = "NONE"
     alertretries = 42

@@ -16,7 +16,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_cspolicylabel" "tf_name" {
+resource "netscaler_cspolicylabel" "<resource_name>" {
 
     cspolicylabeltype = "HTTP"
     labelname = "abc"

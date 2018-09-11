@@ -20,7 +20,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_pqpolicy" "tf_name" {
+resource "netscaler_pqpolicy" "<resource_name>" {
 
     policyname = "abc"
     polqdepth = 42

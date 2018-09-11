@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_netprofile" "tf_name" {
+resource "netscaler_netprofile" "<resource_name>" {
 
     name = "abc"
     overridelsn = "ENABLED"

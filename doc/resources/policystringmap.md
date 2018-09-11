@@ -16,7 +16,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_policystringmap" "tf_name" {
+resource "netscaler_policystringmap" "<resource_name>" {
 
     comment = "abc"
     name = "abc"

@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_appqoepolicy" "tf_name" {
+resource "netscaler_appqoepolicy" "<resource_name>" {
 
     action = "${netscaler_appqoeaction.<resource_name>.name}"
     name = "abc"

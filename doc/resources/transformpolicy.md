@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_transformpolicy" "tf_name" {
+resource "netscaler_transformpolicy" "<resource_name>" {
 
     comment = "abc"
     logaction = "abc"

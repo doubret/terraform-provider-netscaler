@@ -37,7 +37,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_feoaction" "tf_name" {
+resource "netscaler_feoaction" "<resource_name>" {
 
     cachemaxage = 42
     clientsidemeasurements = true

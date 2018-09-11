@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_dospolicy" "tf_name" {
+resource "netscaler_dospolicy" "<resource_name>" {
 
     cltdetectrate = 42
     name = "abc"

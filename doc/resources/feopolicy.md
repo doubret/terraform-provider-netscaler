@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_feopolicy" "tf_name" {
+resource "netscaler_feopolicy" "<resource_name>" {
 
     action = "${netscaler_feoaction.<resource_name>.name}"
     name = "abc"

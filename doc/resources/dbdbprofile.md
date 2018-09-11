@@ -20,7 +20,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_dbdbprofile" "tf_name" {
+resource "netscaler_dbdbprofile" "<resource_name>" {
 
     conmultiplex = "ENABLED"
     enablecachingconmuxoff = "ENABLED"

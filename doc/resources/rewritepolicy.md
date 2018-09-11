@@ -20,7 +20,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_rewritepolicy" "tf_name" {
+resource "netscaler_rewritepolicy" "<resource_name>" {
 
     action = "${netscaler_rewriteaction.<resource_name>.name}"
     comment = "abc"

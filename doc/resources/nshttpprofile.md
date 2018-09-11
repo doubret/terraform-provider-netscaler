@@ -47,7 +47,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_nshttpprofile" "tf_name" {
+resource "netscaler_nshttpprofile" "<resource_name>" {
 
     adpttimeout = "ENABLED"
     altsvc = "ENABLED"

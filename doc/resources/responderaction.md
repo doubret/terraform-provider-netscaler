@@ -22,7 +22,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_responderaction" "tf_name" {
+resource "netscaler_responderaction" "<resource_name>" {
 
     bypasssafetycheck = "YES"
     comment = "abc"

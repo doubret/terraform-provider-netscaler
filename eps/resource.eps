@@ -28,7 +28,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_<%= $name %>" "tf_name" {
+resource "netscaler_<%= $name %>" "<resource_name>" {
 <% foreach($field in $resource.Fields.GetEnumerator() | Sort -Property Name) { %>
     <%= $field.Name -%> = <%= if($field.Value.EndsWith("[]")) { "[ ... ]" } -%>
 <%= if($field.Value -eq "ip") { '"1.2.3.4"' } -%>

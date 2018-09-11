@@ -22,7 +22,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_scpolicy" "tf_name" {
+resource "netscaler_scpolicy" "<resource_name>" {
 
     action = "abc"
     altcontentpath = "ACS"

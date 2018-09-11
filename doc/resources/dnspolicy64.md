@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_dnspolicy64" "tf_name" {
+resource "netscaler_dnspolicy64" "<resource_name>" {
 
     action = "${netscaler_dnsaction64.<resource_name>.actionname}"
     name = "abc"

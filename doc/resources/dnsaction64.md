@@ -18,7 +18,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_dnsaction64" "tf_name" {
+resource "netscaler_dnsaction64" "<resource_name>" {
 
     actionname = "abc"
     excluderule = "abc"

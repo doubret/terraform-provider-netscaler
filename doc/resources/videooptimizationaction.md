@@ -18,7 +18,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_videooptimizationaction" "tf_name" {
+resource "netscaler_videooptimizationaction" "<resource_name>" {
 
     comment = "abc"
     name = "abc"

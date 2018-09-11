@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_cmpaction" "tf_name" {
+resource "netscaler_cmpaction" "<resource_name>" {
 
     addvaryheader = "GLOBAL"
     cmptype = "compress"

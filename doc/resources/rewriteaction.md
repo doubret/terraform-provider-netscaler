@@ -23,7 +23,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_rewriteaction" "tf_name" {
+resource "netscaler_rewriteaction" "<resource_name>" {
 
     bypasssafetycheck = "YES"
     comment = "abc"

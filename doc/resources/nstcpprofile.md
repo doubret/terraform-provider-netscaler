@@ -64,7 +64,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_nstcpprofile" "tf_name" {
+resource "netscaler_nstcpprofile" "<resource_name>" {
 
     ackaggregation = "ENABLED"
     ackonpush = "ENABLED"

@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_caaction" "tf_name" {
+resource "netscaler_caaction" "<resource_name>" {
 
     accumressize = 42
     comment = "abc"

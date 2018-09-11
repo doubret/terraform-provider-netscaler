@@ -21,7 +21,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_lbprofile" "tf_name" {
+resource "netscaler_lbprofile" "<resource_name>" {
 
     cookiepassphrase = "abc"
     dbslb = "ENABLED"

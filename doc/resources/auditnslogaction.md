@@ -31,7 +31,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_auditnslogaction" "tf_name" {
+resource "netscaler_auditnslogaction" "<resource_name>" {
 
     acl = "ENABLED"
     alg = "ENABLED"

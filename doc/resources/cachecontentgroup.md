@@ -53,7 +53,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_cachecontentgroup" "tf_name" {
+resource "netscaler_cachecontentgroup" "<resource_name>" {
 
     absexpiry = [ ... ]
     absexpirygmt = [ ... ]

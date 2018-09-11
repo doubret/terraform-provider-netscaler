@@ -23,7 +23,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_dnsprofile" "tf_name" {
+resource "netscaler_dnsprofile" "<resource_name>" {
 
     cacheecsresponses = "ENABLED"
     cachenegativeresponses = "ENABLED"

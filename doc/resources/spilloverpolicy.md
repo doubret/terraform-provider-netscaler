@@ -18,7 +18,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_spilloverpolicy" "tf_name" {
+resource "netscaler_spilloverpolicy" "<resource_name>" {
 
     action = "${netscaler_spilloveraction.<resource_name>.name}"
     comment = "abc"

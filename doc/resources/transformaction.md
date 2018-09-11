@@ -25,7 +25,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_transformaction" "tf_name" {
+resource "netscaler_transformaction" "<resource_name>" {
 
     comment = "abc"
     cookiedomainfrom = "abc"

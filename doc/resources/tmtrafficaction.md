@@ -26,7 +26,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_tmtrafficaction" "tf_name" {
+resource "netscaler_tmtrafficaction" "<resource_name>" {
 
     apptimeout = 42
     forcedtimeout = "START"

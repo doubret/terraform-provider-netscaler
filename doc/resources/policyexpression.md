@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_policyexpression" "tf_name" {
+resource "netscaler_policyexpression" "<resource_name>" {
 
     clientsecuritymessage = "abc"
     comment = "abc"

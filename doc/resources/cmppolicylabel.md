@@ -16,7 +16,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_cmppolicylabel" "tf_name" {
+resource "netscaler_cmppolicylabel" "<resource_name>" {
 
     labelname = "abc"
     type = "REQ"

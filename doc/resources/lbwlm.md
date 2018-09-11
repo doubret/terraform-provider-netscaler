@@ -19,7 +19,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_lbwlm" "tf_name" {
+resource "netscaler_lbwlm" "<resource_name>" {
 
     ipaddress = "1.2.3.4"
     katimeout = 42

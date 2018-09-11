@@ -21,7 +21,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_appflowaction" "tf_name" {
+resource "netscaler_appflowaction" "<resource_name>" {
 
     clientsidemeasurements = "ENABLED"
     collectors = [ ... ]"${netscaler_appflowcollector.<resource_name>.name[]}"

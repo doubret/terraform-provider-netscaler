@@ -17,7 +17,7 @@ See [official documentation page](https://developer-docs.citrix.com/projects/net
 ##### Exemple
 
 ```
-resource "netscaler_rewritepolicylabel" "tf_name" {
+resource "netscaler_rewritepolicylabel" "<resource_name>" {
 
     comment = "abc"
     labelname = "abc"
