@@ -12,7 +12,6 @@ Terraform resource name : ```netscaler_lbmonitor_sslcertkey_binding```
 |monitorname|No|No|[lbmonitor.monitorname](/doc/resources/lbmonitor.md)|
 |ocspcheck|No|No|string|
 
-
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbmonitor_sslcertkey_binding/lbmonitor_sslcertkey_binding/) for possible values for these arguments and for an exhaustive list of arguments.

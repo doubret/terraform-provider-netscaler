@@ -14,7 +14,6 @@ Terraform resource name : ```netscaler_lbvserver_pqpolicy_binding```
 |policyname|No|No|[pqpolicy.policyname](/doc/resources/pqpolicy.md)|
 |priority|No|No|double|
 
-
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_pqpolicy_binding/lbvserver_pqpolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.

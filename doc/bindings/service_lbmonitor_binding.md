@@ -12,7 +12,6 @@ Terraform resource name : ```netscaler_service_lbmonitor_binding```
 |passive|No|No|bool|
 |weight|No|No|double|
 
-
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/basic/service_lbmonitor_binding/service_lbmonitor_binding/) for possible values for these arguments and for an exhaustive list of arguments.

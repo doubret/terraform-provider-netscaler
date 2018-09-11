@@ -14,7 +14,6 @@ Terraform resource name : ```netscaler_lbvserver_appfwpolicy_binding```
 |policyname|No|No|[appfwpolicy.name](/doc/resources/appfwpolicy.md)|
 |priority|No|No|double|
 
-
 ##### Argument Reference
 
 See [official documentation page](https://developer-docs.citrix.com/projects/netscaler-nitro-api/en/11.0/configuration/load-balancing/lbvserver_appfwpolicy_binding/lbvserver_appfwpolicy_binding/) for possible values for these arguments and for an exhaustive list of arguments.
