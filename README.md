@@ -1,3 +1,88 @@
-# citrix-netscaler-terraform-provider
+# terraform-provider-netscaler
 
-Citrix Netscaler terraform provider
+[Terraform](https://www.terraform.io) Provider for [Citrix NetScaler](https://www.citrix.com/products/netscaler-adc/)
+
+## Description
+
+This project is a terraform custom provider for Citrix NetScaler. It uses the [Nitro API](https://docs.citrix.com/en-us/netscaler/11/nitro-api.html) to create/configure NetScaler resources and bindings. 
+
+**Important note: The provider will not commit the config changes to NetScaler's persistent store.**
+
+## Requirement
+
+* [hashicorp/terraform](https://github.com/hashicorp/terraform)
+
+
+## Usage
+
+### Running
+1. Copy the binary (either from the [build](#building) or from the
+   [releases](https://github.com/citrix/terraform-provider-netscaler/releases) page)
+   `terraform-provider-netscaler` to an appropriate location.
+
+   [Configure](https://www.terraform.io/docs/plugins/basics.html) `.terraformrc` to use the
+   `netscaler` provider. An example `.terraformrc`:
+
+```
+providers {
+    netscaler = "<path-to-custom-providers>/terraform-provider-netscaler"
+}
+```
+
+2. Run `terraform` as usual 
+
+```
+terraform plan
+terraform apply
+```
+
+3. The provider will not commit the config changes to NetScaler's persistent store. To do this, run the shell script `ns_commit.sh`:
+
+```
+export NS_URL=http://<host>:<port>/
+export NS_USER=nsroot
+export NS_PASSWORD=nsroot
+./ns_commit.sh
+```
+
+To ensure that the config is saved on every run, we can use something like `terraform apply && ns_commit.sh`
+
+### Provider Configuration
+
+```
+provider "netscaler" {
+    username = "${var.ns_user}"
+    password = "${var.ns_password}"
+    endpoint = "http://10.71.136.250/"
+}
+```
+
+We can use a `https` URL and accept the untrusted authority certificate on the NetScaler by specifying `insecure_skip_verify = true`
+
+##### Argument Reference
+
+The following arguments are supported.
+
+* `username` - This is the user name to access to NetScaler. Defaults to `nsroot` unless environment variable `NS_LOGIN` has been set
+* `password` - This is the password to access to NetScaler. Defaults to `nsroot` unless environment variable `NS_PASSWORD` has been set
+* `endpoint` - (Required) Nitro API endpoint in the form `http://<NS_IP>/` or `http://<NS_IP>:<PORT>/`. Can be specified in environment variable `NS_URL`
+* `insecure_skip_verify` - (Optional, true/false) Whether to accept the untrusted certificate on the NetScaler when the NetScaler endpoint is `https`
+
+The username, password and endpoint can be provided in environment variables `NS_LOGIN`, `NS_PASSWORD` and `NS_URL`. 
+
+## Using `remote-exec` for one-time tasks
+Terraform is useful for maintaining desired state for a set of resources. It is less useful for tasks such as network configuration which don't change. Network configuration is like using a provisioner inside Terraform. The directory `examples/remote-exec` show examples of how Terraform can use ssh to accomplish these one-time tasks.
+
+## Building
+### Assumption
+* You have (some) experience with Terraform, the different provisioners and providers that come out of the box,
+its configuration files, tfstate files, etc.
+* You are comfortable with the Go language and its code organization.
+
+1. Install `terraform` from <https://www.terraform.io/downloads.html>
+2. Install `dep` (<https://github.com/golang/dep>)
+3. Check out this code: `git clone https://<>`
+4. Build this code using `make build`
+
+## Samples
+See the `examples` directory for various LB topologies that can be driven from this terraform provider.
